@@ -1,72 +1,33 @@
-/* Copyright (c) 2021 FIRST. All rights reserved.
- *
- * Redistribution and use in source and binary forms, with or without modification,
- * are permitted (subject to the limitations in the disclaimer below) provided that
- * the following conditions are met:
- *
- * Redistributions of source code must retain the above copyright notice, this list
- * of conditions and the following disclaimer.
- *
- * Redistributions in binary form must reproduce the above copyright notice, this
- * list of conditions and the following disclaimer in the documentation and/or
- * other materials provided with the distribution.
- *
- * Neither the name of FIRST nor the names of its contributors may be used to endorse or
- * promote products derived from this software without specific prior written permission.
- *
- * NO EXPRESS OR IMPLIED LICENSES TO ANY PARTY'S PATENT RIGHTS ARE GRANTED BY THIS
- * LICENSE. THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
- * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO,
- * THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
- * ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE
- * FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
- * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
- * SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
- * CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
- * OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- */
+package com.example.ftclibexamples;
 
-package org.firstinspires.ftc.robotcontroller.external.samples;
 
+//import com.arcrobotics.ftclib.drivebase.MecanumDrive;
+//import com.arcrobotics.ftclib.gamepad.GamepadEx;
+import com.qualcomm.hardware.rev.RevHubOrientationOnRobot;
+import com.qualcomm.robotcore.hardware.IMU;
+//import com.arcrobotics.ftclib.hardware.motors.Motor;
 import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
-import com.qualcomm.robotcore.hardware.DcMotorSimple;
+import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
-/*
- * This file contains an example of a Linear "OpMode".
- * An OpMode is a 'program' that runs in either the autonomous or the teleop period of an FTC match.
- * The names of OpModes appear on the menu of the FTC Driver Station.
- * When a selection is made from the menu, the corresponding OpMode is executed.
- *
- * This particular OpMode illustrates driving a 4-motor Omni-Directional (or Holonomic) robot.
- * This code will work with either a Mecanum-Drive or an X-Drive train.
- * Both of these drives are illustrated at https://gm0.org/en/latest/docs/robot-design/drivetrains/holonomic.html
- * Note that a Mecanum drive must display an X roller-pattern when viewed from above.
- *
- * Also note that it is critical to set the correct rotation direction for each motor.  See details below.
- *
- * Holonomic drives provide the ability for the robot to move in three axes (directions) simultaneously.
- * Each motion axis is controlled by one Joystick axis.
- *
- * 1) Axial:    Driving forward and backward               Left-joystick Forward/Backward
- * 2) Lateral:  Strafing right and left                     Left-joystick Right and Left
- * 3) Yaw:      Rotating Clockwise and counter clockwise    Right-joystick Right and Left
- *
- * This code is written assuming that the right-side motors need to be reversed for the robot to drive forward.
- * When you first test your robot, if it moves backward when you push the left stick forward, then you must flip
- * the direction of all 4 motors (see code below).
- *
- * Use Android Studio to Copy this Class, and Paste it into your team's code folder with a new name.
- * Remove or comment out the @Disabled line to add this OpMode to the Driver Station OpMode list
- */
+import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
+import org.firstinspires.ftc.robotcore.internal.system.Deadline;
+import java.util.concurrent.TimeUnit;
 
-@TeleOp(name="Basic: Omni Linear OpMode", group="Linear OpMode")
 
-public class BasicOmniOpMode_Linear extends LinearOpMode {
+@TeleOp
+
+
+public class MecanumDrivingSampleField extends LinearOpMode {
+
+    // This variable determines whether the following program
+    // uses field-centric or robot-centric driving styles. The
+    // differences between them can be read here in the docs:
+    // https://docs.ftclib.org/ftclib/features/drivebases#control-scheme
+    static boolean FIELD_CENTRIC = true;//NOTE : FIELD CENTRIC WILL ONLY WORK IF THE CONTROL HUB IS FLAT ON THE ROBOT AT THE MOMENT!!!
 
     // Declare OpMode members for each of the 4 motors.
     private ElapsedTime runtime = new ElapsedTime();
@@ -85,6 +46,34 @@ public class BasicOmniOpMode_Linear extends LinearOpMode {
         rightFrontDrive = hardwareMap.get(DcMotor.class, "rightFrontDrive");
         rightBackDrive = hardwareMap.get(DcMotor.class, "rightBackDrive");
 
+        //Initialize IMU
+        // This is the built-in IMU in the REV hub.
+        // We're initializing it by its default parameters
+        // and name in the config ('imu'). The orientation
+        // of the hub is important. Below is a model
+        // of the REV Hub and the orientation axes for the IMU.
+        //
+        //                           | Z axis
+        //                           |
+        //     (Motor Port Side)     |   / X axis
+        //                       ____|__/____
+        //          Y axis     / *   | /    /|   (IO Side)
+        //          _________ /______|/    //      I2C
+        //                   /___________ //     Digital
+        //                  |____________|/      Analog
+        //
+        //                 (Servo Port Side)
+        //
+
+
+        IMU imu = hardwareMap.get(IMU.class,"imu");
+        IMU.Parameters parameters = new IMU.Parameters(new RevHubOrientationOnRobot(
+               RevHubOrientationOnRobot.LogoFacingDirection.BACKWARD,
+            RevHubOrientationOnRobot.UsbFacingDirection.RIGHT));
+
+        imu.initialize (parameters);
+//      IMU calibration
+        Deadline gamepadRateLimit = new Deadline(500,TimeUnit.MILLISECONDS);
         // ########################################################################################
         // !!!            IMPORTANT Drive Information. Test your motor directions.            !!!!!
         // ########################################################################################
@@ -95,14 +84,17 @@ public class BasicOmniOpMode_Linear extends LinearOpMode {
         // when you first test your robot, push the left joystick forward and observe the direction the wheels turn.
         // Reverse the direction (flip FORWARD <-> REVERSE ) of any wheel that runs backward
         // Keep testing until ALL the wheels move the robot forward when you push the left joystick forward.
-        leftFrontDrive.setDirection(DcMotor.Direction.FORWARD);
-        leftBackDrive.setDirection(DcMotor.Direction.FORWARD);
-        rightFrontDrive.setDirection(DcMotor.Direction.REVERSE);
-        rightBackDrive.setDirection(DcMotor.Direction.REVERSE);
+        leftFrontDrive.setDirection(DcMotor.Direction.REVERSE);
+        leftBackDrive.setDirection(DcMotor.Direction.REVERSE);
+//        leftFrontDrive.setDirection(DcMotor.Direction.FORWARD);
+//        leftBackDrive.setDirection(DcMotor.Direction.FORWARD);
+ //       rightFrontDrive.setDirection(DcMotor.Direction.REVERSE);
+ //       rightBackDrive.setDirection(DcMotor.Direction.REVERSE);
 
         // Wait for the game to start (driver presses PLAY)
         telemetry.addData("Status", "Initialized");
         telemetry.update();
+
 
         waitForStart();
         runtime.reset();
@@ -111,17 +103,46 @@ public class BasicOmniOpMode_Linear extends LinearOpMode {
         while (opModeIsActive()) {
             double max;
 
-            // POV Mode uses left joystick to go forward & strafe, and right joystick to rotate.
-            double axial   = -gamepad1.left_stick_y;  //fwd
-            double lateral =  gamepad1.left_stick_x;  //str
-            double yaw     =  gamepad1.right_stick_x; //TUR
-            
+            // POV Mode uses left joystick to go forward & rotate, and right joystick to strafe.
+            double axial   =  gamepad1.left_stick_y;  //fwd
+            double lateral =  gamepad1.left_stick_x;  //TUR
+            double yaw     =  gamepad1.right_stick_x; //STR
+
+            //timeout happens then reset
+            if(gamepadRateLimit.hasExpired() && gamepad1.a){
+                imu.resetYaw();
+                gamepadRateLimit.reset();
+            }
+
+            //   Field Oriented Conversion Test
+            // This is the built-in IMU in the REV hub.
+            // We're initializing it by its default parameters
+            // and name in the config ('imu'). The orientation
+            // of the hub is important. Below is a model
+            // of the REV Hub and the orientation axes for the IMU.
+            //
+            //                           | Z axis
+            //                           |
+            //     (Motor Port Side)     |   / X axis
+            //                       ____|__/____
+            //          Y axis     / *   | /    /|   (IO Side)
+            //          _________ /______|/    //      I2C
+            //                   /___________ //     Digital
+            //                  |____________|/      Analog
+            //
+            //                 (Servo Port Side)
+            //
+
+            double heading = -imu.getRobotYawPitchRollAngles().getYaw(AngleUnit.RADIANS);
+            double Adjlateral = -axial *Math.sin(heading) + lateral * Math.cos(heading);
+            double Adjaxial = axial *Math.cos(heading) + lateral * Math.sin(heading);
+
             // Combine the joystick requests for each axis-motion to determine each wheel's power.
             // Set up a variable for each drive wheel to save the power level for telemetry.
-            double leftFrontPower  = axial + lateral + yaw;
-            double rightFrontPower = axial - lateral - yaw;
-            double leftBackPower   = axial - lateral + yaw;
-            double rightBackPower  = axial + lateral - yaw;
+            double leftFrontPower  = Adjaxial + Adjlateral + yaw;
+            double rightFrontPower = Adjaxial - Adjlateral - yaw;
+            double leftBackPower   = Adjaxial - Adjlateral + yaw;
+            double rightBackPower  = Adjaxial + Adjlateral - yaw;
 
             // Normalize the values so no wheel power exceeds 100%
             // This ensures that the robot maintains the desired motion.
@@ -162,6 +183,11 @@ public class BasicOmniOpMode_Linear extends LinearOpMode {
             telemetry.addData("Status", "Run Time: " + runtime.toString());
             telemetry.addData("Front left/Right", "%4.2f, %4.2f", leftFrontPower, rightFrontPower);
             telemetry.addData("Back  left/Right", "%4.2f, %4.2f", leftBackPower, rightBackPower);
+            telemetry.addData("non-Calibraated  left/Right", "%4.2f, %4.2f", axial, lateral);
+            telemetry.addData("Calibraated  left/Right", "%4.2f, %4.2f", Adjaxial, Adjlateral);
             telemetry.update();
         }
-    }}
+    }
+
+
+}
