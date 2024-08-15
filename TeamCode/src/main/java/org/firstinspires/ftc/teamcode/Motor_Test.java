@@ -26,23 +26,11 @@ public class Motor_Test extends LinearOpMode {
     private DcMotor leftBackDrive = null;
     private DcMotor rightFrontDrive = null;
     private DcMotor rightBackDrive = null;
-//    private DcMotorEx intakeLift = null;
 
-    private Servo testServo = null;
-    private Servo torqueServo = null;
-    private Servo HOPPER_SERVO_OLD = null;
-
-    public static double servoMax = 1.0;
-    public static double servoMin = 0.0;
     private int motorToTest = 2;
     //private DcMotorEx hopperLift;
     private float powerToSet;
-    private boolean hangRelease;
-     private boolean hangLiftHang;
-    private boolean hangLiftDrop;
-    private DcMotorEx hangMotor;
     private boolean pressedOnce = true;
-    private DcMotorEx intake;
 
     public void initializeHardware() throws InterruptedException {
 
@@ -145,9 +133,6 @@ public class Motor_Test extends LinearOpMode {
 
     private void updateTestMotors() {
         if(motorToTest == 1) {
-            intake.setPower(powerToSet);
-            hangMotor.setPower(0);
-            //hopperLift.setPower(0);
             leftFrontDrive.setPower(0);
             rightFrontDrive.setPower(0);
             leftBackDrive.setPower(0);
@@ -155,18 +140,12 @@ public class Motor_Test extends LinearOpMode {
         }
 
         if(motorToTest == 2) {
-           // intakeLift.setPower(0);
-            hangMotor.setPower(powerToSet);
-            //hopperLift.setPower(0);
             leftFrontDrive.setPower(0);
             rightFrontDrive.setPower(0);
             leftBackDrive.setPower(0);
             rightBackDrive.setPower(0);
         }
         if(motorToTest == 3) {
-           // intakeLift.setPower(0);
-            hangMotor.setPower(0);
-            //hopperLift.setPower(powerToSet);
             leftFrontDrive.setPower(0);
             rightFrontDrive.setPower(0);
             leftBackDrive.setPower(0);
@@ -174,20 +153,14 @@ public class Motor_Test extends LinearOpMode {
         }
 
         if(motorToTest == 4) {
-           // intakeLift.setPower(0);
-            hangMotor.setPower(0);
-            //hopperLift.setPower(0);
-            leftFrontDrive.setPower(powerToSet);
+             leftFrontDrive.setPower(powerToSet);
             rightFrontDrive.setPower(0);
             leftBackDrive.setPower(0);
             rightBackDrive.setPower(0);
         }
 
         if(motorToTest == 5) {
-          //  intakeLift.setPower(0);
-            hangMotor.setPower(0);
-            //hopperLift.setPower(0);
-            leftFrontDrive.setPower(0);
+           leftFrontDrive.setPower(0);
             rightFrontDrive.setPower(powerToSet);
             leftBackDrive.setPower(0);
             rightBackDrive.setPower(0);
@@ -195,7 +168,7 @@ public class Motor_Test extends LinearOpMode {
 
         if(motorToTest == 6) {
            // intakeLift.setPower(0);
-            hangMotor.setPower(0);
+ //           hangMotor.setPower(0);
             //hopperLift.setPower(0);
             leftFrontDrive.setPower(0);
             rightFrontDrive.setPower(0);
@@ -204,9 +177,6 @@ public class Motor_Test extends LinearOpMode {
         }
 
         if(motorToTest == 7) {
-           // intakeLift.setPower(0);
-            hangMotor.setPower(0);
-            //hopperLift.setPower(0);
             leftFrontDrive.setPower(0);
             rightFrontDrive.setPower(0);
             leftBackDrive.setPower(0);
@@ -235,20 +205,9 @@ public class Motor_Test extends LinearOpMode {
         if(gamepad1.b)
             setHopperServo(servoMin); //HopperServo is 0.4 for up
          */
-        if (gamepad1.dpad_down && hangRelease)
-            hangLiftHang = true;
-        else
-            hangLiftHang = false;
-
-        if(gamepad1.a)
-            hangLiftDrop = true;
-        else
-            hangLiftDrop = false;
 
         boolean endgame = true;
 
-        if (gamepad1.b && gamepad1.dpad_right && endgame)
-            hangRelease = true;
 
         if(gamepad1.dpad_left && pressedOnce) {
             motorToTest++;
@@ -292,9 +251,5 @@ public class Motor_Test extends LinearOpMode {
     }
 
 
-    private void setHOPPER_SERVO_OLD(double pos) {
-        HOPPER_SERVO_OLD.setPosition(pos);}
-    private void setTorqueServoPos(double pos) {torqueServo.setPosition(pos);}
-    private void setServoPos(double pos) {testServo.setPosition(pos);}
-}
+ }
 
