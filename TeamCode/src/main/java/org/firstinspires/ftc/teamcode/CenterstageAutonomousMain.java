@@ -96,7 +96,7 @@ import org.firstinspires.ftc.teamcode.subsystem.SubSystemDrivetrain;
  */
 
 @Autonomous
-
+//adding empty Functions - AUTO
 public class CenterstageAutonomousMain extends LinearOpMode {
     private boolean isTestBot = true;
 
