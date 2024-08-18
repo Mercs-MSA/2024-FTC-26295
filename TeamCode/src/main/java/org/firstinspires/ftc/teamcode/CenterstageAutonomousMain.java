@@ -96,15 +96,16 @@ import org.firstinspires.ftc.teamcode.subsystem.SubSystemDrivetrain;
  */
 
 @Autonomous
-@Disabled
+
 public class CenterstageAutonomousMain extends LinearOpMode {
     private boolean isTestBot = true;
 
     /* Declare OpMode members. */
-    private DcMotor frontLeftDrive = null;
-    private DcMotor frontRightDrive = null;
-    private DcMotor backRightDrive = null;
-    private DcMotor backLeftDrive = null;
+    private ElapsedTime runtime = new ElapsedTime();
+    private DcMotor leftFrontDrive = null;
+    private DcMotor leftBackDrive = null;
+    private DcMotor rightFrontDrive = null;
+    private DcMotor rightBackDrive = null;
     private DistanceSensor leftDistanceSensor;
     private DistanceSensor rightDistanceSensor;
 
@@ -163,10 +164,10 @@ public class CenterstageAutonomousMain extends LinearOpMode {
 
     public void initializeMotors() throws InterruptedException {
         // Initialize the drive system variables.
-        frontLeftDrive = hardwareMap.get(DcMotor.class, "frontLeftDrive");
-        frontRightDrive = hardwareMap.get(DcMotor.class, "frontRightDrive");
-        backLeftDrive = hardwareMap.get(DcMotor.class, "backLeftDrive");
-        backRightDrive = hardwareMap.get(DcMotor.class, "backRightDrive");
+        leftFrontDrive = hardwareMap.get(DcMotor.class, "frontLeftDrive");
+        rightFrontDrive = hardwareMap.get(DcMotor.class, "frontRightDrive");
+        leftBackDrive = hardwareMap.get(DcMotor.class, "backLeftDrive");
+        rightBackDrive = hardwareMap.get(DcMotor.class, "backRightDrive");
 
         driveTerrain = new SubSystemDrivetrain(hardwareMap, SubSystemVariables.currentBot);
 
@@ -176,10 +177,10 @@ public class CenterstageAutonomousMain extends LinearOpMode {
         // To drive forward, most robots need the motor on one side to be reversed, because the axles point in opposite directions.
         // When run, this OpMode should start both motors driving forward. So adjust these two lines based on your first test drive.
         // Note: The settings here assume direct drive on left and right wheels.  Gear Reduction or 90 Deg drives may require direction flips
-        frontLeftDrive.setDirection(DcMotor.Direction.REVERSE);
-        backLeftDrive.setDirection(DcMotor.Direction.REVERSE);
-        frontRightDrive.setDirection(DcMotor.Direction.FORWARD);
-        backRightDrive.setDirection(DcMotor.Direction.FORWARD);
+        leftFrontDrive.setDirection(DcMotor.Direction.REVERSE);
+        leftBackDrive.setDirection(DcMotor.Direction.REVERSE);
+        rightFrontDrive.setDirection(DcMotor.Direction.FORWARD);
+        rightBackDrive.setDirection(DcMotor.Direction.FORWARD);
     }
 
     public void testProgram() {
@@ -210,21 +211,21 @@ public class CenterstageAutonomousMain extends LinearOpMode {
 
     public void configureMotors() {
         // Ensure the robot is stationary.  Reset the encoders and set the motors to BRAKE mode
-        frontLeftDrive.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        frontRightDrive.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        backLeftDrive.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        backRightDrive.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        leftFrontDrive.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        rightFrontDrive.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        leftBackDrive.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        rightBackDrive.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
 
-        frontLeftDrive.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        frontRightDrive.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        backLeftDrive.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        backRightDrive.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        leftFrontDrive.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        rightFrontDrive.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        leftBackDrive.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        rightBackDrive.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
         // Set the encoders for closed loop speed control, and reset the heading.
-        frontLeftDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        frontRightDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        backLeftDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        backRightDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        leftFrontDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        rightFrontDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        leftBackDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        rightBackDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
     }
     private void updateTelemetry() {
         //telemetry.addData(">", "Robot Heading = %4.0f", getHeading());
@@ -478,19 +479,19 @@ public class CenterstageAutonomousMain extends LinearOpMode {
 
             // Determine new target position, and pass to motor controller
             int moveCounts = (int)(distance * COUNTS_PER_INCH);
-            leftTarget = frontLeftDrive.getCurrentPosition() + moveCounts;
-            rightTarget = frontRightDrive.getCurrentPosition() + moveCounts;
+            leftTarget = leftFrontDrive.getCurrentPosition() + moveCounts;
+            rightTarget = rightFrontDrive.getCurrentPosition() + moveCounts;
 
             // Set Target FIRST, then turn on RUN_TO_POSITION
-            frontLeftDrive.setTargetPosition(leftTarget);
-            backLeftDrive.setTargetPosition(leftTarget);
-            frontRightDrive.setTargetPosition(rightTarget);
-            backRightDrive.setTargetPosition(rightTarget);
+            leftFrontDrive.setTargetPosition(leftTarget);
+            leftBackDrive.setTargetPosition(leftTarget);
+            rightFrontDrive.setTargetPosition(rightTarget);
+            rightBackDrive.setTargetPosition(rightTarget);
 
-            frontLeftDrive.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-            backLeftDrive.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-            frontRightDrive.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-            backRightDrive.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+            leftFrontDrive.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+            leftBackDrive.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+            rightFrontDrive.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+            rightBackDrive.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 
             // Set the required driving speed  (must be positive for RUN_TO_POSITION)
             // Start driving straight, and then enter the control loop
@@ -499,7 +500,7 @@ public class CenterstageAutonomousMain extends LinearOpMode {
 
             // keep looping while we are still active, and BOTH motors are running.
             while (opModeIsActive() &&
-                    (frontLeftDrive.isBusy() && frontRightDrive.isBusy())) {
+                    (leftFrontDrive.isBusy() && rightFrontDrive.isBusy())) {
 
                 // Determine required steering to keep on heading
                 turnSpeed = getSteeringCorrection(heading, P_DRIVE_GAIN);
@@ -517,10 +518,10 @@ public class CenterstageAutonomousMain extends LinearOpMode {
 
             // Stop all motion & Turn off RUN_TO_POSITION
             moveRobot(0, 0);
-            frontLeftDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-            frontRightDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-            backLeftDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-            backRightDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+            leftFrontDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+            rightFrontDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+            leftBackDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+            rightBackDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         }
     }
 
@@ -644,10 +645,10 @@ public class CenterstageAutonomousMain extends LinearOpMode {
             rightSpeed /= max;
         }
 
-        frontLeftDrive.setPower(leftSpeed);
-        frontRightDrive.setPower(rightSpeed);
-        backLeftDrive.setPower(leftSpeed);
-        backRightDrive.setPower(rightSpeed);
+        leftFrontDrive.setPower(leftSpeed);
+        rightFrontDrive.setPower(rightSpeed);
+        leftBackDrive.setPower(leftSpeed);
+        rightBackDrive.setPower(rightSpeed);
     }
 
     /**
@@ -660,8 +661,8 @@ public class CenterstageAutonomousMain extends LinearOpMode {
         if (straight) {
             telemetry.addData("Motion", "Drive Straight");
             telemetry.addData("Target Pos L:R",  "%7d:%7d",      leftTarget,  rightTarget);
-            telemetry.addData("Actual Pos L:R",  "%7d:%7d",      frontLeftDrive.getCurrentPosition(),
-                    frontRightDrive.getCurrentPosition());
+            telemetry.addData("Actual Pos L:R",  "%7d:%7d",      leftFrontDrive.getCurrentPosition(),
+                    rightFrontDrive.getCurrentPosition());
         } else {
             telemetry.addData("Motion", "Turning");
         }

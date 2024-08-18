@@ -1,9 +1,10 @@
-package com.example.ftclibexamples;
+package org.firstinspires.ftc.teamcode;
 
 
 //import com.arcrobotics.ftclib.drivebase.MecanumDrive;
 //import com.arcrobotics.ftclib.gamepad.GamepadEx;
 import com.qualcomm.hardware.rev.RevHubOrientationOnRobot;
+import com.qualcomm.robotcore.hardware.DistanceSensor;
 import com.qualcomm.robotcore.hardware.IMU;
 //import com.arcrobotics.ftclib.hardware.motors.Motor;
 import com.qualcomm.robotcore.eventloop.opmode.Disabled;
@@ -35,6 +36,8 @@ public class MecanumDrivingSampleField extends LinearOpMode {
     private DcMotor leftBackDrive = null;
     private DcMotor rightFrontDrive = null;
     private DcMotor rightBackDrive = null;
+    private DistanceSensor frontrightDistanceSensor;
+    private DistanceSensor frontleftDistanceSensor;
 
     @Override
     public void runOpMode() {
@@ -84,15 +87,20 @@ public class MecanumDrivingSampleField extends LinearOpMode {
         // when you first test your robot, push the left joystick forward and observe the direction the wheels turn.
         // Reverse the direction (flip FORWARD <-> REVERSE ) of any wheel that runs backward
         // Keep testing until ALL the wheels move the robot forward when you push the left joystick forward.
-        leftFrontDrive.setDirection(DcMotor.Direction.REVERSE);
-        leftBackDrive.setDirection(DcMotor.Direction.REVERSE);
+//        leftFrontDrive.setDirection(DcMotor.Direction.REVERSE);
+//        leftBackDrive.setDirection(DcMotor.Direction.REVERSE);
+////        leftFrontDrive.setDirection(DcMotor.Direction.FORWARD);
+////        leftBackDrive.setDirection(DcMotor.Direction.FORWARD);
+// //       rightFrontDrive.setDirection(DcMotor.Direction.REVERSE);
+// //       rightBackDrive.setDirection(DcMotor.Direction.REVERSE);
 //        leftFrontDrive.setDirection(DcMotor.Direction.FORWARD);
 //        leftBackDrive.setDirection(DcMotor.Direction.FORWARD);
- //       rightFrontDrive.setDirection(DcMotor.Direction.REVERSE);
- //       rightBackDrive.setDirection(DcMotor.Direction.REVERSE);
-        leftFrontDrive.setDirection(DcMotor.Direction.FORWARD);
+//        rightFrontDrive.setDirection(DcMotor.Direction.REVERSE);
+//        rightBackDrive.setDirection(DcMotor.Direction.REVERSE);
+//
+        leftFrontDrive.setDirection(DcMotor.Direction.REVERSE);
+        rightFrontDrive.setDirection(DcMotor.Direction.FORWARD);
         leftBackDrive.setDirection(DcMotor.Direction.FORWARD);
-        rightFrontDrive.setDirection(DcMotor.Direction.REVERSE);
         rightBackDrive.setDirection(DcMotor.Direction.REVERSE);
 
         leftBackDrive.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
@@ -108,7 +116,6 @@ public class MecanumDrivingSampleField extends LinearOpMode {
         // Wait for the game to start (driver presses PLAY)
         telemetry.addData("Status", "Initialized");
         telemetry.update();
-
 
         waitForStart();
         runtime.reset();
@@ -199,6 +206,7 @@ public class MecanumDrivingSampleField extends LinearOpMode {
             telemetry.addData("Back  left/Right", "%4.2f, %4.2f", leftBackPower, rightBackPower);
             telemetry.addData("non-Calibrated  Axial/Lateral", "%4.2f, %4.2f", axial, lateral);
             telemetry.addData("Calibrated  Axial/Lateral", "%4.2f, %4.2f", Adjaxial, Adjlateral);
+            telemetry.addData("heading ", "%4.2f", heading);
             telemetry.update();
         }
     }

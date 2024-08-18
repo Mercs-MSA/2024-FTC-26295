@@ -286,7 +286,7 @@ public class SubSystemDrivetrain {
     }
 
     public double getFrontDistanceSensor(){
-        return frontDistanceSensor.getDistance(DistanceUnit.MM);
+        return frontDistanceSensor.getDistance(DistanceUnit.INCH);
     }
 
 }
