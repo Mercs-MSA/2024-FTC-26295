@@ -87,17 +87,7 @@ public class MecanumDrivingSampleField extends LinearOpMode {
         // when you first test your robot, push the left joystick forward and observe the direction the wheels turn.
         // Reverse the direction (flip FORWARD <-> REVERSE ) of any wheel that runs backward
         // Keep testing until ALL the wheels move the robot forward when you push the left joystick forward.
-//        leftFrontDrive.setDirection(DcMotor.Direction.REVERSE);
-//        leftBackDrive.setDirection(DcMotor.Direction.REVERSE);
-////        leftFrontDrive.setDirection(DcMotor.Direction.FORWARD);
-////        leftBackDrive.setDirection(DcMotor.Direction.FORWARD);
-// //       rightFrontDrive.setDirection(DcMotor.Direction.REVERSE);
-// //       rightBackDrive.setDirection(DcMotor.Direction.REVERSE);
-//        leftFrontDrive.setDirection(DcMotor.Direction.FORWARD);
-//        leftBackDrive.setDirection(DcMotor.Direction.FORWARD);
-//        rightFrontDrive.setDirection(DcMotor.Direction.REVERSE);
-//        rightBackDrive.setDirection(DcMotor.Direction.REVERSE);
-//
+
         leftFrontDrive.setDirection(DcMotor.Direction.REVERSE);
         rightFrontDrive.setDirection(DcMotor.Direction.FORWARD);
         leftBackDrive.setDirection(DcMotor.Direction.FORWARD);
@@ -125,7 +115,7 @@ public class MecanumDrivingSampleField extends LinearOpMode {
             double max;
 
             // POV Mode uses left joystick to go forward & rotate, and right joystick to strafe.
-            double axial   =  gamepad1.left_stick_y;  //fwd
+            double axial   =  -gamepad1.left_stick_y;  //fwd
             double lateral =  gamepad1.left_stick_x;  //TUR
             double yaw     =  gamepad1.right_stick_x; //STR
 

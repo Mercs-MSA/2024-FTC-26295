@@ -178,9 +178,20 @@ public class CenterstageAutonomousMain extends LinearOpMode {
         // When run, this OpMode should start both motors driving forward. So adjust these two lines based on your first test drive.
         // Note: The settings here assume direct drive on left and right wheels.  Gear Reduction or 90 Deg drives may require direction flips
         leftFrontDrive.setDirection(DcMotor.Direction.REVERSE);
-        leftBackDrive.setDirection(DcMotor.Direction.REVERSE);
         rightFrontDrive.setDirection(DcMotor.Direction.FORWARD);
-        rightBackDrive.setDirection(DcMotor.Direction.FORWARD);
+        leftBackDrive.setDirection(DcMotor.Direction.FORWARD);
+        rightBackDrive.setDirection(DcMotor.Direction.REVERSE);
+
+        leftBackDrive.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        rightBackDrive.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        rightFrontDrive.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        leftFrontDrive.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+
+        leftFrontDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        rightFrontDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        rightBackDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        leftBackDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+
     }
 
     public void testProgram() {
@@ -392,11 +403,11 @@ public class CenterstageAutonomousMain extends LinearOpMode {
 
     private int detectPropDistance() {
         sleep(500);
-        //while(opModeIsActive()) {
-        //telemetry.addData("Left Distance: ", leftDistanceSensor.getDistance(DistanceUnit.MM));
-        //telemetry.addData("Right Distance: ", rightDistanceSensor.getDistance(DistanceUnit.MM));
-        //telemetry.update();
-        //}
+        while(opModeIsActive()) {
+        telemetry.addData("Left Distance: ", leftDistanceSensor.getDistance(DistanceUnit.MM));
+        telemetry.addData("Right Distance: ", rightDistanceSensor.getDistance(DistanceUnit.MM));
+        telemetry.update();
+        }
         if (leftDistanceSensor.getDistance(DistanceUnit.MM) < 450) {
             return 1;
         } else if (rightDistanceSensor.getDistance(DistanceUnit.MM) < 450) {
