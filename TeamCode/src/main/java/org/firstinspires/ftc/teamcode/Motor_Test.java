@@ -133,14 +133,14 @@ public class Motor_Test extends LinearOpMode {
 
     private void updateTestMotors() {
         if(motorToTest == 1) {
-            CenterstageAutonomousMain();
+//            CenterstageAutonomousMain();
         }
 
         if(motorToTest == 2) {
-            MecanumDrivingSampleField();
+//            MecanumDrivingSampleField();
          }
         if(motorToTest == 3) {
-            MecanumDrivingSampleFieldwPID();        }
+//            MecanumDrivingSampleFieldwPID();        }
 
         if(motorToTest == 4) {
              leftFrontDrive.setPower(powerToSet);
