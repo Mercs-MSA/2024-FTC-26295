@@ -34,9 +34,9 @@ public class SubSystemVariables {
     public static enum ALLIANCE_COLOR {BLUE, RED};
     public static enum ALLIANCE_SIDE {BOTTOM, TOP};
     public static ALLIANCE_COLOR allianceColor = ALLIANCE_COLOR.BLUE;
-    public static ALLIANCE_SIDE allianceSide = ALLIANCE_SIDE.BOTTOM;
+    public static ALLIANCE_SIDE allianceSide = ALLIANCE_SIDE.TOP;
     public static int parkingPos = 1;
-    public static boolean parkInBackstage = false;
+    public static boolean parkInBackstage = true;
 
     public static double HOPPER_GATE_OPEN = 0.8;
     public static double HOPPER_GATE_CLOSE = 1;

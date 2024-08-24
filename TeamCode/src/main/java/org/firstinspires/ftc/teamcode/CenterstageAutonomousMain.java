@@ -33,6 +33,7 @@ import com.qualcomm.hardware.rev.RevHubOrientationOnRobot;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DistanceSensor;
 import com.qualcomm.robotcore.hardware.IMU;
@@ -94,8 +95,9 @@ import org.firstinspires.ftc.teamcode.subsystem.SubSystemDrivetrain;
  *  Use Android Studio to Copy this Class, and Paste it into your "TeamCode" folder with a new name.
  *  Remove or comment out the @Disabled line to add this OpMode to the Driver Station OpMode list
  */
-
-@Autonomous
+//@Autonomous
+//@TeleOp
+//@disable
 //adding empty Functions - AUTO
 public class CenterstageAutonomousMain extends LinearOpMode {
     private boolean isTestBot = true;
@@ -106,8 +108,8 @@ public class CenterstageAutonomousMain extends LinearOpMode {
     private DcMotor leftBackDrive = null;
     private DcMotor rightFrontDrive = null;
     private DcMotor rightBackDrive = null;
-    private DistanceSensor leftDistanceSensor;
-    private DistanceSensor rightDistanceSensor;
+//    private DistanceSensor leftDistanceSensor;
+//    private DistanceSensor rightDistanceSensor;
 
     private IMU             imu         = null;      // Control/Expansion Hub IMU
 
@@ -164,15 +166,15 @@ public class CenterstageAutonomousMain extends LinearOpMode {
 
     public void initializeMotors() throws InterruptedException {
         // Initialize the drive system variables.
-        leftFrontDrive = hardwareMap.get(DcMotor.class, "frontLeftDrive");
-        rightFrontDrive = hardwareMap.get(DcMotor.class, "frontRightDrive");
-        leftBackDrive = hardwareMap.get(DcMotor.class, "backLeftDrive");
-        rightBackDrive = hardwareMap.get(DcMotor.class, "backRightDrive");
+        leftFrontDrive = hardwareMap.get(DcMotor.class, "leftFrontDrive");
+        rightFrontDrive = hardwareMap.get(DcMotor.class, "rightFrontDrive");
+        leftBackDrive = hardwareMap.get(DcMotor.class, "leftBackDrive");
+        rightBackDrive = hardwareMap.get(DcMotor.class, "rightBackDrive");
 
         driveTerrain = new SubSystemDrivetrain(hardwareMap, SubSystemVariables.currentBot);
 
-        leftDistanceSensor = hardwareMap.get(DistanceSensor.class, "leftDistanceSensor");
-        rightDistanceSensor = hardwareMap.get(DistanceSensor.class, "rightDistanceSensor");
+    //    leftDistanceSensor = hardwareMap.get(DistanceSensor.class, "leftDistanceSensor");
+    //    rightDistanceSensor = hardwareMap.get(DistanceSensor.class, "rightDistanceSensor");
 
         // To drive forward, most robots need the motor on one side to be reversed, because the axles point in opposite directions.
         // When run, this OpMode should start both motors driving forward. So adjust these two lines based on your first test drive.
@@ -248,8 +250,8 @@ public class CenterstageAutonomousMain extends LinearOpMode {
         //telemetry.addData("Gyro Val: ", imu.getRobotYawPitchRollAngles());
         telemetry.addData("Parking Position (1 is corner) (change via triggers): ", SubSystemVariables.parkingPos);
         telemetry.addData("Park? (change via bumper) ", SubSystemVariables.parkInBackstage);
-        telemetry.addData("leftDistSensor: ", leftDistanceSensor.getDistance(DistanceUnit.MM));
-        telemetry.addData("rightDistSensor: ", rightDistanceSensor.getDistance(DistanceUnit.MM));
+ //       telemetry.addData("leftDistSensor: ", leftDistanceSensor.getDistance(DistanceUnit.MM));
+ //       telemetry.addData("rightDistSensor: ", rightDistanceSensor.getDistance(DistanceUnit.MM));
         telemetry.update();
     }
 
@@ -404,18 +406,18 @@ public class CenterstageAutonomousMain extends LinearOpMode {
     private int detectPropDistance() {
         sleep(500);
         while(opModeIsActive()) {
-        telemetry.addData("Left Distance: ", leftDistanceSensor.getDistance(DistanceUnit.MM));
-        telemetry.addData("Right Distance: ", rightDistanceSensor.getDistance(DistanceUnit.MM));
+//        telemetry.addData("Left Distance: ", leftDistanceSensor.getDistance(DistanceUnit.MM));
+//        telemetry.addData("Right Distance: ", rightDistanceSensor.getDistance(DistanceUnit.MM));
         telemetry.update();
         }
-        if (leftDistanceSensor.getDistance(DistanceUnit.MM) < 450) {
-            return 1;
-        } else if (rightDistanceSensor.getDistance(DistanceUnit.MM) < 450) {
-            return 3;
-        } else {
-            return 2;
-        }
-
+//        if (leftDistanceSensor.getDistance(DistanceUnit.MM) < 450) {
+//            return 1;
+//        } else if (rightDistanceSensor.getDistance(DistanceUnit.MM) < 450) {
+//            return 3;
+//        } else {
+//            return 2;
+//        }
+        return 2;
     }
 
     private int detectProp() {
