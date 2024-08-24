@@ -29,10 +29,10 @@ import java.lang.Math;
 public class SubSystemDrivetrain {
     //Which robot are we on? Hubs are mounted different on A & B
     // Instantiate the drivetrain motor variables
-    private DcMotorEx frontLeftDrive;
-    private DcMotorEx frontRightDrive;
-    private DcMotorEx backLeftDrive;
-    private DcMotorEx backRightDrive;
+    private DcMotorEx leftFrontDrive;
+    private DcMotorEx rightFrontDrive;
+    private DcMotorEx leftBackDrive;
+    private DcMotorEx rightBackDrive;
     private DistanceSensor frontDistanceSensor;
     private IMU imu;
     private double ZeroAngleOffsetRads  = 0.0;
@@ -50,28 +50,28 @@ public class SubSystemDrivetrain {
         // Initialize the motor hardware variables. Note that the strings used here as parameters
         // to 'get' must correspond to the names assigned during the robot configuration
         // step (using the FTC Robot Controller app on the phone).
-        frontLeftDrive  = hardwareMap.get(DcMotorEx.class, "frontLeftDrive");      //Sets the names of the hardware on the hardware map
-        frontRightDrive = hardwareMap.get(DcMotorEx.class, "frontRightDrive");      // "DeviceName" must match the Config EXACTLY
-        backLeftDrive   = hardwareMap.get(DcMotorEx.class, "backLeftDrive");
-        backRightDrive  = hardwareMap.get(DcMotorEx.class, "backRightDrive");
+        leftFrontDrive  = hardwareMap.get(DcMotorEx.class, "leftFrontDrive");      //Sets the names of the hardware on the hardware map
+        rightFrontDrive = hardwareMap.get(DcMotorEx.class, "rightFrontDrive");      // "DeviceName" must match the Config EXACTLY
+        leftBackDrive   = hardwareMap.get(DcMotorEx.class, "leftBackDrive");
+        rightBackDrive  = hardwareMap.get(DcMotorEx.class, "rightBackDrive");
 
         // Motors on one side need to effectively run 'backwards' to move 'forward'
         // Reverse the motors that runs backwards when connected directly to the battery
-        frontLeftDrive.setDirection(DcMotorEx.Direction.REVERSE);
-        frontRightDrive.setDirection(DcMotorEx.Direction.FORWARD);
-        backLeftDrive.setDirection(DcMotorEx.Direction.REVERSE);
-        backRightDrive.setDirection(DcMotorEx.Direction.FORWARD);
+        leftFrontDrive.setDirection(DcMotorEx.Direction.REVERSE);
+        rightFrontDrive.setDirection(DcMotorEx.Direction.FORWARD);
+        leftBackDrive.setDirection(DcMotorEx.Direction.REVERSE);
+        rightBackDrive.setDirection(DcMotorEx.Direction.FORWARD);
 
-        frontLeftDrive.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        frontRightDrive.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        backLeftDrive.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        backRightDrive.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        leftFrontDrive.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        rightFrontDrive.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        leftBackDrive.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        rightBackDrive.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
         resetEncoders();
 
         //Front distance sensor
-        if (currentBot == 0)
-            frontDistanceSensor = hardwareMap.get(DistanceSensor.class, "frontDistanceSensor");
+//        if (currentBot == 0)
+//            frontDistanceSensor = hardwareMap.get(DistanceSensor.class, "frontDistanceSensor");
 
         //IMU
         imu = hardwareMap.get(IMU.class, "imu");
@@ -94,15 +94,15 @@ public class SubSystemDrivetrain {
 
     private void resetEncoders(){
         //Stop the motors and reset the encoders to zero
-        frontLeftDrive.setMode(DcMotorEx.RunMode.STOP_AND_RESET_ENCODER);
-        frontRightDrive.setMode(DcMotorEx.RunMode.STOP_AND_RESET_ENCODER);
-        backLeftDrive.setMode(DcMotorEx.RunMode.STOP_AND_RESET_ENCODER);
-        backRightDrive.setMode(DcMotorEx.RunMode.STOP_AND_RESET_ENCODER);
+        leftFrontDrive.setMode(DcMotorEx.RunMode.STOP_AND_RESET_ENCODER);
+        rightFrontDrive.setMode(DcMotorEx.RunMode.STOP_AND_RESET_ENCODER);
+        leftBackDrive.setMode(DcMotorEx.RunMode.STOP_AND_RESET_ENCODER);
+        rightBackDrive.setMode(DcMotorEx.RunMode.STOP_AND_RESET_ENCODER);
         //Make sure we re-enable the use of encoders
-        frontLeftDrive.setMode(DcMotorEx.RunMode.RUN_USING_ENCODER);
-        frontRightDrive.setMode(DcMotorEx.RunMode.RUN_USING_ENCODER);
-        backLeftDrive.setMode(DcMotorEx.RunMode.RUN_USING_ENCODER);
-        backRightDrive.setMode(DcMotorEx.RunMode.RUN_USING_ENCODER);
+        leftFrontDrive.setMode(DcMotorEx.RunMode.RUN_USING_ENCODER);
+        rightFrontDrive.setMode(DcMotorEx.RunMode.RUN_USING_ENCODER);
+        leftBackDrive.setMode(DcMotorEx.RunMode.RUN_USING_ENCODER);
+        rightBackDrive.setMode(DcMotorEx.RunMode.RUN_USING_ENCODER);
     }
 
     public void resetGyro(){
@@ -112,10 +112,10 @@ public class SubSystemDrivetrain {
     private int[] getMotorEncoders(){
         int[] result = new int[4];
 
-        result[0] = frontLeftDrive.getCurrentPosition();
-        result[1] = frontRightDrive.getCurrentPosition();
-        result[2] = backLeftDrive.getCurrentPosition();
-        result[3] = backRightDrive.getCurrentPosition();
+        result[0] = leftFrontDrive.getCurrentPosition();
+        result[1] = rightFrontDrive.getCurrentPosition();
+        result[2] = leftBackDrive.getCurrentPosition();
+        result[3] = rightBackDrive.getCurrentPosition();
 
         return result;
     }
@@ -156,10 +156,10 @@ public class SubSystemDrivetrain {
         BLP = BL;
         BRP = BR;
 
-        frontLeftDrive.setPower(FL);
-        frontRightDrive.setPower(FR);
-        backLeftDrive.setPower(BL);
-        backRightDrive.setPower(BR);
+        leftFrontDrive.setPower(FL);
+        rightFrontDrive.setPower(FR);
+        leftBackDrive.setPower(BL);
+        rightBackDrive.setPower(BR);
 
     }
 

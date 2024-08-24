@@ -7,10 +7,8 @@ import com.qualcomm.hardware.rev.RevHubOrientationOnRobot;
 import com.qualcomm.robotcore.hardware.DistanceSensor;
 import com.qualcomm.robotcore.hardware.IMU;
 //import com.arcrobotics.ftclib.hardware.motors.Motor;
-import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
-import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
@@ -39,30 +37,11 @@ public class MecanumDrivingSampleFieldwPID extends LinearOpMode {
     private DcMotorEx rightFrontDrive = null;
     private DcMotorEx rightBackDrive = null;
 
-    private double leftFrontDriveKp = 0;
-    private double leftBackDriveKp = 0;
-    private double rightFrontDriveKp = 0;
-    private double rightBackDriveKp = 0;
-
-    private double leftFrontDriveKi = 0;
-    private double leftBackDriveKi = 0;
-    private double rightFrontDriveKi = 0;
-    private double rightBackDriveKi = 0;
-
-    private double leftFrontDriveKd = 0;
-    private double leftBackDriveKd = 0;
-    private double rightFrontDriveKd = 0;
-    private double rightBackDriveKd = 0;
-
-    private double leftFrontDriveKf = 0;
-    private double leftBackDriveKf = 0;
-    private double rightFrontDriveKf = 0;
-    private double rightBackDriveKf = 0;
-
-    private double leftFrontDriveIntegralSum = 0;
-    private double leftBackDriveIntegralSum = 0;
-    private double rightFrontDriveIntegralSum = 0;
-    private double rightBackDriveIntegralSum = 0;
+    private double Kp = 1;
+    private double Ki = 0;
+    private double Kd = 0;
+    private double Kf = 0;
+    private double IntegralSum = 0;
 
     private DistanceSensor frontrightDistanceSensor;
     private DistanceSensor frontleftDistanceSensor;
@@ -139,7 +118,7 @@ public class MecanumDrivingSampleFieldwPID extends LinearOpMode {
         runtime.reset();
 
         //put desired angle in radians...
-        double referenceAngle = Math.toRadians(0);
+        double referenceAngle = Math.toRadians(90);
         // run until the end of the match (driver presses STOP)
         while (opModeIsActive()) {
             double max;
@@ -214,10 +193,10 @@ public class MecanumDrivingSampleFieldwPID extends LinearOpMode {
             rightBackPower  = gamepad1.b ? 1.0 : 0.0;  // B gamepad
 */
             // PID Calculation for the wheels - w/ AngleWrap method
-            leftFrontPower = PIDControl(leftFrontPower, leftFrontDrive.getVelocity(), leftFrontDriveIntegralSum, leftFrontDriveKp, leftFrontDriveKi, leftFrontDriveKd, leftFrontDriveKf);
-            rightFrontPower = PIDControl(rightFrontPower, rightFrontDrive.getVelocity(), rightFrontDriveIntegralSum, rightFrontDriveKp, rightFrontDriveKi, rightFrontDriveKd, rightFrontDriveKf);
-            leftBackPower = PIDControl(leftBackPower, leftBackDrive.getVelocity(), leftBackDriveIntegralSum, leftBackDriveKp, leftBackDriveKi, leftBackDriveKd, leftBackDriveKf);
-            rightBackPower = PIDControl(rightBackPower, rightBackDrive.getVelocity(), rightBackDriveIntegralSum, rightBackDriveKp, rightBackDriveKi, rightBackDriveKd, rightBackDriveKf);
+            leftFrontPower = PIDControl(1000, leftFrontDrive.getCurrentPosition(), IntegralSum, Kp, Ki, Kd, Kf);
+            rightFrontPower = PIDControl(1000, rightFrontDrive.getCurrentPosition(), IntegralSum, Kp, Ki, Kd, Kf);
+            leftBackPower = PIDControl(1000, leftBackDrive.getCurrentPosition(), IntegralSum, Kp, Ki, Kd, Kf);
+            rightBackPower = PIDControl(1000, rightBackDrive.getCurrentPosition(), IntegralSum, Kp, Ki, Kd, Kf);
 
             // Send calculated power to wheels
             leftFrontDrive.setPower(leftFrontPower);
