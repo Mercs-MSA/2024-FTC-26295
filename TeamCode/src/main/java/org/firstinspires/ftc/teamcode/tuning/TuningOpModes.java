@@ -23,7 +23,9 @@ import com.qualcomm.robotcore.eventloop.opmode.OpModeRegistrar;
 
 import org.firstinspires.ftc.robotcore.internal.opmode.OpModeMeta;
 import org.firstinspires.ftc.teamcode.MecanumDrive;
+import org.firstinspires.ftc.teamcode.TankDrive;
 import org.firstinspires.ftc.teamcode.ThreeDeadWheelLocalizer;
+import org.firstinspires.ftc.teamcode.TwoDeadWheelLocalizer;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -68,7 +70,11 @@ public final class TuningOpModes {
                     parEncs.add(dl.par0);
                     parEncs.add(dl.par1);
                     perpEncs.add(dl.perp);
-                }  else {
+                } else if (md.localizer instanceof TwoDeadWheelLocalizer) {
+                    TwoDeadWheelLocalizer dl = (TwoDeadWheelLocalizer) md.localizer;
+                    parEncs.add(dl.par);
+                    perpEncs.add(dl.perp);
+                } else {
                     throw new RuntimeException("unknown localizer: " + md.localizer.getClass().getName());
                 }
 
@@ -80,12 +86,12 @@ public final class TuningOpModes {
                         MecanumDrive.PARAMS.maxProfileAccel,
                         hardwareMap.getAll(LynxModule.class),
                         Arrays.asList(
-                                md.leftFrontDrive,
-                                md.leftBackDrive
+                                md.leftFront,
+                                md.leftBack
                         ),
                         Arrays.asList(
-                                md.rightFrontDrive,
-                                md.rightBackDrive
+                                md.rightFront,
+                                md.rightBack
                         ),
                         leftEncs,
                         rightEncs,
@@ -96,6 +102,49 @@ public final class TuningOpModes {
                         () -> new MotorFeedforward(MecanumDrive.PARAMS.kS,
                                 MecanumDrive.PARAMS.kV / MecanumDrive.PARAMS.inPerTick,
                                 MecanumDrive.PARAMS.kA / MecanumDrive.PARAMS.inPerTick)
+                );
+            };
+        } else if (DRIVE_CLASS.equals(TankDrive.class)) {
+            dvf = hardwareMap -> {
+                TankDrive td = new TankDrive(hardwareMap, new Pose2d(0, 0, 0));
+
+                List<Encoder> leftEncs = new ArrayList<>(), rightEncs = new ArrayList<>();
+                List<Encoder> parEncs = new ArrayList<>(), perpEncs = new ArrayList<>();
+                if (td.localizer instanceof TankDrive.DriveLocalizer) {
+                    TankDrive.DriveLocalizer dl = (TankDrive.DriveLocalizer) td.localizer;
+                    leftEncs.addAll(dl.leftEncs);
+                    rightEncs.addAll(dl.rightEncs);
+                } else if (td.localizer instanceof ThreeDeadWheelLocalizer) {
+                    ThreeDeadWheelLocalizer dl = (ThreeDeadWheelLocalizer) td.localizer;
+                    parEncs.add(dl.par0);
+                    parEncs.add(dl.par1);
+                    perpEncs.add(dl.perp);
+                } else if (td.localizer instanceof TwoDeadWheelLocalizer) {
+                    TwoDeadWheelLocalizer dl = (TwoDeadWheelLocalizer) td.localizer;
+                    parEncs.add(dl.par);
+                    perpEncs.add(dl.perp);
+                } else {
+                    throw new RuntimeException("unknown localizer: " + td.localizer.getClass().getName());
+                }
+
+                return new DriveView(
+                    DriveType.TANK,
+                        TankDrive.PARAMS.inPerTick,
+                        TankDrive.PARAMS.maxWheelVel,
+                        TankDrive.PARAMS.minProfileAccel,
+                        TankDrive.PARAMS.maxProfileAccel,
+                        hardwareMap.getAll(LynxModule.class),
+                        td.leftMotors,
+                        td.rightMotors,
+                        leftEncs,
+                        rightEncs,
+                        parEncs,
+                        perpEncs,
+                        td.lazyImu,
+                        td.voltageSensor,
+                        () -> new MotorFeedforward(TankDrive.PARAMS.kS,
+                                TankDrive.PARAMS.kV / TankDrive.PARAMS.inPerTick,
+                                TankDrive.PARAMS.kA / TankDrive.PARAMS.inPerTick)
                 );
             };
         } else {
