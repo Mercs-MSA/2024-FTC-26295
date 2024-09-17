@@ -70,9 +70,14 @@ public class MecanumDrivingSampleField extends LinearOpMode {
 
 
         IMU imu = hardwareMap.get(IMU.class,"imu");
+/*      Test Robot Directions
         IMU.Parameters parameters = new IMU.Parameters(new RevHubOrientationOnRobot(
                 RevHubOrientationOnRobot.LogoFacingDirection.BACKWARD,
             RevHubOrientationOnRobot.UsbFacingDirection.RIGHT));
+*/      // Competition Robot Directions
+        IMU.Parameters parameters = new IMU.Parameters(new RevHubOrientationOnRobot(
+                RevHubOrientationOnRobot.LogoFacingDirection.FORWARD,
+                RevHubOrientationOnRobot.UsbFacingDirection.LEFT));
 
         imu.initialize (parameters);
 //      IMU calibration

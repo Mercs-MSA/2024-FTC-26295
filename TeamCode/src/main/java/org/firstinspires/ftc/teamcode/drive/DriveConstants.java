@@ -19,7 +19,7 @@ import com.qualcomm.robotcore.hardware.PIDFCoefficients;
 public class DriveConstants {
 
     /*
-     * These are motor constants that should be listed online for your motors.
+     * These are motor constants that should be listed online for your motors. 560 ; 300
      */
     public static final double TICKS_PER_REV = 537.6;
     public static final double MAX_RPM = 312;
@@ -46,7 +46,7 @@ public class DriveConstants {
      */
     public static double WHEEL_RADIUS = 1.88976; // in
     public static double GEAR_RATIO = 1; // output (wheel) speed / input (motor) speed
-    public static double TRACK_WIDTH = 16.34; // in
+    public static double TRACK_WIDTH = 16.34; // in Width between Wheels
 
     /*
      * These are the feedforward parameters used to model the drive motor behavior. If you are using
@@ -65,18 +65,18 @@ public class DriveConstants {
      * small and gradually increase them later after everything is working. All distance units are
      * inches.
      */
-    public static double MAX_VEL = 52.48180821614297;
-    public static double MAX_ACCEL = 52.48180821614297;
-    public static double MAX_ANG_VEL = Math.toRadians(184.02607784577722);
-    public static double MAX_ANG_ACCEL = Math.toRadians(184.02607784577722);
+    public static double MAX_VEL = 52.48180821614297;//30
+    public static double MAX_ACCEL = 52.48180821614297;//30
+    public static double MAX_ANG_VEL = Math.toRadians(184.02607784577722);//180
+    public static double MAX_ANG_ACCEL = Math.toRadians(184.02607784577722);//180
 
     /*
      * Adjust the orientations here to match your robot. See the FTC SDK documentation for details.
      */
     public static RevHubOrientationOnRobot.LogoFacingDirection LOGO_FACING_DIR =
-            RevHubOrientationOnRobot.LogoFacingDirection.BACKWARD;
+            RevHubOrientationOnRobot.LogoFacingDirection.FORWARD;
     public static RevHubOrientationOnRobot.UsbFacingDirection USB_FACING_DIR =
-            RevHubOrientationOnRobot.UsbFacingDirection.RIGHT;
+            RevHubOrientationOnRobot.UsbFacingDirection.LEFT;
 
 
     public static double encoderTicksToInches(double ticks) {
