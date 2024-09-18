@@ -13,7 +13,7 @@ import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
-@TeleOp
+@Disabled
 //Example Codes for Robot Centric Drive
 public class MecanumDrivingSample extends LinearOpMode {
 
@@ -45,10 +45,10 @@ public class MecanumDrivingSample extends LinearOpMode {
         // Reverse the direction (flip FORWARD <-> REVERSE ) of any wheel that runs backward
         // Keep testing until ALL the wheels move the robot forward when you push the left joystick forward.
 //      Test Robot Drive base direction
-        leftFrontDrive.setDirection(DcMotor.Direction.REVERSE);
+/*        leftFrontDrive.setDirection(DcMotor.Direction.REVERSE);
         leftBackDrive.setDirection(DcMotor.Direction.REVERSE);
         rightFrontDrive.setDirection(DcMotor.Direction.FORWARD);
-        rightBackDrive.setDirection(DcMotor.Direction.FORWARD);
+*///        rightBackDrive.setDirection(DcMotor.Direction.FORWARD);
 //         Competition Robot Directions
 //        leftFrontDrive.setDirection(DcMotor.Direction.FORWARD);
 //        leftBackDrive.setDirection(DcMotor.Direction.REVERSE);
@@ -110,11 +110,11 @@ public class MecanumDrivingSample extends LinearOpMode {
             //      the setDirection() calls above.
             // Once the correct motors move in the correct direction re-comment this code.
 
-      /*      leftFrontPower  = gamepad1.x ? 1.0 : 0.0;  // X gamepad
+            leftFrontPower  = gamepad1.x ? 1.0 : 0.0;  // X gamepad
             leftBackPower   = gamepad1.a ? 1.0 : 0.0;  // A gamepad
             rightFrontPower = gamepad1.y ? 1.0 : 0.0;  // Y gamepad
             rightBackPower  = gamepad1.b ? 1.0 : 0.0;  // B gamepad
-*/
+
 
             // Send calculated power to wheels
             leftFrontDrive.setPower(leftFrontPower);
