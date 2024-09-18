@@ -124,15 +124,15 @@ public class SampleMecanumDrive extends MecanumDrive {
 
         // TODO: reverse any motors using DcMotor.setDirection()
 //      Test Robot Drive base direction
-        leftFront.setDirection(DcMotor.Direction.REVERSE);
+//        leftFront.setDirection(DcMotor.Direction.REVERSE);
+//        leftRear.setDirection(DcMotor.Direction.REVERSE);
+//        rightFront.setDirection(DcMotor.Direction.FORWARD);
+//        rightRear.setDirection(DcMotor.Direction.FORWARD);
+//         Competition Robot Directions
+        leftFront.setDirection(DcMotor.Direction.FORWARD);
         leftRear.setDirection(DcMotor.Direction.REVERSE);
         rightFront.setDirection(DcMotor.Direction.FORWARD);
-        rightRear.setDirection(DcMotor.Direction.FORWARD);
-//         Competition Robot Directions
-//        leftFrontDrive.setDirection(DcMotor.Direction.FORWARD);
-//        leftBackDrive.setDirection(DcMotor.Direction.REVERSE);
-//        rightFrontDrive.setDirection(DcMotor.Direction.FORWARD);
-//        rightBackDrive.setDirection(DcMotor.Direction.REVERSE);
+        rightRear.setDirection(DcMotor.Direction.REVERSE);
 
         List<Integer> lastTrackingEncPositions = new ArrayList<>();
         List<Integer> lastTrackingEncVels = new ArrayList<>();

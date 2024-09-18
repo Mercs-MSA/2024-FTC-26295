@@ -75,16 +75,16 @@ public class MecanumDrivingSampleField extends LinearOpMode {
                 RevHubOrientationOnRobot.LogoFacingDirection.BACKWARD,
             RevHubOrientationOnRobot.UsbFacingDirection.RIGHT));
 */
-/*        // Competition Robot Directions
+        // Competition Robot Directions
         IMU.Parameters parameters = new IMU.Parameters(new RevHubOrientationOnRobot(
                 RevHubOrientationOnRobot.LogoFacingDirection.FORWARD,
                 RevHubOrientationOnRobot.UsbFacingDirection.LEFT));
- */
+
         // Test Robot Directions
-        IMU.Parameters parameters = new IMU.Parameters(new RevHubOrientationOnRobot(
+/*        IMU.Parameters parameters = new IMU.Parameters(new RevHubOrientationOnRobot(
                 RevHubOrientationOnRobot.LogoFacingDirection.BACKWARD,
                 RevHubOrientationOnRobot.UsbFacingDirection.RIGHT));
-
+*/
         imu.initialize (parameters);
 //      IMU calibration
         Deadline gamepadRateLimit = new Deadline(500,TimeUnit.MILLISECONDS);
