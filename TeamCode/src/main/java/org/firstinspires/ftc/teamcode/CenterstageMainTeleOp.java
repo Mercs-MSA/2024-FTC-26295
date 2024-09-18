@@ -12,7 +12,7 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.teamcode.subsystem.SubSystemDrivetrain;
 
-@TeleOp
+@Disabled
 //@Config
 //@Disabled
 //adding empty Functions - update for tele ops

@@ -95,9 +95,8 @@ import org.firstinspires.ftc.teamcode.subsystem.SubSystemDrivetrain;
  *  Use Android Studio to Copy this Class, and Paste it into your "TeamCode" folder with a new name.
  *  Remove or comment out the @Disabled line to add this OpMode to the Driver Station OpMode list
  */
-//@Autonomous
-//@TeleOp
-//@disable
+
+@Disabled
 //adding empty Functions - AUTO
 public class CenterstageAutonomousMain extends LinearOpMode {
     private boolean isTestBot = true;

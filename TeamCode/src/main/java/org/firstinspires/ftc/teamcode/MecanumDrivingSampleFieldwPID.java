@@ -4,6 +4,7 @@ package org.firstinspires.ftc.teamcode;
 //import com.arcrobotics.ftclib.drivebase.MecanumDrive;
 //import com.arcrobotics.ftclib.gamepad.GamepadEx;
 import com.qualcomm.hardware.rev.RevHubOrientationOnRobot;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.hardware.DistanceSensor;
 import com.qualcomm.robotcore.hardware.IMU;
 //import com.arcrobotics.ftclib.hardware.motors.Motor;
@@ -17,7 +18,7 @@ import org.firstinspires.ftc.robotcore.internal.system.Deadline;
 import java.util.concurrent.TimeUnit;
 
 
-@TeleOp
+@Disabled
 
 //Example Codes for Field Centric Drive
 public class MecanumDrivingSampleFieldwPID extends LinearOpMode {
