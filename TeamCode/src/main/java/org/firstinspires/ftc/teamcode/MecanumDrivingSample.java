@@ -13,7 +13,7 @@ import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
-@TeleOp
+@Disabled
 //Example Codes for Robot Centric Drive
 public class MecanumDrivingSample extends LinearOpMode {
 
@@ -50,10 +50,10 @@ public class MecanumDrivingSample extends LinearOpMode {
         rightFrontDrive.setDirection(DcMotor.Direction.FORWARD);
 *///        rightBackDrive.setDirection(DcMotor.Direction.FORWARD);
 //         Competition Robot Directions
-        leftFrontDrive.setDirection(DcMotor.Direction.FORWARD);
-        leftBackDrive.setDirection(DcMotor.Direction.REVERSE);
-        rightFrontDrive.setDirection(DcMotor.Direction.FORWARD);
-        rightBackDrive.setDirection(DcMotor.Direction.REVERSE);
+//        leftFrontDrive.setDirection(DcMotor.Direction.FORWARD);
+//        leftBackDrive.setDirection(DcMotor.Direction.REVERSE);
+//        rightFrontDrive.setDirection(DcMotor.Direction.FORWARD);
+//        rightBackDrive.setDirection(DcMotor.Direction.REVERSE);
 
         leftBackDrive.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         rightBackDrive.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
@@ -109,12 +109,12 @@ public class MecanumDrivingSample extends LinearOpMode {
             //   2) Then make sure they run in the correct direction by modifying the
             //      the setDirection() calls above.
             // Once the correct motors move in the correct direction re-comment this code.
-//          Motor Test Functions
-//            leftFrontPower  = gamepad1.x ? 1.0 : 0.0;  // X gamepad
-//            leftBackPower   = gamepad1.a ? 1.0 : 0.0;  // A gamepad
-//            rightFrontPower = gamepad1.y ? 1.0 : 0.0;  // Y gamepad
-//            rightBackPower  = gamepad1.b ? 1.0 : 0.0;  // B gamepad
-//
+
+            leftFrontPower  = gamepad1.x ? 1.0 : 0.0;  // X gamepad
+            leftBackPower   = gamepad1.a ? 1.0 : 0.0;  // A gamepad
+            rightFrontPower = gamepad1.y ? 1.0 : 0.0;  // Y gamepad
+            rightBackPower  = gamepad1.b ? 1.0 : 0.0;  // B gamepad
+
 
             // Send calculated power to wheels
             leftFrontDrive.setPower(leftFrontPower);

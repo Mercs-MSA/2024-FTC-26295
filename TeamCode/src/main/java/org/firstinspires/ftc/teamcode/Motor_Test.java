@@ -1,259 +1,133 @@
 package org.firstinspires.ftc.teamcode;
 
-
+//import com.arcrobotics.ftclib.drivebase.MecanumDrive;
+//import com.arcrobotics.ftclib.gamepad.GamepadEx;
+//import com.arcrobotics.ftclib.hardware.RevIMU;
+//import com.arcrobotics.ftclib.hardware.motors.Motor;
+//import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
-import com.qualcomm.robotcore.hardware.Servo;
+import com.qualcomm.robotcore.util.ElapsedTime;
 
-
-
-//This is a Robot Function test Routine to push to github
-@Disabled
-
-//@Disabled
+@TeleOp
+//Example Codes for Robot Centric Drive
 public class Motor_Test extends LinearOpMode {
-    //Dashboard demo variables
-    public static double ORBITAL_FREQUENCY = 0.05;
-    public static double SPIN_FREQUENCY = 0.25;
-    public static double ORBITAL_RADIUS = 50;
-    public static double SIDE_LENGTH = 10;
 
-    //Motor demo variables
+    // Declare OpMode members for each of the 4 motors.
+    private ElapsedTime runtime = new ElapsedTime();
     private DcMotor leftFrontDrive = null;
     private DcMotor leftBackDrive = null;
     private DcMotor rightFrontDrive = null;
     private DcMotor rightBackDrive = null;
 
-    private int motorToTest = 2;
-    //private DcMotorEx hopperLift;
-    private float powerToSet;
-    private boolean pressedOnce = true;
+    @Override
+    public void runOpMode() {
 
-    public void initializeHardware() throws InterruptedException {
+        // Initialize the hardware variables. Note that the strings used here must correspond
+        // to the names assigned during the robot configuration step on the DS or RC devices.
+        leftFrontDrive  = hardwareMap.get(DcMotor.class, "leftFrontDrive");
+        leftBackDrive  = hardwareMap.get(DcMotor.class, "leftBackDrive");
+        rightFrontDrive = hardwareMap.get(DcMotor.class, "rightFrontDrive");
+        rightBackDrive = hardwareMap.get(DcMotor.class, "rightBackDrive");
 
-        leftFrontDrive = hardwareMap.get(DcMotorEx.class, "leftFrontDrive");
-        rightFrontDrive = hardwareMap.get(DcMotorEx.class, "rightFrontDrive");
-        leftBackDrive = hardwareMap.get(DcMotorEx.class, "leftBackDrive");
-        rightBackDrive = hardwareMap.get(DcMotorEx.class, "rightBackDrive");
-       // intakeLift = hardwareMap.get(DcMotorEx.class, "intakeLift");
-        //hopperLift = hardwareMap.get(DcMotorEx.class, "hopperLift");
-    //    intake = hardwareMap.get(DcMotorEx.class, "intake");
-     //   hangMotor = hardwareMap.get(DcMotorEx.class, "hangLift");
-
-        leftFrontDrive.setDirection(DcMotor.Direction.FORWARD);
-        leftBackDrive.setDirection(DcMotor.Direction.FORWARD);
-        rightFrontDrive.setDirection(DcMotor.Direction.REVERSE);
-        rightBackDrive.setDirection(DcMotor.Direction.REVERSE);
+        // ########################################################################################
+        // !!!            IMPORTANT Drive Information. Test your motor directions.            !!!!!
+        // ########################################################################################
+        // Most robots need the motors on one side to be reversed to drive forward.
+        // The motor reversals shown here are for a "direct drive" robot (the wheels turn the same direction as the motor shaft)
+        // If your robot has additional gear reductions or uses a right-angled drive, it's important to ensure
+        // that your motors are turning in the correct direction.  So, start out with the reversals here, BUT
+        // when you first test your robot, push the left joystick forward and observe the direction the wheels turn.
+        // Reverse the direction (flip FORWARD <-> REVERSE ) of any wheel that runs backward
+        // Keep testing until ALL the wheels move the robot forward when you push the left joystick forward.
+//      Test Robot Drive base direction
+/*        leftFrontDrive.setDirection(DcMotor.Direction.REVERSE);
+        leftBackDrive.setDirection(DcMotor.Direction.REVERSE);
+        rightFrontDrive.setDirection(DcMotor.Direction.FORWARD);
+*///        rightBackDrive.setDirection(DcMotor.Direction.FORWARD);
+//         Competition Robot Directions
+//        leftFrontDrive.setDirection(DcMotor.Direction.FORWARD);
+//        leftBackDrive.setDirection(DcMotor.Direction.REVERSE);
+//        rightFrontDrive.setDirection(DcMotor.Direction.FORWARD);
+//        rightBackDrive.setDirection(DcMotor.Direction.REVERSE);
 
         leftBackDrive.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         rightBackDrive.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         rightFrontDrive.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         leftFrontDrive.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-    //    intake.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-       // intakeLift.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        //hopperLift.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-     //   hangMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
-        leftFrontDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+  /*     leftFrontDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         rightFrontDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         rightBackDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         leftBackDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-    //    intake.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-       // intakeLift.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        //hopperLift.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-    //    hangMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-
-        //frontLeftDrive.setMode(DcMotorEx.RunMode.STOP_AND_RESET_ENCODER);
-        //intakeLift.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        //hopperLift.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-
-
- //       testServo = hardwareMap.get(Servo.class, "hopperGateServo");
-        //torqueServo = hardwareMap.get(Servo.class, "torqueServo");
- //       HOPPER_SERVO_OLD = hardwareMap.get(Servo.class, "hopperServo");
-        //hopperServo = new SubSystemHopper(hardwareMap);
-        //hangLift = new SubSystemHangLift(hardwareMap);
-    }
-
-    private static void initTestmotor() {
-
-    }
-
-    private static void rotatePoints(double[] xPoints, double[] yPoints, double angle) {
-        for (int i = 0; i < xPoints.length; i++) {
-            double x = xPoints[i];
-            double y = yPoints[i];
-            xPoints[i] = x * Math.cos(angle) - y * Math.sin(angle);
-            yPoints[i] = x * Math.sin(angle) + y * Math.cos(angle);
-        }
-    }
-
-
-    public void dashboardDemo(){
-        double time = getRuntime();
-
-        double bx = ORBITAL_RADIUS * Math.cos(2 * Math.PI * ORBITAL_FREQUENCY * time);
-        double by = ORBITAL_RADIUS * Math.sin(2 * Math.PI * ORBITAL_FREQUENCY * time);
-        double l = SIDE_LENGTH / 2;
-
-        double[] bxPoints = { l, -l, -l, l };
-        double[] byPoints = { l, l, -l, -l };
-        rotatePoints(bxPoints, byPoints, 2 * Math.PI * SPIN_FREQUENCY * time);
-        for (int i = 0; i < 4; i++) {
-            bxPoints[i] += bx;
-            byPoints[i] += by;
-        }
-
-
-        sleep(20);
-    }
-
-    private void displayTelemetry() {
-        telemetry.addData("Motor (intake is true, hopper is false)", motorToTest);
-
- //        telemetry.addData("Motor 3 encoder: ", hangMotor.getCurrentPosition());
+   */    //  Wait for the game to start (driver presses PLAY)
+        telemetry.addData("Status", "Initialized");
         telemetry.update();
-    }
-
-    public void runOpMode() throws InterruptedException {
-        initializeHardware();
 
         waitForStart();
+        runtime.reset();
+
+        // run until the end of the match (driver presses STOP)
         while (opModeIsActive()) {
-            displayTelemetry();
-            updateController();
-            //hangLiftUpdate();
-            updateTestMotors();
+            double max;
 
+            // POV Mode uses left joystick to go forward & rotate, and right joystick to strafe.
+            double axial   = -gamepad1.left_stick_y;  //fwd
+            double lateral =  gamepad1.left_stick_x;  //TUR
+            double yaw     =  gamepad1.right_stick_x; //STR
+
+            // Combine the joystick requests for each axis-motion to determine each wheel's power.
+            // Set up a variable for each drive wheel to save the power level for telemetry.
+            double leftFrontPower  = axial + lateral + yaw;
+            double rightFrontPower = axial - lateral - yaw;
+            double leftBackPower   = axial - lateral + yaw;
+            double rightBackPower  = axial + lateral - yaw;
+
+            // Normalize the values so no wheel power exceeds 100%
+            // This ensures that the robot maintains the desired motion.
+            max = Math.max(Math.abs(leftFrontPower), Math.abs(rightFrontPower));
+            max = Math.max(max, Math.abs(leftBackPower));
+            max = Math.max(max, Math.abs(rightBackPower));
+
+            if (max > 1.0) {
+                leftFrontPower  /= max;
+                rightFrontPower /= max;
+                leftBackPower   /= max;
+                rightBackPower  /= max;
+            }
+
+            // This is test code:
+            //
+            // Uncomment the following code to test your motor directions.
+            // Each button should make the corresponding motor run FORWARD.
+            //   1) First get all the motors to take to correct positions on the robot
+            //      by adjusting your Robot Configuration if necessary.
+            //   2) Then make sure they run in the correct direction by modifying the
+            //      the setDirection() calls above.
+            // Once the correct motors move in the correct direction re-comment this code.
+
+            leftFrontPower  = gamepad1.x ? 1.0 : 0.0;  // X gamepad
+            leftBackPower   = gamepad1.a ? 1.0 : 0.0;  // A gamepad
+            rightFrontPower = gamepad1.y ? 1.0 : 0.0;  // Y gamepad
+            rightBackPower  = gamepad1.b ? 1.0 : 0.0;  // B gamepad
+
+
+            // Send calculated power to wheels
+            leftFrontDrive.setPower(leftFrontPower);
+            rightFrontDrive.setPower(rightFrontPower);
+            leftBackDrive.setPower(leftBackPower);
+            rightBackDrive.setPower(rightBackPower);
+
+            // Show the elapsed game time and wheel power.
+            telemetry.addData("Status", "Run Time: " + runtime.toString());
+            telemetry.addData("Front left/Right", "%4.2f, %4.2f", leftFrontPower, rightFrontPower);
+            telemetry.addData("Back  left/Right", "%4.2f, %4.2f", leftBackPower, rightBackPower);
+            telemetry.update();
         }
     }
 
-    private void updateTestMotors() {
-        if(motorToTest == 1) {
-     //       CenterstageAutonomousMain();
-            leftFrontDrive.setPower(0);
-            rightFrontDrive.setPower(0);
-            leftBackDrive.setPower(0);
-            rightBackDrive.setPower(0);
-        }
-
-        if(motorToTest == 2) {
-      //      MecanumDrivingSampleField();
-            leftFrontDrive.setPower(0);
-            rightFrontDrive.setPower(0);
-            leftBackDrive.setPower(0);
-            rightBackDrive.setPower(0);
-        }
-        if(motorToTest == 3) {
-    //        MecanumDrivingSampleFieldwPID();
-            leftFrontDrive.setPower(0);
-            rightFrontDrive.setPower(0);
-            leftBackDrive.setPower(0);
-            rightBackDrive.setPower(0);
-        }
-
-        if(motorToTest == 4) {
-             leftFrontDrive.setPower(powerToSet);
-            rightFrontDrive.setPower(0);
-            leftBackDrive.setPower(0);
-            rightBackDrive.setPower(0);
-        }
-
-        if(motorToTest == 5) {
-           leftFrontDrive.setPower(0);
-            rightFrontDrive.setPower(powerToSet);
-            leftBackDrive.setPower(0);
-            rightBackDrive.setPower(0);
-        }
-
-        if(motorToTest == 6) {
-           // intakeLift.setPower(0);
- //           hangMotor.setPower(0);
-            //hopperLift.setPower(0);
-            leftFrontDrive.setPower(0);
-            rightFrontDrive.setPower(0);
-            leftBackDrive.setPower(powerToSet);
-            rightBackDrive.setPower(0);
-        }
-
-        if(motorToTest == 7) {
-            leftFrontDrive.setPower(0);
-            rightFrontDrive.setPower(0);
-            leftBackDrive.setPower(0);
-            rightBackDrive.setPower(powerToSet);
-         }
-
-    }
-
-    private void updateController() {
-        /*
-        if(gamepad1.left_bumper)
-            setServoPos(0.8); //0.8 is open for gate servo
-
-        if(gamepad1.right_bumper)
-            setServoPos(1); //1 is closed gate servo
-
-        if(gamepad1.left_trigger > 0.5)
-            setTorqueServoPos(0);
-
-        if(gamepad1.right_trigger > 0.5)
-            setTorqueServoPos(1);
-
-        if(gamepad1.x)
-            setHopperServo(servoMax); //HopperServo is 0.05 for down
-
-        if(gamepad1.b)
-            setHopperServo(servoMin); //HopperServo is 0.4 for up
-         */
-
-        boolean endgame = true;
-
-
-        if(gamepad1.dpad_left && pressedOnce) {
-            motorToTest++;
-            pressedOnce = false;
-        } else if (!gamepad1.dpad_left){
-            pressedOnce = true;
-        }
-        if(motorToTest > 7) {
-            motorToTest = 1;
-        }
-
-        if(gamepad1.left_trigger > 0.1) {
-            powerToSet = gamepad1.left_trigger;
-            telemetry.addLine("powering motor");
-        } else if (gamepad1.right_trigger > 0.1 ) {
-            powerToSet = -gamepad1.right_trigger;
-            telemetry.addLine("powering motor");
-        } else {
-            powerToSet = 0;
-            telemetry.addLine("Not powering any motor");
-        }
-
-        if (gamepad1.right_bumper) {
-     //       hopperServo.openGate(true);
-        }
-
-        if (gamepad1.left_bumper) {
-    //        hopperServo.openGate(false);
-        }
-
-        if(gamepad1.x) {
-    //        hopperServo.setHopperPosition(SubSystemVariables.HOPPER_POS_1);
-        }
-        if(gamepad1.y) {
-     //       hopperServo.setHopperPosition(SubSystemVariables.HOPPER_POS_3);
-        }
-        if(gamepad1.b) {
-     //       hopperServo.setHopperPosition(SubSystemVariables.HOPPER_POS_4);
-        }
-
-    }
-
-
- }
-
+}

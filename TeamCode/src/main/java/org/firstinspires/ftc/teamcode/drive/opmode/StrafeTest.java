@@ -26,8 +26,9 @@ public class StrafeTest extends LinearOpMode {
         SampleMecanumDrive drive = new SampleMecanumDrive(hardwareMap);
 
         Trajectory trajectory = drive.trajectoryBuilder(new Pose2d())
-                .strafeRight(DISTANCE)
+                .strafeRight(60)
                 .build();
+
 
         waitForStart();
 

@@ -100,9 +100,9 @@ public class SampleMecanumDrive extends MecanumDrive {
         imu.initialize(parameters);
 
         leftFront = hardwareMap.get(DcMotorEx.class, "leftFrontDrive");
-        leftRear = hardwareMap.get(DcMotorEx.class, "leftRearDrive");
-        rightRear = hardwareMap.get(DcMotorEx.class, "rightRearDrive");
-        rightFront = hardwareMap.get(DcMotorEx.class, "rightFrontDrive");
+        leftRear = hardwareMap.get(DcMotorEx.class, "leftBackDrive");
+        rightRear = hardwareMap.get(DcMotorEx.class, "rightFrontDrive");
+        rightFront = hardwareMap.get(DcMotorEx.class, "rightBackDrive");
 
         motors = Arrays.asList(leftFront, leftRear, rightRear, rightFront);
 
@@ -124,15 +124,15 @@ public class SampleMecanumDrive extends MecanumDrive {
 
         // TODO: reverse any motors using DcMotor.setDirection()
 //      Test Robot Drive base direction
-//        leftFront.setDirection(DcMotor.Direction.REVERSE);
-//        leftRear.setDirection(DcMotor.Direction.REVERSE);
-//        rightFront.setDirection(DcMotor.Direction.FORWARD);
-//        rightRear.setDirection(DcMotor.Direction.FORWARD);
-//         Competition Robot Directions
-        leftFront.setDirection(DcMotor.Direction.FORWARD);
+        leftFront.setDirection(DcMotor.Direction.REVERSE);
         leftRear.setDirection(DcMotor.Direction.REVERSE);
         rightFront.setDirection(DcMotor.Direction.FORWARD);
-        rightRear.setDirection(DcMotor.Direction.REVERSE);
+        rightRear.setDirection(DcMotor.Direction.FORWARD);
+//         Competition Robot Directions
+//        leftFront.setDirection(DcMotor.Direction.FORWARD);
+//        leftRear.setDirection(DcMotor.Direction.REVERSE);
+//        rightFront.setDirection(DcMotor.Direction.FORWARD);
+//        rightRear.setDirection(DcMotor.Direction.REVERSE);
 
         List<Integer> lastTrackingEncPositions = new ArrayList<>();
         List<Integer> lastTrackingEncVels = new ArrayList<>();
