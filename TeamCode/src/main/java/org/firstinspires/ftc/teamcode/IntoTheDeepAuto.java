@@ -1,6 +1,7 @@
 
 package org.firstinspires.ftc.teamcode;
 
+import com.acmerobotics.roadrunner.drive.Drive;
 import com.qualcomm.hardware.rev.RevHubOrientationOnRobot;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.Disabled;
@@ -121,25 +122,9 @@ public class IntoTheDeepAuto extends LinearOpMode {
     }
 
     public void testProgram() {
-        // Step through each leg of the path,
-        // Notes:   Reverse movement is obtained by setting a negative distance (not speed)
-        //          holdHeading() is used after turns to let the heading stabilize
-        //          Add a sleep(2000) after any step to keep the telemetry data visible for review
 
 
-        driveStraight(DRIVE_SPEED, 60.0, 0.0);    // Drive Forward 24"
-        turnToHeading(TURN_SPEED, -45.0);               // Turn  CW to -45 Degrees
-        holdHeading(TURN_SPEED, -45.0, 0.5);   // Hold -45 Deg heading for a 1/2 second
 
-        driveStraight(DRIVE_SPEED, 17.0, -45.0);  // Drive Forward 17" at -45 degrees (12"x and 12"y)
-        turnToHeading(TURN_SPEED, 45.0);               // Turn  CCW  to  45 Degrees
-        holdHeading(TURN_SPEED, 45.0, 0.5);    // Hold  45 Deg heading for a 1/2 second
-
-        driveStraight(DRIVE_SPEED, 17.0, 45.0);  // Drive Forward 17" at 45 degrees (-12"x and 12"y)
-        turnToHeading(TURN_SPEED, 0.0);               // Turn  CW  to 0 Degrees
-        holdHeading(TURN_SPEED, 0.0, 1.0);    // Hold  0 Deg heading for 1 second
-
-        driveStraight(DRIVE_SPEED, -48.0, 0.0);    // Drive in Reverse 48" (should return to approx. staring position)
 
         telemetry.addData("Path", "Complete");
         telemetry.update();
@@ -169,7 +154,10 @@ public class IntoTheDeepAuto extends LinearOpMode {
 
         telemetry.update();
     }
-
+    private void DriveandTurn() {
+        driveStraight(DRIVE_SPEED, 60.0, 0.2);
+        turnToHeading(TURN_SPEED, -45.0);
+    }
     @Override
     public void runOpMode() throws InterruptedException {
         initializeMotors();
@@ -194,79 +182,26 @@ public class IntoTheDeepAuto extends LinearOpMode {
         // Wait for the game to start (Display Gyro value while waiting)
         while (opModeInInit()) {
             updateTelemetry();
+
 //            updateButtonPressed();
         }
-//        finalizeVariables();
-
-//        AutonDistanceDropPixel();
-//        if(SubSystemVariables.parkInBackstage) {
-//            AutonMoveToBackstage();
-//        }
-//        sleep(1000);
-//        sleep(1000);
 
     }
 
 
-//
+
 
     private int detectPropDistance() {
         sleep(500);
-        while(opModeIsActive()) {
-//        telemetry.addData("Left Distance: ", leftDistanceSensor.getDistance(DistanceUnit.MM));
-//        telemetry.addData("Right Distance: ", rightDistanceSensor.getDistance(DistanceUnit.MM));
+        while (opModeIsActive()) {
+
             telemetry.update();
         }
-//        if (leftDistanceSensor.getDistance(DistanceUnit.MM) < 450) {
-//            return 1;
-//        } else if (rightDistanceSensor.getDistance(DistanceUnit.MM) < 450) {
-//            return 3;
-//        } else {
-//            return 2;
-//        }
-        return 2;
+
+
+        return 0;
     }
 
-    private int detectProp() {
-        /*
-        if(gamepad1.dpad_left) {
-            propStartingPos = 1;
-        } else if (gamepad1.dpad_up) {
-            propStartingPos = 2;
-        } else if (gamepad1.dpad_right) {
-            propStartingPos = 3;
-        }
-         */
-
-        return 2;
-
-
-    }
-
-    private void AutonSimpleDropPixelCenter(int position) {
-        imu.resetYaw();
-
-        if(position == 1) {
-            driveStraight(DRIVE_SPEED, distanceDropPos1, 0);
-            turnToHeading(TURN_SPEED, 90);
-            holdHeading(TURN_SPEED,  90, 0.5);
-            driveStraight(DRIVE_SPEED, finishDistancePos1, 90);
-
-        } else if (position == 2) {
-            driveStraight(DRIVE_SPEED, distanceDropPos2, 0);
-            sleep(1000);
-            sleep(1000);
-            driveStraight(DRIVE_SPEED, -4, 0);
-            sleep(1000);
-
-        }  else /*if (position == 3)*/ {
-            driveStraight(DRIVE_SPEED, distanceDropPos3, 0);
-            turnToHeading(TURN_SPEED, -90);
-            holdHeading( TURN_SPEED,  -90, 0.5);
-            driveStraight(DRIVE_SPEED, finishDistancePos3, -90);
-        }
-
-    }
 
 
     /*
@@ -293,7 +228,6 @@ public class IntoTheDeepAuto extends LinearOpMode {
     public void driveStraight(double maxDriveSpeed,
                               double distance,
                               double heading) {
-
         // Ensure that the OpMode is still active
         if (opModeIsActive()) {
 
@@ -383,7 +317,6 @@ public class IntoTheDeepAuto extends LinearOpMode {
         // Stop all motion;
         moveRobot(0, 0);
     }
-
     /**
      *  Obtain & hold a heading for a finite amount of time
      *  <p>
@@ -499,5 +432,7 @@ public class IntoTheDeepAuto extends LinearOpMode {
     public double getHeading() {
         YawPitchRollAngles orientation = imu.getRobotYawPitchRollAngles();
         return orientation.getYaw(AngleUnit.DEGREES);
+
+
+        }
     }
-}
