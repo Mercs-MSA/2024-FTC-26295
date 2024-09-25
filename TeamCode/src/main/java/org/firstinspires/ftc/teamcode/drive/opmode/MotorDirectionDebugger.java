@@ -32,7 +32,7 @@ import org.firstinspires.ftc.teamcode.drive.SampleMecanumDrive;
  *      .'    '.    '-._____.-'  .'       (x/▢)        \     (Y/Δ)
  *     |       |                 |                      \
  *      '.___.' '.               |          Rear Left    \   Rear Right
- *               '.             /             Wheel       \    Wheel
+ *               '.             /             Wheel       \       Wheel
  *                \.          .'              (A/X)        \   (B/O)
  *                  \________/
  *

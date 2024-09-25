@@ -4,6 +4,7 @@ package org.firstinspires.ftc.teamcode;
 //import com.arcrobotics.ftclib.drivebase.MecanumDrive;
 //import com.arcrobotics.ftclib.gamepad.GamepadEx;
 import com.qualcomm.hardware.rev.RevHubOrientationOnRobot;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.DistanceSensor;
 import com.qualcomm.robotcore.hardware.IMU;
 //import com.arcrobotics.ftclib.hardware.motors.Motor;
@@ -102,7 +103,7 @@ public class InToTheDeepTeleOp extends LinearOpMode {
         leftFrontDrive.setDirection(DcMotor.Direction.REVERSE);
         leftBackDrive.setDirection(DcMotor.Direction.REVERSE);
         rightFrontDrive.setDirection(DcMotor.Direction.FORWARD);
-        rightBackDrive.setDirection(DcMotor.Direction.FORWARD);
+        rightBackDrive.setDirection(DcMotor.Direction.REVERSE);
 //         Competition Robot Directions
 //        leftFrontDrive.setDirection(DcMotor.Direction.FORWARD);
 //        leftBackDrive.setDirection(DcMotor.Direction.REVERSE);
