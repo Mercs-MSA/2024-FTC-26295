@@ -21,6 +21,7 @@ import com.qualcomm.hardware.lynx.LynxModule;
 import com.qualcomm.hardware.rev.RevHubOrientationOnRobot;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.IMU;
 import com.qualcomm.robotcore.hardware.PIDFCoefficients;
@@ -101,8 +102,8 @@ public class SampleMecanumDrive extends MecanumDrive {
 
         leftFront = hardwareMap.get(DcMotorEx.class, "leftFrontDrive");
         leftRear = hardwareMap.get(DcMotorEx.class, "leftBackDrive");
-        rightRear = hardwareMap.get(DcMotorEx.class, "rightFrontDrive");
-        rightFront = hardwareMap.get(DcMotorEx.class, "rightBackDrive");
+        rightRear = hardwareMap.get(DcMotorEx.class, "rightBackDrive");
+        rightFront = hardwareMap.get(DcMotorEx.class, "rightFrontDrive");
 
         motors = Arrays.asList(leftFront, leftRear, rightRear, rightFront);
 
@@ -124,15 +125,15 @@ public class SampleMecanumDrive extends MecanumDrive {
 
         // TODO: reverse any motors using DcMotor.setDirection()
 //      Test Robot Drive base direction
-        leftFront.setDirection(DcMotor.Direction.REVERSE);
-        leftRear.setDirection(DcMotor.Direction.REVERSE);
-        rightFront.setDirection(DcMotor.Direction.FORWARD);
-        rightRear.setDirection(DcMotor.Direction.FORWARD);
-//         Competition Robot Directions
-//        leftFront.setDirection(DcMotor.Direction.FORWARD);
+//        leftFront.setDirection(DcMotor.Direction.REVERSE);
 //        leftRear.setDirection(DcMotor.Direction.REVERSE);
 //        rightFront.setDirection(DcMotor.Direction.FORWARD);
-//        rightRear.setDirection(DcMotor.Direction.REVERSE);
+//        rightRear.setDirection(DcMotor.Direction.FORWARD);
+//         Competition Robot Directions
+        leftFront.setDirection(DcMotor.Direction.REVERSE);
+        leftRear.setDirection(DcMotor.Direction.FORWARD);
+        rightFront.setDirection(DcMotor.Direction.REVERSE);
+        rightRear.setDirection(DcMotor.Direction.REVERSE);
 
         List<Integer> lastTrackingEncPositions = new ArrayList<>();
         List<Integer> lastTrackingEncVels = new ArrayList<>();

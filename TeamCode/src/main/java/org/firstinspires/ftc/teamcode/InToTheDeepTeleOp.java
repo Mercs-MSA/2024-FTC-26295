@@ -76,15 +76,15 @@ public class InToTheDeepTeleOp extends LinearOpMode {
                 RevHubOrientationOnRobot.LogoFacingDirection.BACKWARD,
             RevHubOrientationOnRobot.UsbFacingDirection.RIGHT));
 */
-/*        // Competition Robot Directions
-        IMU.Parameters parameters = new IMU.Parameters(new RevHubOrientationOnRobot(
-                RevHubOrientationOnRobot.LogoFacingDirection.FORWARD,
-                RevHubOrientationOnRobot.UsbFacingDirection.LEFT));
- */
-        // Test Robot Directions
+        // Competition Robot Directions
         IMU.Parameters parameters = new IMU.Parameters(new RevHubOrientationOnRobot(
                 RevHubOrientationOnRobot.LogoFacingDirection.BACKWARD,
                 RevHubOrientationOnRobot.UsbFacingDirection.RIGHT));
+
+        // Test Robot Directions
+//        IMU.Parameters parameters = new IMU.Parameters(new RevHubOrientationOnRobot(
+//                RevHubOrientationOnRobot.LogoFacingDirection.BACKWARD,
+//                RevHubOrientationOnRobot.UsbFacingDirection.RIGHT));
 
         imu.initialize (parameters);
 //      IMU calibration
@@ -100,15 +100,15 @@ public class InToTheDeepTeleOp extends LinearOpMode {
         // Reverse the direction (flip FORWARD <-> REVERSE ) of any wheel that runs backward
         // Keep testing until ALL the wheels move the robot forward when you push the left joystick forward.
 //      Test Robot Drive base direction
-        leftFrontDrive.setDirection(DcMotor.Direction.REVERSE);
-        leftBackDrive.setDirection(DcMotor.Direction.REVERSE);
-        rightFrontDrive.setDirection(DcMotor.Direction.FORWARD);
-        rightBackDrive.setDirection(DcMotor.Direction.REVERSE);
-//         Competition Robot Directions
-//        leftFrontDrive.setDirection(DcMotor.Direction.FORWARD);
+//        leftFrontDrive.setDirection(DcMotor.Direction.REVERSE);
 //        leftBackDrive.setDirection(DcMotor.Direction.REVERSE);
 //        rightFrontDrive.setDirection(DcMotor.Direction.FORWARD);
 //        rightBackDrive.setDirection(DcMotor.Direction.REVERSE);
+//         Competition Robot Directions
+        leftFrontDrive.setDirection(DcMotor.Direction.REVERSE);
+        leftBackDrive.setDirection(DcMotor.Direction.FORWARD);
+        rightFrontDrive.setDirection(DcMotor.Direction.REVERSE);
+        rightBackDrive.setDirection(DcMotor.Direction.REVERSE);
 
         leftBackDrive.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         rightBackDrive.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
