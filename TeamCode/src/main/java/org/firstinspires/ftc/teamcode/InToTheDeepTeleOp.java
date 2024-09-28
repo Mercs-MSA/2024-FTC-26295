@@ -3,6 +3,8 @@ package org.firstinspires.ftc.teamcode;
 
 //import com.arcrobotics.ftclib.drivebase.MecanumDrive;
 //import com.arcrobotics.ftclib.gamepad.GamepadEx;
+import android.widget.Button;
+
 import com.qualcomm.hardware.rev.RevHubOrientationOnRobot;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.DistanceSensor;
@@ -106,6 +108,7 @@ public class InToTheDeepTeleOp extends LinearOpMode {
         leftBackDrive.setDirection(DcMotor.Direction.REVERSE);
         rightFrontDrive.setDirection(DcMotor.Direction.FORWARD);
         rightBackDrive.setDirection(DcMotor.Direction.REVERSE);
+        armAndClimb.setDirection(DcMotor.Direction.FORWARD);
 //         Competition Robot Directions
 //        leftFrontDrive.setDirection(DcMotor.Direction.FORWARD);
 //        leftBackDrive.setDirection(DcMotor.Direction.REVERSE);
@@ -116,6 +119,7 @@ public class InToTheDeepTeleOp extends LinearOpMode {
         rightBackDrive.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         rightFrontDrive.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         leftFrontDrive.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        armAndClimb.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
 /*        leftFrontDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         rightFrontDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
@@ -187,6 +191,16 @@ public class InToTheDeepTeleOp extends LinearOpMode {
                 rightBackPower  /= max;
             }
 
+            // Below this is code to get the arm and climb working
+            if ( gamepad2.dpad_up == true){
+            armAndClimb.setPower(1.0);
+            }
+            else if (gamepad2.dpad_down == true) {
+                armAndClimb.setPower(-1.0);
+            }
+            else {
+                armAndClimb.setPower(0.0); // remember to turn off if nothing pressed!
+            }
             // This is test code:
             //
             // Uncomment the following code to test your motor directions.
@@ -196,18 +210,19 @@ public class InToTheDeepTeleOp extends LinearOpMode {
             //   2) Then make sure they run in the correct direction by modifying the
             //      the setDirection() calls above.
             // Once the correct motors move in the correct direction re-comment this code.
-/*
-            leftFrontPower  = gamepad1.x ? 1.0 : 0.0;  // X gamepad
-            leftBackPower   = gamepad1.a ? 1.0 : 0.0;  // A gamepad
-            rightFrontPower = gamepad1.y ? 1.0 : 0.0;  // Y gamepad
-            rightBackPower  = gamepad1.b ? 1.0 : 0.0;  // B gamepad
-*/
+
+            //armAndClimb  = gamepad1.x ? 1.0 : 0.0;  // X gamepad
+//            leftBackPower   = gamepad1.a ? 1.0 : 0.0;  // A gamepad
+//            rightFrontPower = gamepad1.y ? 1.0 : 0.0;  // Y gamepad
+//            rightBackPower  = gamepad1.b ? 1.0 : 0.0;  // B gamepad
+
 
             // Send calculated power to wheels
             leftFrontDrive.setPower(leftFrontPower);
             rightFrontDrive.setPower(rightFrontPower);
             leftBackDrive.setPower(leftBackPower);
             rightBackDrive.setPower(rightBackPower);
+
 
             // Show the elapsed game time and wheel power.
             telemetry.addData("Status", "Run Time: " + runtime.toString());
