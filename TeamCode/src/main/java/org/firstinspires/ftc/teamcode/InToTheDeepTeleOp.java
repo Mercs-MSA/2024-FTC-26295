@@ -37,6 +37,7 @@ public class InToTheDeepTeleOp extends LinearOpMode {
     private DcMotor leftBackDrive = null;
     private DcMotor rightFrontDrive = null;
     private DcMotor rightBackDrive = null;
+    private DcMotor armAndClimb = null;
     private DistanceSensor frontrightDistanceSensor;
     private DistanceSensor frontleftDistanceSensor;
 
@@ -49,6 +50,7 @@ public class InToTheDeepTeleOp extends LinearOpMode {
         leftBackDrive  = hardwareMap.get(DcMotor.class, "leftBackDrive");
         rightFrontDrive = hardwareMap.get(DcMotor.class, "rightFrontDrive");
         rightBackDrive = hardwareMap.get(DcMotor.class, "rightBackDrive");
+        armAndClimb = hardwareMap.get(DcMotor.class, "armAndClimb");
 
         //Initialize IMU
         // This is the built-in IMU in the REV hub.
