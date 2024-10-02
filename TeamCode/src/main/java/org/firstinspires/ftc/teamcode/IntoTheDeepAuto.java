@@ -8,6 +8,7 @@ import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.DistanceSensor;
 import com.qualcomm.robotcore.hardware.IMU;
 import com.qualcomm.robotcore.util.ElapsedTime;
@@ -104,9 +105,10 @@ public class IntoTheDeepAuto extends LinearOpMode {
         // To drive forward, most robots need the motor on one side to be reversed, because the axles point in opposite directions.
         // When run, this OpMode should start both motors driving forward. So adjust these two lines based on your first test drive.
         // Note: The settings here assume direct drive on left and right wheels.  Gear Reduction or 90 Deg drives may require direction flips
+
         leftFrontDrive.setDirection(DcMotor.Direction.REVERSE);
-        rightFrontDrive.setDirection(DcMotor.Direction.FORWARD);
         leftBackDrive.setDirection(DcMotor.Direction.FORWARD);
+        rightFrontDrive.setDirection(DcMotor.Direction.REVERSE);
         rightBackDrive.setDirection(DcMotor.Direction.REVERSE);
 
         leftBackDrive.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
@@ -160,47 +162,29 @@ public class IntoTheDeepAuto extends LinearOpMode {
     }
     @Override
     public void runOpMode() throws InterruptedException {
+        // Initialize the motors and IMU
         initializeMotors();
 
-        /* The next two lines define Hub orientation.
-         * The Default Orientation (shown) is when a hub is mounted horizontally with the printed logo pointing UP and the USB port pointing FORWARD.
-         *
-         * To Do:  EDIT these two lines to match YOUR mounting configuration.
-         */
-        RevHubOrientationOnRobot.LogoFacingDirection logoDirection = RevHubOrientationOnRobot.LogoFacingDirection.BACKWARD;
-        RevHubOrientationOnRobot.UsbFacingDirection usbDirection = RevHubOrientationOnRobot.UsbFacingDirection.RIGHT;
-        RevHubOrientationOnRobot orientationOnRobot = new RevHubOrientationOnRobot(logoDirection, usbDirection);
+        // Wait for the start of the match
+        waitForStart();
 
-        // Now initialize the IMU with this mounting orientation
-        // This sample expects the IMU to be in a REV Hub and named "imu".
-        imu = hardwareMap.get(IMU.class, "imu");
-        imu.initialize(new IMU.Parameters(orientationOnRobot));
+        // Set motor power to drive forward
+        leftFrontDrive.setPower(0.75);
+        rightFrontDrive.setPower(0.75);
+        leftBackDrive.setPower(0.75);
+        rightBackDrive.setPower(0.75);
 
-        configureMotors();
-        sleep(1000);
-        imu.resetYaw();
-        // Wait for the game to start (Display Gyro value while waiting)
-        while (opModeInInit()) {
-            updateTelemetry();
+        sleep(100000);  // Let the robot drive for 2 seconds
 
-//            updateButtonPressed();
-        }
-
+        // Stop the motors
+        leftFrontDrive.setPower(0);
+        rightFrontDrive.setPower(0);
+        leftBackDrive.setPower(0);
+        rightBackDrive.setPower(0);
     }
 
 
 
-
-    private int detectPropDistance() {
-        sleep(500);
-        while (opModeIsActive()) {
-
-            telemetry.update();
-        }
-
-
-        return 0;
-    }
 
 
 
