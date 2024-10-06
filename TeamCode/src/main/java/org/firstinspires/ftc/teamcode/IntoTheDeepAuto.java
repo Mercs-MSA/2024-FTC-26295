@@ -1,6 +1,8 @@
 
 package org.firstinspires.ftc.teamcode;
 
+import static org.firstinspires.ftc.teamcode.drive.DriveConstants.MaxVelocity;
+
 import com.acmerobotics.roadrunner.drive.Drive;
 import com.qualcomm.hardware.rev.RevHubOrientationOnRobot;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
@@ -8,6 +10,7 @@ import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.DistanceSensor;
 import com.qualcomm.robotcore.hardware.IMU;
@@ -26,14 +29,15 @@ import org.firstinspires.ftc.teamcode.subsystem.SubSystemDrivetrain;
 @Autonomous
 //adding empty Functions - AUTO
 public class IntoTheDeepAuto extends LinearOpMode {
-    private boolean isTestBot = true;
+
 
     /* Declare OpMode members. */
     private ElapsedTime runtime = new ElapsedTime();
-    private DcMotor leftFrontDrive = null;
-    private DcMotor leftBackDrive = null;
-    private DcMotor rightFrontDrive = null;
-    private DcMotor rightBackDrive = null;
+    private DcMotorEx leftFrontDrive = null;
+    private DcMotorEx leftBackDrive = null;
+    private DcMotorEx rightFrontDrive = null;
+    private DcMotorEx rightBackDrive = null;
+    private DcMotor armAndClimb = null;
 //    private DistanceSensor leftDistanceSensor;
 //    private DistanceSensor rightDistanceSensor;
 
@@ -79,12 +83,7 @@ public class IntoTheDeepAuto extends LinearOpMode {
     static final double P_DRIVE_GAIN = 0.03;     // Larger is more responsive, but also less stable
     private int propPosition;
 
-    private final double distanceDropPos1 = 29.0;
-    private final double finishDistancePos1 = 2.0;
-    private final double distanceDropPos2 = 29.0 - 4.0;
-    private final double distanceDropPos3 = 29.0;
-    private final double finishDistancePos3 = 3.0;
-    private int propStartingPos = 0;
+
 
     private final int SCANNING_DISTANCE = 9;
     private SubSystemDrivetrain driveTerrain;
@@ -92,10 +91,11 @@ public class IntoTheDeepAuto extends LinearOpMode {
 
     public void initializeMotors() throws InterruptedException {
         // Initialize the drive system variables.
-        leftFrontDrive = hardwareMap.get(DcMotor.class, "leftFrontDrive");
-        rightFrontDrive = hardwareMap.get(DcMotor.class, "rightFrontDrive");
-        leftBackDrive = hardwareMap.get(DcMotor.class, "leftBackDrive");
-        rightBackDrive = hardwareMap.get(DcMotor.class, "rightBackDrive");
+        leftFrontDrive = hardwareMap.get(DcMotorEx.class, "leftFrontDrive");
+        rightFrontDrive = hardwareMap.get(DcMotorEx.class, "rightFrontDrive");
+        leftBackDrive = hardwareMap.get(DcMotorEx.class, "leftBackDrive");
+        rightBackDrive = hardwareMap.get(DcMotorEx.class, "rightBackDrive");
+        armAndClimb = hardwareMap.get(DcMotor.class, "armAndClimb");
 
         driveTerrain = new SubSystemDrivetrain(hardwareMap, SubSystemVariables.currentBot);
 
@@ -106,20 +106,22 @@ public class IntoTheDeepAuto extends LinearOpMode {
         // When run, this OpMode should start both motors driving forward. So adjust these two lines based on your first test drive.
         // Note: The settings here assume direct drive on left and right wheels.  Gear Reduction or 90 Deg drives may require direction flips
 
-        leftFrontDrive.setDirection(DcMotor.Direction.REVERSE);
-        leftBackDrive.setDirection(DcMotor.Direction.FORWARD);
-        rightFrontDrive.setDirection(DcMotor.Direction.REVERSE);
-        rightBackDrive.setDirection(DcMotor.Direction.REVERSE);
+        leftFrontDrive.setDirection(DcMotorEx.Direction.REVERSE);
+        leftBackDrive.setDirection(DcMotorEx.Direction.REVERSE);
+        rightFrontDrive.setDirection(DcMotorEx.Direction.FORWARD);
+        rightBackDrive.setDirection(DcMotorEx.Direction.REVERSE);
+        armAndClimb.setDirection(DcMotor.Direction.FORWARD);
 
-        leftBackDrive.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        rightBackDrive.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        rightFrontDrive.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        leftFrontDrive.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        leftBackDrive.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.BRAKE);
+        rightBackDrive.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.BRAKE);
+        rightFrontDrive.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.BRAKE);
+        leftFrontDrive.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.BRAKE);
+        armAndClimb.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
-        leftFrontDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        rightFrontDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        rightBackDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        leftBackDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+//        leftFrontDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+//        rightFrontDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+//        rightBackDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+//        leftBackDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
     }
 
@@ -132,34 +134,49 @@ public class IntoTheDeepAuto extends LinearOpMode {
         telemetry.update();
         sleep(1000);  // Pause to display last telemetry message.
     }
+    public void driveStraight() {
+//        leftFrontDrive.setVelocity(MaxVelocity * 0.2);
+//        rightFrontDrive.setVelocity(MaxVelocity * 0.2);
+//        leftBackDrive.setVelocity(MaxVelocity * 0.2);
+//        rightBackDrive.setVelocity(MaxVelocity * 0.2);
+        leftFrontDrive.setPower(0.2);
+        rightFrontDrive.setPower(0.2);
+        leftBackDrive.setPower(0.2);
+        rightBackDrive.setPower(0.2);
+
+        sleep(2000);  // Let the robot drive for 2 seconds
+
+        // Stop the motors
+        leftFrontDrive.setVelocity(0);
+        rightFrontDrive.setVelocity(0);
+        leftBackDrive.setVelocity(0);
+        rightBackDrive.setVelocity(0);
+    }
 
     public void configureMotors() {
         // Ensure the robot is stationary.  Reset the encoders and set the motors to BRAKE mode
-        leftFrontDrive.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        rightFrontDrive.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        leftBackDrive.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        leftFrontDrive.setMode(DcMotorEx.RunMode.STOP_AND_RESET_ENCODER);
+        rightFrontDrive.setMode(DcMotorEx.RunMode.STOP_AND_RESET_ENCODER);
+        leftBackDrive.setMode(DcMotorEx.RunMode.STOP_AND_RESET_ENCODER);
         rightBackDrive.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
 
-        leftFrontDrive.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        rightFrontDrive.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        leftBackDrive.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        rightBackDrive.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        leftFrontDrive.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.BRAKE);
+        rightFrontDrive.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.BRAKE);
+        leftBackDrive.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.BRAKE);
+        rightBackDrive.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.BRAKE);
 
         // Set the encoders for closed loop speed control, and reset the heading.
-        leftFrontDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        rightFrontDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        leftBackDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        rightBackDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        leftFrontDrive.setMode(DcMotorEx.RunMode.RUN_USING_ENCODER);
+        rightFrontDrive.setMode(DcMotorEx.RunMode.RUN_USING_ENCODER);
+        leftBackDrive.setMode(DcMotorEx.RunMode.RUN_USING_ENCODER);
+        rightBackDrive.setMode(DcMotorEx.RunMode.RUN_USING_ENCODER);
     }
 
     private void updateTelemetry() {
 
         telemetry.update();
     }
-    private void DriveandTurn() {
-        driveStraight(DRIVE_SPEED, 60.0, 0.2);
-        turnToHeading(TURN_SPEED, -45.0);
-    }
+
     @Override
     public void runOpMode() throws InterruptedException {
         // Initialize the motors and IMU
@@ -167,20 +184,8 @@ public class IntoTheDeepAuto extends LinearOpMode {
 
         // Wait for the start of the match
         waitForStart();
+        driveStraight();
 
-        // Set motor power to drive forward
-        leftFrontDrive.setPower(0.75);
-        rightFrontDrive.setPower(0.75);
-        leftBackDrive.setPower(0.75);
-        rightBackDrive.setPower(0.75);
-
-        sleep(100000);  // Let the robot drive for 2 seconds
-
-        // Stop the motors
-        leftFrontDrive.setPower(0);
-        rightFrontDrive.setPower(0);
-        leftBackDrive.setPower(0);
-        rightBackDrive.setPower(0);
     }
 
 
@@ -226,10 +231,10 @@ public class IntoTheDeepAuto extends LinearOpMode {
             rightFrontDrive.setTargetPosition(rightTarget);
             rightBackDrive.setTargetPosition(rightTarget);
 
-            leftFrontDrive.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-            leftBackDrive.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-            rightFrontDrive.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-            rightBackDrive.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+            leftFrontDrive.setMode(DcMotorEx.RunMode.RUN_TO_POSITION);
+            leftBackDrive.setMode(DcMotorEx.RunMode.RUN_TO_POSITION);
+            rightFrontDrive.setMode(DcMotorEx.RunMode.RUN_TO_POSITION);
+            rightBackDrive.setMode(DcMotorEx.RunMode.RUN_TO_POSITION);
 
             // Set the required driving speed  (must be positive for RUN_TO_POSITION)
             // Start driving straight, and then enter the control loop
@@ -256,10 +261,10 @@ public class IntoTheDeepAuto extends LinearOpMode {
 
             // Stop all motion & Turn off RUN_TO_POSITION
             moveRobot(0, 0);
-            leftFrontDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-            rightFrontDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-            leftBackDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-            rightBackDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+            leftFrontDrive.setMode(DcMotorEx.RunMode.RUN_USING_ENCODER);
+            rightFrontDrive.setMode(DcMotorEx.RunMode.RUN_USING_ENCODER);
+            leftBackDrive.setMode(DcMotorEx.RunMode.RUN_USING_ENCODER);
+            rightBackDrive.setMode(DcMotorEx.RunMode.RUN_USING_ENCODER);
         }
     }
 
