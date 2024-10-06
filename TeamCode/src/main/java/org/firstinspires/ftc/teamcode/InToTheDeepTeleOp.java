@@ -35,10 +35,10 @@ public class InToTheDeepTeleOp extends LinearOpMode {
 
     // Declare OpMode members for each of the 4 motors.
     private ElapsedTime runtime = new ElapsedTime();
-    private DcMotor leftFrontDrive = null;
-    private DcMotor leftBackDrive = null;
-    private DcMotor rightFrontDrive = null;
-    private DcMotor rightBackDrive = null;
+    private DcMotorEx leftFrontDrive = null;
+    private DcMotorEx leftBackDrive = null;
+    private DcMotorEx rightFrontDrive = null;
+    private DcMotorEx rightBackDrive = null;
     private DcMotor armAndClimb = null;
     private DistanceSensor frontrightDistanceSensor;
     private DistanceSensor frontleftDistanceSensor;
@@ -48,10 +48,10 @@ public class InToTheDeepTeleOp extends LinearOpMode {
 
         // Initialize the hardware variables. Note that the strings used here must correspond
         // to the names assigned during the robot configuration step on the DS or RC devices.
-        leftFrontDrive  = hardwareMap.get(DcMotor.class, "leftFrontDrive");
-        leftBackDrive  = hardwareMap.get(DcMotor.class, "leftBackDrive");
-        rightFrontDrive = hardwareMap.get(DcMotor.class, "rightFrontDrive");
-        rightBackDrive = hardwareMap.get(DcMotor.class, "rightBackDrive");
+        leftFrontDrive  = hardwareMap.get(DcMotorEx.class, "leftFrontDrive");
+        leftBackDrive  = hardwareMap.get(DcMotorEx.class, "leftBackDrive");
+        rightFrontDrive = hardwareMap.get(DcMotorEx.class, "rightFrontDrive");
+        rightBackDrive = hardwareMap.get(DcMotorEx.class, "rightBackDrive");
         armAndClimb = hardwareMap.get(DcMotor.class, "armAndClimb");
 
         //Initialize IMU
@@ -104,21 +104,21 @@ public class InToTheDeepTeleOp extends LinearOpMode {
         // Reverse the direction (flip FORWARD <-> REVERSE ) of any wheel that runs backward
         // Keep testing until ALL the wheels move the robot forward when you push the left joystick forward.
 //      Test Robot Drive base direction
-        leftFrontDrive.setDirection(DcMotor.Direction.REVERSE);
-        leftBackDrive.setDirection(DcMotor.Direction.REVERSE);
-        rightFrontDrive.setDirection(DcMotor.Direction.FORWARD);
-        rightBackDrive.setDirection(DcMotor.Direction.REVERSE);
-        armAndClimb.setDirection(DcMotor.Direction.FORWARD);
+        leftFrontDrive.setDirection(DcMotorEx.Direction.REVERSE);
+        leftBackDrive.setDirection(DcMotorEx.Direction.REVERSE);
+        rightFrontDrive.setDirection(DcMotorEx.Direction.FORWARD);
+        rightBackDrive.setDirection(DcMotorEx.Direction.REVERSE);
+        armAndClimb.setDirection(DcMotorEx.Direction.FORWARD);
 //         Competition Robot Directions
 //        leftFrontDrive.setDirection(DcMotor.Direction.FORWARD);
 //        leftBackDrive.setDirection(DcMotor.Direction.REVERSE);
 //        rightFrontDrive.setDirection(DcMotor.Direction.FORWARD);
 //        rightBackDrive.setDirection(DcMotor.Direction.REVERSE);
 
-        leftBackDrive.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        rightBackDrive.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        rightFrontDrive.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        leftFrontDrive.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        leftBackDrive.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.BRAKE);
+        rightBackDrive.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.BRAKE);
+        rightFrontDrive.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.BRAKE);
+        leftFrontDrive.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.BRAKE);
         armAndClimb.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
 /*        leftFrontDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
@@ -194,6 +194,7 @@ public class InToTheDeepTeleOp extends LinearOpMode {
             // Below this is code to get the arm and climb working
             if ( gamepad2.dpad_up == true){
             armAndClimb.setPower(1.0);
+
             }
             else if (gamepad2.dpad_down == true) {
                 armAndClimb.setPower(-1.0);
@@ -225,6 +226,10 @@ public class InToTheDeepTeleOp extends LinearOpMode {
 
 
             // Show the elapsed game time and wheel power.
+            telemetry.addData("FL", leftBackDrive.getVelocity());
+            telemetry.addData("FR", rightBackDrive.getVelocity());
+            telemetry.addData("FL", leftFrontDrive.getVelocity());
+            telemetry.addData("FL", rightFrontDrive.getVelocity());
             telemetry.addData("Status", "Run Time: " + runtime.toString());
             telemetry.addData("Front left/Right", "%4.2f, %4.2f", leftFrontPower, rightFrontPower);
             telemetry.addData("Back  left/Right", "%4.2f, %4.2f", leftBackPower, rightBackPower);

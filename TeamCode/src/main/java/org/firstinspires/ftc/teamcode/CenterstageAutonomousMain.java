@@ -49,7 +49,7 @@ import org.firstinspires.ftc.robotcore.external.navigation.YawPitchRollAngles;
 import org.firstinspires.ftc.teamcode.subsystem.SubSystemDrivetrain;
 
 
-@Autonomous
+@Disabled
 //adding empty Functions - AUTO
 public class CenterstageAutonomousMain extends LinearOpMode {
     private boolean isTestBot = true;
