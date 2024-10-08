@@ -52,7 +52,7 @@ public class InToTheDeepTeleOp extends LinearOpMode {
         leftBackDrive  = hardwareMap.get(DcMotorEx.class, "leftBackDrive");
         rightFrontDrive = hardwareMap.get(DcMotorEx.class, "rightFrontDrive");
         rightBackDrive = hardwareMap.get(DcMotorEx.class, "rightBackDrive");
-        armAndClimb = hardwareMap.get(DcMotor.class, "armAndClimb");
+//        armAndClimb = hardwareMap.get(DcMotorEx.class, "armAndClimb");
 
         //Initialize IMU
         // This is the built-in IMU in the REV hub.
@@ -108,18 +108,15 @@ public class InToTheDeepTeleOp extends LinearOpMode {
         leftBackDrive.setDirection(DcMotorEx.Direction.REVERSE);
         rightFrontDrive.setDirection(DcMotorEx.Direction.FORWARD);
         rightBackDrive.setDirection(DcMotorEx.Direction.REVERSE);
-        armAndClimb.setDirection(DcMotorEx.Direction.FORWARD);
+//        armAndClimb.setDirection(DcMotorEx.Direction.FORWARD);
 //         Competition Robot Directions
-//        leftFrontDrive.setDirection(DcMotor.Direction.FORWARD);
-//        leftBackDrive.setDirection(DcMotor.Direction.REVERSE);
-//        rightFrontDrive.setDirection(DcMotor.Direction.FORWARD);
-//        rightBackDrive.setDirection(DcMotor.Direction.REVERSE);
+//        rightBackDrive.setDirection(DcMotor.Direction.FORWARD);
 
         leftBackDrive.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.BRAKE);
         rightBackDrive.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.BRAKE);
         rightFrontDrive.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.BRAKE);
         leftFrontDrive.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.BRAKE);
-        armAndClimb.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+//        armAndClimb.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
 /*        leftFrontDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         rightFrontDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
@@ -138,7 +135,7 @@ public class InToTheDeepTeleOp extends LinearOpMode {
             double max;
 
             // POV Mode uses left joystick to go forward & rotate, and right joystick to strafe.
-            double axial   =  -gamepad1.left_stick_y;  //fwd
+            double axial   =  -gamepad1.left_stick_y;  //FWD
             double lateral =  gamepad1.left_stick_x;  //TUR
             double yaw     =  gamepad1.right_stick_x; //STR
 
@@ -192,16 +189,16 @@ public class InToTheDeepTeleOp extends LinearOpMode {
             }
 
             // Below this is code to get the arm and climb working
-            if ( gamepad2.dpad_up == true){
-            armAndClimb.setPower(1.0);
-
-            }
-            else if (gamepad2.dpad_down == true) {
-                armAndClimb.setPower(-1.0);
-            }
-            else {
-                armAndClimb.setPower(0.0); // remember to turn off if nothing pressed!
-            }
+//            if ( gamepad2.dpad_up == true){
+//            armAndClimb.setPower(1.0);
+//
+//            }
+//            else if (gamepad2.dpad_down == true) {
+//                armAndClimb.setPower(-1.0);
+//            }
+//            else {
+//                armAndClimb.setPower(0.0); // remember to turn off if nothing pressed!
+//            }
             // This is test code:
             //
             // Uncomment the following code to test your motor directions.
