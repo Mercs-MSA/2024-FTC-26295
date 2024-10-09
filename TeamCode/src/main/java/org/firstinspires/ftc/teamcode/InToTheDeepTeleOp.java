@@ -39,7 +39,7 @@ public class InToTheDeepTeleOp extends LinearOpMode {
     private DcMotorEx leftBackDrive = null;
     private DcMotorEx rightFrontDrive = null;
     private DcMotorEx rightBackDrive = null;
-    private DcMotor armAndClimb = null;
+//    private DcMotor armAndClimb = null;
     private DistanceSensor frontrightDistanceSensor;
     private DistanceSensor frontleftDistanceSensor;
 
