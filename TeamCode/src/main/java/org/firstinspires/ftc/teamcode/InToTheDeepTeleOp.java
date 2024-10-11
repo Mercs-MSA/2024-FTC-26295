@@ -21,6 +21,29 @@ import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.robotcore.internal.system.Deadline;
 import java.util.concurrent.TimeUnit;
 
+//Gamepad Mapping
+//      Gamepad 1                       ||          Gamepad 2
+//  gamepad1.a                          ||  gamepad2.a
+//  gamepad1.b                          ||  gamepad2.b
+//  gamepad1.cross
+//  gamepad1.triangle
+//  gamepad1.circle
+//  gamepad1.left_stick    = Drive          ||  gamepad2.left_stick
+//  gamepad1.right_stick   = Drive          ||  gamepad2.right_stick
+//  gamepad1..dpad_right
+//  gamepad1.dpad_left
+//  gamepad1.dpad_up
+//  gamepad1.dpad_down
+//  gamepad1.right_stick_y
+//  gamepad1.right_stick_x  = STRAFE
+//  gamepad1.left_stick_x   = TURN
+//  gamepad1.left_stick_y   = FWD / REVERSE
+//  gamepad1.b
+//  gamepad1.a
+//
+//
+//
+//
 
 @TeleOp
 
@@ -42,7 +65,7 @@ public class InToTheDeepTeleOp extends LinearOpMode {
     private DcMotor armAndClimb = null;
     private DistanceSensor frontrightDistanceSensor;
     private DistanceSensor frontleftDistanceSensor;
-
+    
     @Override
     public void runOpMode() {
 
@@ -82,8 +105,8 @@ public class InToTheDeepTeleOp extends LinearOpMode {
 */
 /*        // Competition Robot Directions
         IMU.Parameters parameters = new IMU.Parameters(new RevHubOrientationOnRobot(
-                RevHubOrientationOnRobot.LogoFacingDirection.FORWARD,
-                RevHubOrientationOnRobot.UsbFacingDirection.LEFT));
+                RevHubOrientationOnRobot.LogoFacingDirection.LEFT,
+                RevHubOrientationOnRobot.UsbFacingDirection.BACKWARD);
  */
         // Test Robot Directions
         IMU.Parameters parameters = new IMU.Parameters(new RevHubOrientationOnRobot(
@@ -138,7 +161,6 @@ public class InToTheDeepTeleOp extends LinearOpMode {
             double axial   =  -gamepad1.left_stick_y;  //FWD
             double lateral =  gamepad1.left_stick_x;  //TUR
             double yaw     =  gamepad1.right_stick_x; //STR
-
             //timeout happens then reset
             if(gamepadRateLimit.hasExpired() && gamepad1.a){
                 imu.resetYaw();
