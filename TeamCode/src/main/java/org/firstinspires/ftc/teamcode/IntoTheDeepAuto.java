@@ -95,7 +95,7 @@ public class IntoTheDeepAuto extends LinearOpMode {
         rightFrontDrive = hardwareMap.get(DcMotorEx.class, "rightFrontDrive");
         leftBackDrive = hardwareMap.get(DcMotorEx.class, "leftBackDrive");
         rightBackDrive = hardwareMap.get(DcMotorEx.class, "rightBackDrive");
-        armAndClimb = hardwareMap.get(DcMotor.class, "armAndClimb");
+//        armAndClimb = hardwareMap.get(DcMotor.class, "armAndClimb");
 
         driveTerrain = new SubSystemDrivetrain(hardwareMap, SubSystemVariables.currentBot);
 
@@ -135,14 +135,14 @@ public class IntoTheDeepAuto extends LinearOpMode {
         sleep(1000);  // Pause to display last telemetry message.
     }
     public void driveStraight() {
-//        leftFrontDrive.setVelocity(MaxVelocity * 0.2);
-//        rightFrontDrive.setVelocity(MaxVelocity * 0.2);
-//        leftBackDrive.setVelocity(MaxVelocity * 0.2);
-//        rightBackDrive.setVelocity(MaxVelocity * 0.2);
-        leftFrontDrive.setPower(0.2);
-        rightFrontDrive.setPower(0.2);
-        leftBackDrive.setPower(0.2);
-        rightBackDrive.setPower(0.2);
+        leftFrontDrive.setVelocity(MaxVelocity * 0.2);
+        rightFrontDrive.setVelocity(MaxVelocity * 0.2);
+        leftBackDrive.setVelocity(MaxVelocity * 0.2);
+        rightBackDrive.setVelocity(MaxVelocity * 0.2);
+//        leftFrontDrive.setPower(0.2);
+//        rightFrontDrive.setPower(0.2);
+//        leftBackDrive.setPower(0.2);
+//        rightBackDrive.setPower(0.2);
 
         sleep(2000);  // Let the robot drive for 2 seconds
 
