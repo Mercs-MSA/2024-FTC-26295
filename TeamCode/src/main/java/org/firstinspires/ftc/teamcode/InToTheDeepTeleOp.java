@@ -1,9 +1,8 @@
 package org.firstinspires.ftc.teamcode;
 
 
-//import com.arcrobotics.ftclib.drivebase.MecanumDrive;
-//import com.arcrobotics.ftclib.gamepad.GamepadEx;
-import android.widget.Button;
+
+import android.annotation.SuppressLint;
 
 import com.qualcomm.hardware.rev.RevHubOrientationOnRobot;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
@@ -15,35 +14,13 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
+import com.qualcomm.robotcore.hardware.Servo;
+import com.qualcomm.robotcore.hardware.ServoController;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.robotcore.internal.system.Deadline;
 import java.util.concurrent.TimeUnit;
-
-//Gamepad Mapping
-//      Gamepad 1                       ||          Gamepad 2
-//  gamepad1.a                          ||  gamepad2.a
-//  gamepad1.b                          ||  gamepad2.b
-//  gamepad1.cross
-//  gamepad1.triangle
-//  gamepad1.circle
-//  gamepad1.left_stick    = Drive          ||  gamepad2.left_stick
-//  gamepad1.right_stick   = Drive          ||  gamepad2.right_stick
-//  gamepad1..dpad_right
-//  gamepad1.dpad_left
-//  gamepad1.dpad_up
-//  gamepad1.dpad_down
-//  gamepad1.right_stick_y
-//  gamepad1.right_stick_x  = STRAFE
-//  gamepad1.left_stick_x   = TURN
-//  gamepad1.left_stick_y   = FWD / REVERSE
-//  gamepad1.b
-//  gamepad1.a
-//
-//
-//
-//
 
 @TeleOp
 
@@ -54,7 +31,7 @@ public class InToTheDeepTeleOp extends LinearOpMode {
     // uses field-centric or robot-centric driving styles. The
     // differences between them can be read here in the docs:
     // https://docs.ftclib.org/ftclib/features/drivebases#control-scheme
-    static boolean FIELD_CENTRIC = true;//NOTE : FIELD CENTRIC WILL ONLY WORK IF THE CONTROL HUB IS FLAT ON THE ROBOT AT THE MOMENT!!!
+    static boolean FIELD_CENTRIC = true;// CONTROL HUB MUST BE ON THE ROBOT
 
     // Declare OpMode members for each of the 4 motors.
     private ElapsedTime runtime = new ElapsedTime();
@@ -62,10 +39,16 @@ public class InToTheDeepTeleOp extends LinearOpMode {
     private DcMotorEx leftBackDrive = null;
     private DcMotorEx rightFrontDrive = null;
     private DcMotorEx rightBackDrive = null;
-//    private DcMotor armAndClimb = null;
+    private DcMotorEx Climb = null;
+    private DcMotorEx linearSlideIntake = null;
+    private DcMotorEx linearSlideLeftRight = null;
     private DistanceSensor frontrightDistanceSensor;
     private DistanceSensor frontleftDistanceSensor;
+    private Servo rollerLeftRight;
+    private Servo wheelSpin;
+    private Servo hook;
     
+    @SuppressLint("SuspiciousIndentation")
     @Override
     public void runOpMode() {
 
@@ -75,7 +58,13 @@ public class InToTheDeepTeleOp extends LinearOpMode {
         leftBackDrive  = hardwareMap.get(DcMotorEx.class, "leftBackDrive");
         rightFrontDrive = hardwareMap.get(DcMotorEx.class, "rightFrontDrive");
         rightBackDrive = hardwareMap.get(DcMotorEx.class, "rightBackDrive");
-//        armAndClimb = hardwareMap.get(DcMotorEx.class, "armAndClimb");
+        linearSlideIntake = hardwareMap.get(DcMotorEx.class, "linearSlideIntake");
+        linearSlideLeftRight = hardwareMap.get(DcMotorEx.class, "linearSlideLeftRight");
+        Climb = hardwareMap.get(DcMotorEx.class, "climb");
+        rollerLeftRight = hardwareMap.get(Servo. class, "rollerLeftRight");
+        wheelSpin = hardwareMap.get(Servo. class, "wheelSpin");
+        hook = hardwareMap.get(Servo.class, "hook");
+
 
         //Initialize IMU
         // This is the built-in IMU in the REV hub.
@@ -131,15 +120,24 @@ public class InToTheDeepTeleOp extends LinearOpMode {
         leftBackDrive.setDirection(DcMotorEx.Direction.REVERSE);
         rightFrontDrive.setDirection(DcMotorEx.Direction.FORWARD);
         rightBackDrive.setDirection(DcMotorEx.Direction.REVERSE);
-//        armAndClimb.setDirection(DcMotorEx.Direction.FORWARD);
-//         Competition Robot Directions
-//        rightBackDrive.setDirection(DcMotor.Direction.FORWARD);
+       Climb.setDirection(DcMotor.Direction.FORWARD);
+       linearSlideIntake.setDirection(DcMotor.Direction.FORWARD);
+       linearSlideLeftRight.setDirection(DcMotor.Direction.FORWARD);
+       rollerLeftRight.setPosition(0);
+       wheelSpin.setPosition(0);
+       hook.setPosition(0);
+//         Competition Robot Direction
+
 
         leftBackDrive.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.BRAKE);
         rightBackDrive.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.BRAKE);
         rightFrontDrive.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.BRAKE);
         leftFrontDrive.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.BRAKE);
-//        armAndClimb.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        Climb.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        linearSlideIntake.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        linearSlideLeftRight.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+
+
 
 /*        leftFrontDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         rightFrontDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
@@ -209,17 +207,64 @@ public class InToTheDeepTeleOp extends LinearOpMode {
                 leftBackPower   /= max;
                 rightBackPower  /= max;
             }
+            //hook
+            if (gamepad2.dpad_left){
+                hook.setPosition(1);
+            }
+            else if (gamepad2.dpad_right){
+                hook.setPosition(-1);
+            }
+            // Wheel SPin
+           if (gamepad1.x){
+               wheelSpin.setPosition(1);
+           } else if (gamepad1.b) {
+               wheelSpin.setPosition(-1);
 
-            // Below this is code to get the arm and climb working
-//            if ( gamepad2.dpad_up == true){
-//            armAndClimb.setPower(1.0);
+           }
+            // rollerLeftRight -
+            if (gamepad2.right_bumper == true){
+                rollerLeftRight.setPosition(1.0);
+
+            }
+
+             else if (gamepad2.y == true) {
+                rollerLeftRight.setPosition(-1.0);
+            }
+            else {
+                rollerLeftRight.setPosition(0.0);
+
+// Linear Slide Intake Up and Down
+            if (gamepad2.x == true){
+                linearSlideIntake.setPower(1.0);
+
+            }
+            else if (gamepad2.y == true) {
+                linearSlideIntake.setPower(-1.0);
+            }
+            else {
+                linearSlideIntake.setPower(0.0);
+            }
+// Linear Slide Left Right\
+            if (gamepad2.a == true){
+                    linearSlideLeftRight.setPower(1.0);
+                }
+            else if (gamepad2.b == true) {
+                    linearSlideLeftRight.setPower(-1.0);
+                }
+            else {
+                    linearSlideLeftRight.setPower(0.0);
+
+//             Below this is code to get the arm and climb working
+            if ( gamepad2.dpad_up == true){
+            Climb.setPower(1.0);
+
+            }
+            else if (gamepad2.dpad_down == true) {
+                Climb.setPower(-1.0);
+            }
+            else {
+                Climb.setPower(0.0); // remember to turn off if nothing pressed!
 //
-//            }
-//            else if (gamepad2.dpad_down == true) {
-//                armAndClimb.setPower(-1.0);
-//            }
-//            else {
-//                armAndClimb.setPower(0.0); // remember to turn off if nothing pressed!
 //            }
             // This is test code:
             //
@@ -260,4 +305,4 @@ public class InToTheDeepTeleOp extends LinearOpMode {
     }
 
 
-}
+}}}}
