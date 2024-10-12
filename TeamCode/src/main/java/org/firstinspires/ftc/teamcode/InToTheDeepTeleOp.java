@@ -85,7 +85,6 @@ public class InToTheDeepTeleOp extends LinearOpMode {
         //                 (Servo Port Side)
         //
 
-
         IMU imu = hardwareMap.get(IMU.class,"imu");
 /*      Test Robot Directions
         IMU.Parameters parameters = new IMU.Parameters(new RevHubOrientationOnRobot(
@@ -120,14 +119,13 @@ public class InToTheDeepTeleOp extends LinearOpMode {
         leftBackDrive.setDirection(DcMotorEx.Direction.REVERSE);
         rightFrontDrive.setDirection(DcMotorEx.Direction.FORWARD);
         rightBackDrive.setDirection(DcMotorEx.Direction.REVERSE);
-       Climb.setDirection(DcMotor.Direction.FORWARD);
-       linearSlideIntake.setDirection(DcMotor.Direction.FORWARD);
-       linearSlideLeftRight.setDirection(DcMotor.Direction.FORWARD);
-       rollerLeftRight.setPosition(0);
-       wheelSpin.setPosition(0);
-       hook.setPosition(0);
+        Climb.setDirection(DcMotor.Direction.FORWARD);
+        linearSlideIntake.setDirection(DcMotor.Direction.FORWARD);
+        linearSlideLeftRight.setDirection(DcMotor.Direction.FORWARD);
+        rollerLeftRight.setPosition(0);
+        wheelSpin.setPosition(0);
+        hook.setPosition(0);
 //         Competition Robot Direction
-
 
         leftBackDrive.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.BRAKE);
         rightBackDrive.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.BRAKE);
@@ -137,13 +135,6 @@ public class InToTheDeepTeleOp extends LinearOpMode {
         linearSlideIntake.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         linearSlideLeftRight.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
-
-
-/*        leftFrontDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        rightFrontDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        rightBackDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        leftBackDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-*/
         // Wait for the game to start (driver presses PLAY)
         telemetry.addData("Status", "Initialized");
         telemetry.update();
@@ -215,18 +206,16 @@ public class InToTheDeepTeleOp extends LinearOpMode {
                 hook.setPosition(-1);
             }
             // Wheel SPin
-           if (gamepad1.x){
+           if (gamepad2.x){
                wheelSpin.setPosition(1);
-           } else if (gamepad1.b) {
+           } else if (gamepad2.b) {
                wheelSpin.setPosition(-1);
-
            }
             // rollerLeftRight -
             if (gamepad2.right_bumper == true){
                 rollerLeftRight.setPosition(1.0);
 
             }
-
              else if (gamepad2.y == true) {
                 rollerLeftRight.setPosition(-1.0);
             }
