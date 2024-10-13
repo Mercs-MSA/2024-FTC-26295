@@ -40,25 +40,27 @@ public class InToTheDeepTeleOp extends LinearOpMode {
     private DcMotorEx rightFrontDrive = null;
     private DcMotorEx rightBackDrive = null;
     private DcMotorEx Climb = null;
-    private DcMotorEx linearSlideIntake = null;
+    private DcMotorEx linearSlideUpDown = null;
     private DcMotorEx linearSlideLeftRight = null;
     private DistanceSensor frontrightDistanceSensor;
     private DistanceSensor frontleftDistanceSensor;
     private Servo rollerLeftRight;
     private Servo wheelSpin;
     private Servo hook;
+
     
     @SuppressLint("SuspiciousIndentation")
     @Override
-    public void runOpMode() {
+    public void runOpMode() throws InterruptedException {
 
         // Initialize the hardware variables. Note that the strings used here must correspond
-        // to the names assigned during the robot configuration step on the DS or RC devices.
+        // to the names assigned during the robot co
+        // nfiguration step on the DS or RC devices.
         leftFrontDrive  = hardwareMap.get(DcMotorEx.class, "leftFrontDrive");
         leftBackDrive  = hardwareMap.get(DcMotorEx.class, "leftBackDrive");
         rightFrontDrive = hardwareMap.get(DcMotorEx.class, "rightFrontDrive");
         rightBackDrive = hardwareMap.get(DcMotorEx.class, "rightBackDrive");
-        linearSlideIntake = hardwareMap.get(DcMotorEx.class, "linearSlideIntake");
+        linearSlideUpDown = hardwareMap.get(DcMotorEx.class, "linearSlide");
         linearSlideLeftRight = hardwareMap.get(DcMotorEx.class, "linearSlideLeftRight");
         Climb = hardwareMap.get(DcMotorEx.class, "climb");
         rollerLeftRight = hardwareMap.get(Servo. class, "rollerLeftRight");
@@ -84,6 +86,7 @@ public class InToTheDeepTeleOp extends LinearOpMode {
         //
         //                 (Servo Port Side)
         //
+
 
         IMU imu = hardwareMap.get(IMU.class,"imu");
 /*      Test Robot Directions
@@ -116,25 +119,35 @@ public class InToTheDeepTeleOp extends LinearOpMode {
         // Keep testing until ALL the wheels move the robot forward when you push the left joystick forward.
 //      Test Robot Drive base direction
         leftFrontDrive.setDirection(DcMotorEx.Direction.REVERSE);
-        leftBackDrive.setDirection(DcMotorEx.Direction.REVERSE);
-        rightFrontDrive.setDirection(DcMotorEx.Direction.FORWARD);
-        rightBackDrive.setDirection(DcMotorEx.Direction.REVERSE);
-        Climb.setDirection(DcMotor.Direction.FORWARD);
-        linearSlideIntake.setDirection(DcMotor.Direction.FORWARD);
-        linearSlideLeftRight.setDirection(DcMotor.Direction.FORWARD);
-        rollerLeftRight.setPosition(0);
-        wheelSpin.setPosition(0);
-        hook.setPosition(0);
+        leftBackDrive.setDirection(DcMotorEx.Direction.FORWARD);
+        rightFrontDrive.setDirection(DcMotorEx.Direction.REVERSE);
+        rightBackDrive.setDirection(DcMotorEx.Direction.FORWARD);
+       Climb.setDirection(DcMotor.Direction.FORWARD);
+        linearSlideUpDown.setDirection(DcMotor.Direction.FORWARD);
+       linearSlideLeftRight.setDirection(DcMotor.Direction.FORWARD);
+       rollerLeftRight.setPosition(0);
+       wheelSpin.setPosition(0);
+       hook.setPosition(0);
 //         Competition Robot Direction
+
 
         leftBackDrive.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.BRAKE);
         rightBackDrive.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.BRAKE);
         rightFrontDrive.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.BRAKE);
         leftFrontDrive.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.BRAKE);
         Climb.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        linearSlideIntake.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        linearSlideUpDown.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         linearSlideLeftRight.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
+
+
+
+
+/*        leftFrontDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        rightFrontDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        rightBackDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        leftBackDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+*/
         // Wait for the game to start (driver presses PLAY)
         telemetry.addData("Status", "Initialized");
         telemetry.update();
@@ -206,17 +219,23 @@ public class InToTheDeepTeleOp extends LinearOpMode {
                 hook.setPosition(-1);
             }
             // Wheel SPin
-           if (gamepad2.x){
+           if (gamepad1.x == true){
                wheelSpin.setPosition(1);
-           } else if (gamepad2.b) {
+           } else if (gamepad1.b == true) {
                wheelSpin.setPosition(-1);
            }
+               else {
+                   wheelSpin.setPosition(0);
+               }
+
+
             // rollerLeftRight -
             if (gamepad2.right_bumper == true){
                 rollerLeftRight.setPosition(1.0);
 
             }
-             else if (gamepad2.y == true) {
+
+             else if (gamepad2.left_bumper == true) {
                 rollerLeftRight.setPosition(-1.0);
             }
             else {
@@ -224,14 +243,14 @@ public class InToTheDeepTeleOp extends LinearOpMode {
 
 // Linear Slide Intake Up and Down
             if (gamepad2.x == true){
-                linearSlideIntake.setPower(1.0);
+                linearSlideUpDown.setPower(0.5);
 
             }
             else if (gamepad2.y == true) {
-                linearSlideIntake.setPower(-1.0);
+                linearSlideUpDown.setPower(-1.0);
             }
             else {
-                linearSlideIntake.setPower(0.0);
+                linearSlideUpDown.setPower(0.0);
             }
 // Linear Slide Left Right\
             if (gamepad2.a == true){
