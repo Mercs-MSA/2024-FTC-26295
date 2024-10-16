@@ -2,6 +2,8 @@ package org.firstinspires.ftc.teamcode;
 
 
 
+import static com.sun.tools.javac.tree.JCTree.Tag.AND;
+
 import android.annotation.SuppressLint;
 
 import com.qualcomm.hardware.rev.RevHubOrientationOnRobot;
@@ -17,6 +19,7 @@ import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
+import org.firstinspires.ftc.robotcore.external.navigation.Position;
 import org.firstinspires.ftc.robotcore.internal.system.Deadline;
 import java.util.concurrent.TimeUnit;
 
@@ -67,11 +70,15 @@ public class InToTheDeepTeleOp extends LinearOpMode {
         linearSlideUpDown = hardwareMap.get(DcMotorEx.class, "linearSlide");
         linearSlideLeftRight = hardwareMap.get(DcMotorEx.class, "linearSlideLeftRight");
         RotatingARMJoint = hardwareMap.get(DcMotorEx. class, "RotatingARMJoint");
-        rollerLeftRight = hardwareMap.get(Servo. class, "rollerLeftRight");
-        WheelSpin =  hardwareMap.get(Servo. class, "WheelSpin");
+        //Servos
+        rollerLeftRight = hardwareMap.get(Servo.class, "rollerLeftRight");
+        WheelSpin =  hardwareMap.get(Servo.class, "wheelSpin");
         //Ascent HW Init
         Climb = hardwareMap.get(DcMotorEx.class, "climb");
         hook = hardwareMap.get(Servo.class, "hook");
+
+
+
 
         //Initialize IMU
         // This is the built-in IMU in the REV hub.
@@ -154,10 +161,9 @@ public class InToTheDeepTeleOp extends LinearOpMode {
         rightFrontDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         rightBackDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         leftBackDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-
-        // Wait for the game to start (driver presses PLAY)
-        telemetry.addData("Status", "Initialized");
-        telemetry.update();
+        RotatingARMJoint.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        linearSlideUpDown.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        linearSlideLeftRight.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
         waitForStart();
         runtime.reset();
@@ -260,10 +266,10 @@ public class InToTheDeepTeleOp extends LinearOpMode {
                 rollerLeftRight.setPosition(0.0);
             }
 // Linear Slide Intake Up and Down
-                if (gamepad2.x == true) {
+                if ((gamepad2.x == true) &&  (linearSlideUpDown.getCurrentPosition() > -7210)) {
                     linearSlideUpDown.setPower(0.5);
 
-                } else if (gamepad2.y == true) {
+                } else if ((gamepad2.y == true) && (linearSlideUpDown.getCurrentPosition() < 3330)){
                     linearSlideUpDown.setPower(-1.0);
                 } else {
                     linearSlideUpDown.setPower(0.0);
@@ -297,7 +303,7 @@ public class InToTheDeepTeleOp extends LinearOpMode {
             //      the setDirection() calls above.
             // Once the correct motors move in the correct direction re-comment this code.
 
-            //armAndClimb  = gamepad1.x ? 1.0 : 0.0;  // X gamepad
+//          armAndClimb  = gamepad1.x ? 1.0 : 0.0;  // X gamepad
 //            leftBackPower   = gamepad1.a ? 1.0 : 0.0;  // A gamepad
 //            rightFrontPower = gamepad1.y ? 1.0 : 0.0;  // Y gamepad
 //            rightBackPower  = gamepad1.b ? 1.0 : 0.0;  // B gamepad
@@ -310,7 +316,7 @@ public class InToTheDeepTeleOp extends LinearOpMode {
             rightBackDrive.setPower(rightBackPower);
 
 
-            // Show the elapsed game time and wheel power.
+            // Show the elapsed game time and wheel power.c
             telemetry.addData("FL", leftBackDrive.getVelocity());
             telemetry.addData("FR", rightBackDrive.getVelocity());
             telemetry.addData("FL", leftFrontDrive.getVelocity());
@@ -321,9 +327,15 @@ public class InToTheDeepTeleOp extends LinearOpMode {
             telemetry.addData("non-Calibrated  Axial/Lateral", "%4.2f, %4.2f", axial, lateral);
             telemetry.addData("Calibrated  Axial/Lateral", "%4.2f, %4.2f", Adjaxial, Adjlateral);
             telemetry.addData("heading ", "%4.2f", heading);
+            telemetry.addData("Wheel Spins Linear", linearSlideUpDown.getCurrentPosition());
+            telemetry.addData("Linear SlideLeftRight", linearSlideLeftRight.getCurrentPosition());
+            telemetry.addData("climb ", Climb.getCurrentPosition());
+            telemetry.addData("rotatingARM", RotatingARMJoint.getCurrentPosition());
             telemetry.update();
         }
     }
 
-
+// limits
+ //   Linear Up - -7210, down 3330
+    // Climb -
 }
