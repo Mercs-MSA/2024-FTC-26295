@@ -1,13 +1,37 @@
 package org.firstinspires.ftc.teamcode;
 
+/*
+Drive Motors:
+leftFrontDrive                  control                      motor 0
+rightFrontDrive                 control                      motor 1
+leftBackDrive                   control                      motor 2
+rightBackDrive                  control                      motor 3
 
+Intake Motors:
+linearSlide                     expansion
+linearSlideLeftRight            expansion
+RotatingARMJoint                expansion
+
+Servos:
+rollerLeftRight                 control
+wheelSpin                       control
+hook                            control
+
+Climb Motors:
+climb                           expansion
+
+
+*/
 
 import static com.sun.tools.javac.tree.JCTree.Tag.AND;
+
+import static org.firstinspires.ftc.teamcode.drive.DriveConstants.MaxVelocity;
 
 import android.annotation.SuppressLint;
 
 import com.qualcomm.hardware.rev.RevHubOrientationOnRobot;
 import com.qualcomm.robotcore.hardware.ColorSensor;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.DistanceSensor;
 import com.qualcomm.robotcore.hardware.IMU;
 //import com.arcrobotics.ftclib.hardware.motors.Motor;
@@ -54,9 +78,28 @@ public class InToTheDeepTeleOp extends LinearOpMode {
     private DistanceSensor frontrightDistanceSensor;
     private DistanceSensor frontleftDistanceSensor;
 
+    public void driveStraight() {
+        leftFrontDrive.setVelocity(MaxVelocity * 0.2);
+        rightFrontDrive.setVelocity(MaxVelocity * 0.2);
+        leftBackDrive.setVelocity(MaxVelocity * 0.2);
+        rightBackDrive.setVelocity(MaxVelocity * 0.2);
+//        leftFrontDrive.setPower(0.2);
+//        rightFrontDrive.setPower(0.2);
+//        leftBackDrive.setPower(0.2);
+//        rightBackDrive.setPower(0.2);
+
+        sleep(2000);  // Let the robot drive for 2 seconds
+
+        // Stop the motors
+        leftFrontDrive.setVelocity(0);
+        rightFrontDrive.setVelocity(0);
+        leftBackDrive.setVelocity(0);
+        rightBackDrive.setVelocity(0);
+    }
     @SuppressLint("SuspiciousIndentation")
     @Override
     public void runOpMode() throws InterruptedException {
+
 
         // Initialize the hardware variables. Note that the strings used here must correspond
         // to the names assigned during the robot co
@@ -77,8 +120,7 @@ public class InToTheDeepTeleOp extends LinearOpMode {
         Climb = hardwareMap.get(DcMotorEx.class, "climb");
         hook = hardwareMap.get(Servo.class, "hook");
 
-
-
+        // Drive assist
 
         //Initialize IMU
         // This is the built-in IMU in the REV hub.
@@ -130,6 +172,8 @@ public class InToTheDeepTeleOp extends LinearOpMode {
         // Reverse the direction (flip FORWARD <-> REVERSE ) of any wheel that runs backward
         // Keep testing until ALL the wheels move the robot forward when you push the left joystick forward.
 //      Test Robot Drive base direction
+
+
         leftFrontDrive.setDirection(DcMotorEx.Direction.REVERSE);
         leftBackDrive.setDirection(DcMotorEx.Direction.FORWARD);
         rightFrontDrive.setDirection(DcMotorEx.Direction.REVERSE);
@@ -224,24 +268,26 @@ public class InToTheDeepTeleOp extends LinearOpMode {
                 leftBackPower   /= max;
                 rightBackPower  /= max;
             }
+
+
             // Climber Logic
 //             Below this is code to get the arm and climb working
-            if ( gamepad2.dpad_up == true){
+            if ( gamepad2.left_bumper){
+                driveStraight();
                 Climb.setPower(1.0);
+                sleep(5000);
+                hook.setPosition(.5);
+                Climb.setPower(-1.0);
+
 
             }
-            else if (gamepad2.dpad_down == true) {
-                Climb.setPower(-1.0);
+            else if (gamepad2.right_bumper) {
+
+                //DO LATER IF WE BUILD ROBOT
             }
             else {
                 Climb.setPower(0.0); // remember to turn off if nothing pressed!
             }            //hook
-            if (gamepad2.dpad_left){
-                hook.setPosition(1);
-            }
-            else if (gamepad2.dpad_right){
-                hook.setPosition(-1);
-            }
 
             // Wheel SPin
            if (gamepad2.x == true){
