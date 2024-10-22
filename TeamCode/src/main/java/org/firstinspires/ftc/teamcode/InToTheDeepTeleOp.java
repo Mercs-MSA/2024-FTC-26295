@@ -96,7 +96,6 @@ public class InToTheDeepTeleOp extends LinearOpMode {
         leftBackDrive.setVelocity(0);
         rightBackDrive.setVelocity(0);
     }
-    @SuppressLint("SuspiciousIndentation")
     @Override
     public void runOpMode() throws InterruptedException {
 
@@ -181,7 +180,7 @@ public class InToTheDeepTeleOp extends LinearOpMode {
 
         linearSlideUpDown.setDirection(DcMotor.Direction.FORWARD);
         linearSlideLeftRight.setDirection(DcMotor.Direction.FORWARD);
-        rollerLeftRight.setPosition(0);
+        rollerLeftRight.setPosition(.5);
         WheelSpin.setPosition(0);
         RotatingARMJoint.setDirection(DcMotor.Direction.FORWARD);
 
@@ -201,13 +200,13 @@ public class InToTheDeepTeleOp extends LinearOpMode {
 
         Climb.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
-        leftFrontDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        rightFrontDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        rightBackDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        leftBackDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        RotatingARMJoint.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        linearSlideUpDown.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        linearSlideLeftRight.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+//        leftFrontDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+//        rightFrontDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+//        rightBackDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+//        leftBackDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+//        RotatingARMJoint.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+//        linearSlideUpDown.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+//        linearSlideLeftRight.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
         waitForStart();
         runtime.reset();
@@ -291,21 +290,21 @@ public class InToTheDeepTeleOp extends LinearOpMode {
 
             // Wheel SPin
            if (gamepad2.x == true){
-               WheelSpin.setPosition(1);
-           } else if (gamepad2.b == true) {
                WheelSpin.setPosition(-1);
+           } else if (gamepad2.b == true) {
+               WheelSpin.setPosition(0);
            }
            else {
-               WheelSpin.setPosition(0);
+               WheelSpin.setPosition(1);
            }
 
             // rollerLeftRight -
             if (gamepad1.y == true){
-                rollerLeftRight.setPosition(1.0);
+                rollerLeftRight.setPosition(1);
             }
 
              else if (gamepad1.x == true) {
-                rollerLeftRight.setPosition(0);
+                rollerLeftRight.setPosition(0.5);
             }
             
 // Linear Slide Intake Up and Down
