@@ -47,11 +47,13 @@ rightDistanceSensor            control            i2cBus 3                rightD
         gamepad1.                  initialize/reset IMU     ||      gamepad2.       IntakeRollersample
         gamepad1.                                           ||      gamepad2.       ReleaseRollersample
 
-    // Potential Automated Routines @ EndGamw
+    // Potential Automated Routines @ EndGame & TeleOp
     Climb Stage 2
     Climb Stage 3
-
-
+    specimen low rung
+    specimen high rung
+    sample low basket
+    sample high basket
 */
 
 import static org.firstinspires.ftc.teamcode.drive.DriveConstants.MaxVelocity;
