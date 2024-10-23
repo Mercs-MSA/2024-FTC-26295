@@ -32,19 +32,25 @@ rightDistanceSensor            control            i2cBus 3                rightD
 /*
         Driver Station key mapping
 
-        gamepad1.                       ||      gamepad2.
-        gamepad1.                       ||      gamepad2.
-        gamepad1.                       ||      gamepad2.
-        gamepad1.                       ||      gamepad2.
-        gamepad1.                       ||      gamepad2.
-        gamepad1.                       ||      gamepad2.
-        gamepad1.                       ||      gamepad2.
-        gamepad1.                       ||      gamepad2.
-        gamepad1.                       ||      gamepad2.
-        gamepad1.                       ||      gamepad2.
-        gamepad1.                       ||      gamepad2.
-        gamepad1.                       ||      gamepad2.
-        gamepad1.                       ||      gamepad2.
+        gamepad1.                  drive fwd                ||      gamepad2.          climbElevator up
+        gamepad1.                  drive back               ||      gamepad2.         climbElevator down
+        gamepad1.                  strafe left              ||      gamepad2.        Climbhook rotation (clockwise)
+        gamepad1.                  strafe right             ||      gamepad2.       Climbhook Rotation (anticlockwise)
+        gamepad1.                  turn left                ||      gamepad2.       IntakeElevator up
+        gamepad1.                  turn right               ||      gamepad2.       IntakeElevator down
+        gamepad1.                  all motor reset          ||      gamepad2.       IntakeARM fwd
+        gamepad1.                  Auto red Pos1            ||      gamepad2.       IntakeARM back
+        gamepad1.                  Auto Red Pos2            ||      gamepad2.       RotatingARMJoint up
+        gamepad1.                  Auto Blue Pos1           ||      gamepad2.       RotatingARMJoint down
+        gamepad1.                  Auto Blue Pos2           ||      gamepad2.       intakeRollerLefttoRight
+        gamepad1.                  Tele-Op operatorAssist   ||      gamepad2.       intakeRollerRighttoLeft
+        gamepad1.                  initialize/reset IMU     ||      gamepad2.       IntakeRollersample
+        gamepad1.                                           ||      gamepad2.       ReleaseRollersample
+
+    // Potential Automated Routines @ EndGamw
+    Climb Stage 2
+    Climb Stage 3
+
 
 */
 
@@ -52,7 +58,6 @@ import static org.firstinspires.ftc.teamcode.drive.DriveConstants.MaxVelocity;
 import com.qualcomm.hardware.rev.Rev2mDistanceSensor;
 import com.qualcomm.robotcore.hardware.NormalizedColorSensor;
 import com.qualcomm.robotcore.hardware.NormalizedRGBA;
-import com.qualcomm.hardware.rev.Rev2mDistanceSensor;
 import com.qualcomm.hardware.rev.RevBlinkinLedDriver;
 import com.qualcomm.hardware.rev.RevHubOrientationOnRobot;
 import com.qualcomm.robotcore.hardware.ColorSensor;
@@ -67,7 +72,6 @@ import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
-import org.firstinspires.ftc.robotcore.external.navigation.YawPitchRollAngles;
 
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.robotcore.internal.system.Deadline;
@@ -97,8 +101,8 @@ public class InToTheDeepTeleOp extends LinearOpMode {
     private DcMotorEx linearSlideElevator = null;
     private DcMotorEx linearSlideARM = null;
     private DcMotorEx RotatingARMJoint;
-    private Servo rollerLeftRight;
-    private Servo WheelSpin;
+    private Servo Intakerollerdirection;
+    private Servo IntakeWheelSpin;
 
     private DcMotorEx Climb = null;
     private Servo hook;
@@ -173,11 +177,11 @@ public class InToTheDeepTeleOp extends LinearOpMode {
         rightBackDrive = hardwareMap.get(DcMotorEx.class, "rightBackDrive");
         // Intake Mechanism Init
         linearSlideElevator = hardwareMap.get(DcMotorEx.class, "linearSlide");
-        linearSlideARM = hardwareMap.get(DcMotorEx.class, "linearSlideLeftRight");
+        linearSlideARM = hardwareMap.get(DcMotorEx.class, "linearSlideARM");
         RotatingARMJoint = hardwareMap.get(DcMotorEx. class, "RotatingARMJoint");
         //Servos
-        rollerLeftRight = hardwareMap.get(Servo.class, "rollerLeftRight");
-        WheelSpin =  hardwareMap.get(Servo.class, "wheelSpin");
+        Intakerollerdirection = hardwareMap.get(Servo.class, "rollerLeftRight");
+        IntakeWheelSpin =  hardwareMap.get(Servo.class, "wheelSpin");
         //Ascent HW Init
         Climb = hardwareMap.get(DcMotorEx.class, "climb");
         hook = hardwareMap.get(Servo.class, "hook");
@@ -242,8 +246,8 @@ public class InToTheDeepTeleOp extends LinearOpMode {
 
         linearSlideElevator.setDirection(DcMotor.Direction.FORWARD);
         linearSlideARM.setDirection(DcMotor.Direction.FORWARD);
-        rollerLeftRight.setPosition(.5);
-        WheelSpin.setPosition(0);
+        Intakerollerdirection.setPosition(.5);
+        IntakeWheelSpin.setPosition(0);
         RotatingARMJoint.setDirection(DcMotor.Direction.FORWARD);
 
         Climb.setDirection(DcMotor.Direction.FORWARD);
@@ -401,24 +405,24 @@ public class InToTheDeepTeleOp extends LinearOpMode {
 
                 // Wheel SPin
                 if (gamepad2.x == true){
-                    WheelSpin.setPosition(-1);
+                    IntakeWheelSpin.setPosition(-1);
                 } else if (gamepad2.b == true) {
-                    WheelSpin.setPosition(1);
+                    IntakeWheelSpin.setPosition(1);
                 }
                 else {
-                    WheelSpin.setPosition(0);
+                    IntakeWheelSpin.setPosition(0);
                 }
 
-                // rollerLeftRight -
+                // Intakerollerdirection -
                 if (gamepad2.y == true){
-                    rollerLeftRight.setPosition(1);
+                    Intakerollerdirection.setPosition(1);
                 }
 
                 else if (gamepad2.x == true) {
-                    rollerLeftRight.setPosition(0.5);
+                    Intakerollerdirection.setPosition(0.5);
                 }
                 else {
-                    rollerLeftRight.setPosition(0);
+                    Intakerollerdirection.setPosition(0);
                 }
 
 // Linear Slide Intake Up and Down
@@ -485,10 +489,15 @@ public class InToTheDeepTeleOp extends LinearOpMode {
             telemetry.addData("non-Calibrated  Axial/Lateral", "%4.2f, %4.2f", axial, lateral);
             telemetry.addData("Calibrated  Axial/Lateral", "%4.2f, %4.2f", Adjaxial, Adjlateral);
             telemetry.addData("heading ", "%4.2f", heading);
-            telemetry.addData("Wheel Spins Linear", linearSlideElevator.getCurrentPosition());
-            telemetry.addData("Linear SlideLeftRight", linearSlideARM.getCurrentPosition());
-            telemetry.addData("climb ", Climb.getCurrentPosition());
+
+            telemetry.addData("Linear Slide Elevator", linearSlideElevator.getCurrentPosition());
+            telemetry.addData("Linear SlideARM ", linearSlideARM.getCurrentPosition());
             telemetry.addData("rotatingARM", RotatingARMJoint.getCurrentPosition());
+            telemetry.addData("IntakeWheel", IntakeWheelSpin.getPosition());
+            telemetry.addData("IntakeWheelDirection ", Intakerollerdirection.getPosition());
+
+            telemetry.addData("climb ", Climb.getCurrentPosition());
+            telemetry.addData("Hook Position", hook.getPosition());
             telemetry.addData("Sample detected", getSampleColor());
             telemetry.addData("Left distance", leftDistanceSensor.getDistance(DistanceUnit.MM));
             telemetry.addData("Front distance", rightDistanceSensor.getDistance(DistanceUnit.MM));
