@@ -21,7 +21,6 @@ Intakewheel                    control
 climbhook                      control
 blinkIn                        control            servo 2                 ledDriver
 
-
 Sensors
 imu                            control            i2cBus 0                revInternalIMU
 leftDistanceSensor             control            i2Bus 1                 leftDistance sensor
