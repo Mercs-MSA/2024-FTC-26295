@@ -2,23 +2,23 @@ package org.firstinspires.ftc.teamcode;
 
 /*              Driver station Configuration
 Drive Motors:
-leftFrontDrive                  control                      motor 0
-rightFrontDrive                 control                      motor 1
-leftBackDrive                   control                      motor 2
-rightBackDrive                  control                      motor 3
+leftFrontDrive                 control           motor 0
+rightFrontDrive                control           motor 1
+leftBackDrive                  control           motor 2
+rightBackDrive                 control           motor 3
 
 Intake Motors:
-linearSlideElevator             expansion
-linearSlideARM                  expansion
-RotatingARMJoint                expansion
+linearSlideElevator            expansion         motor 1
+linearSlideARM                 expansion         motor 3
+RotatingARMJoint               expansion         motor 2
 
 Climb Motors:
-climbElevator                   expansion
+climbElevator                  expansion         motor 0
 
 Servos:
 IntakeRotation                 control
-Intakewheel                    control
-climbhook                      control
+wheelSpin                      control
+hook                           control
 blinkIn                        control            servo 2                 ledDriver
 
 Sensors
@@ -353,12 +353,7 @@ public class InToTheDeepTeleOp extends LinearOpMode {
             {
             //  automated Driver assist functions Drop in lower basket
                 if ( gamepad2.left_bumper) {
-                    driveStraight();
-                    Climb.setPower(1.0);
-                    sleep(5000);
-                    hook.setPosition(.5);
-                    Climb.setPower(-1.0);
-                }
+
                 //  automated Driver assist functions Drop in upper basket
                 if(gamepad2.left_bumper){
 
@@ -389,21 +384,28 @@ public class InToTheDeepTeleOp extends LinearOpMode {
                 // Climber Logic
 //             Below this is code to get the arm and climb working
                 if ( gamepad2.left_bumper){
- //                   driveStraight();
                     Climb.setPower(1.0);
-                    sleep(5000);
-                    hook.setPosition(.5);
-
 
                 }
+
                 else if (gamepad2.right_bumper) {
-                    //DO LATER IF WE BUILD ROBOT
+
                     Climb.setPower(-1.0);
                 }
                 else {
-                    Climb.setPower(0.0); // remember to turn off if nothing pressed!
-                }            //hook
+                    Climb.setPower(0.0); //
+                }
+                if ( gamepad2.dpad_left){
+                    hook.setPosition(1.0);
 
+                }
+                else if (gamepad2.dpad_right) {
+
+                    hook.setPosition(-1.0);
+                }
+                else {
+
+                }
                 // Wheel SPin
                 if (gamepad2.x == true){
                     IntakeWheelSpin.setPosition(-1);
@@ -509,4 +511,4 @@ public class InToTheDeepTeleOp extends LinearOpMode {
 // limits
  //   Linear Up - -7210, down 3330
     // Climb -
-}
+}}
