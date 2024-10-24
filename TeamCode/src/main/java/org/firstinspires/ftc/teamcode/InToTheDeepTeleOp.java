@@ -31,20 +31,20 @@ rightDistanceSensor            control            i2cBus 3                rightD
 /*
         Driver Station key mapping
 
-        gamepad1.                  drive fwd                ||      gamepad2.          climbElevator up
-        gamepad1.                  drive back               ||      gamepad2.         climbElevator down
-        gamepad1.                  strafe left              ||      gamepad2.        Climbhook rotation (clockwise)
-        gamepad1.                  strafe right             ||      gamepad2.       Climbhook Rotation (anticlockwise)
-        gamepad1.                  turn left                ||      gamepad2.       IntakeElevator up
-        gamepad1.                  turn right               ||      gamepad2.       IntakeElevator down
-        gamepad1.                  all motor reset          ||      gamepad2.       IntakeARM fwd
-        gamepad1.                  Auto red Pos1            ||      gamepad2.       IntakeARM back
-        gamepad1.                  Auto Red Pos2            ||      gamepad2.       RotatingARMJoint up
-        gamepad1.                  Auto Blue Pos1           ||      gamepad2.       RotatingARMJoint down
-        gamepad1.                  Auto Blue Pos2           ||      gamepad2.       intakeRollerLefttoRight
-        gamepad1.                  Tele-Op operatorAssist   ||      gamepad2.       intakeRollerRighttoLeft
-        gamepad1.                  initialize/reset IMU     ||      gamepad2.       IntakeRollersample
-        gamepad1.                                           ||      gamepad2.       ReleaseRollersample
+        gamepad1.                  drive fwd                 joystick1 ||      gamepad2.       climbElevator up                      leftbumper
+        gamepad1.                  drive back                joystick1 ||      gamepad2.       climbElevator down                    rightbumper
+        gamepad1.                  strafe left               joystick1 ||      gamepad2.       Climbhook rotation (clockwise)        dpadleft
+        gamepad1.                  strafe right              joystick1 ||      gamepad2.       Climbhook Rotation (anticlockwise)    dpadright
+        gamepad1.                  turn left                 joystick2 ||      gamepad2.       IntakeElevator up                     y
+        gamepad1.                  turn right                joystick2 ||      gamepad2.       IntakeElevator down                   x
+        gamepad1.                  all motor reset                     ||      gamepad2.       IntakeARM fwd                         a
+        gamepad1.                  Auto red Pos1                       ||      gamepad2.       IntakeARM back                        b
+        gamepad1.                  Auto Red Pos2                       ||      gamepad2.       RotatingARMJoint up                   joystick 1 x
+        gamepad1.                  Auto Blue Pos1                      ||      gamepad2.       RotatingARMJoint down                 joystick 1 y
+        gamepad1.                  Auto Blue Pos2                      ||      gamepad2.       intakeRollerLefttoRight               dpad up
+        gamepad1.                  Tele-Op operatorAssist              ||      gamepad2.       intakeRollerRighttoLeft               dpad down
+        gamepad1.                  initialize/reset IMU          x     ||      gamepad1.       IntakeRollersample                    y
+        gamepad1.                                                      ||      gamepad1.       ReleaseRollersample                   b
 
     // Potential Automated Routines @ EndGame & TeleOp
     Climb Stage 2
@@ -407,9 +407,9 @@ public class InToTheDeepTeleOp extends LinearOpMode {
 
                 }
                 // Wheel SPin
-                if (gamepad2.x == true){
+                if (gamepad1.y == true){
                     IntakeWheelSpin.setPosition(-1);
-                } else if (gamepad2.b == true) {
+                } else if (gamepad1.b == true) {
                     IntakeWheelSpin.setPosition(1);
                 }
                 else {
@@ -417,11 +417,11 @@ public class InToTheDeepTeleOp extends LinearOpMode {
                 }
 
                 // Intakerollerdirection -
-                if (gamepad2.y == true){
+                if (gamepad2.dpad_up == true){
                     Intakerollerdirection.setPosition(1);
                 }
 
-                else if (gamepad2.x == true) {
+                else if (gamepad2.dpad_down == true) {
                     Intakerollerdirection.setPosition(0.5);
                 }
                 else {
