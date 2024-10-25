@@ -396,14 +396,12 @@ public class InToTheDeepTeleOp extends LinearOpMode {
                 if (gamepad2.y){
                     Intakerollerdirection.setPosition(1);
                 }
-
                 else if (gamepad2.x) {
                     Intakerollerdirection.setPosition(0.5);
                 }
 
             }
 
-//
 //            }
             // This is test code:
             //
@@ -420,24 +418,18 @@ public class InToTheDeepTeleOp extends LinearOpMode {
 //            rightFrontPower = gamepad1.y ? 1.0 : 0.0;  // Y gamepad
 //            rightBackPower  = gamepad1.b ? 1.0 : 0.0;  // B gamepad
 
-
             // Send calculated power to wheels
             leftFrontDrive.setPower(leftFrontPower);
             rightFrontDrive.setPower(rightFrontPower);
             leftBackDrive.setPower(leftBackPower);
             rightBackDrive.setPower(rightBackPower);
 
-
             // Show the elapsed game time and wheel power.c
-            telemetry.addData("FL", leftBackDrive.getVelocity());
-            telemetry.addData("FR", rightBackDrive.getVelocity());
-            telemetry.addData("FL", leftFrontDrive.getVelocity());
-            telemetry.addData("FL", rightFrontDrive.getVelocity());
-            telemetry.addData("Status", "Run Time: " + runtime.toString());
-            telemetry.addData("Front left/Right", "%4.2f, %4.2f", leftFrontPower, rightFrontPower);
-            telemetry.addData("Back  left/Right", "%4.2f, %4.2f", leftBackPower, rightBackPower);
-            telemetry.addData("non-Calibrated  Axial/Lateral", "%4.2f, %4.2f", axial, lateral);
-            telemetry.addData("Calibrated  Axial/Lateral", "%4.2f, %4.2f", Adjaxial, Adjlateral);
+             telemetry.addData("Status", "Run Time: " + runtime.toString());
+            telemetry.addData("Front left/Right", "%4.2f, %4.2f", leftFrontDrive.getVelocity(), rightFrontDrive.getVelocity());
+            telemetry.addData("Back  left/Right", "%4.2f, %4.2f", leftBackDrive.getVelocity(), rightBackDrive.getVelocity());
+//            telemetry.addData("non-Calibrated  Axial/Lateral", "%4.2f, %4.2f", axial, lateral);
+//            telemetry.addData("Calibrated  Axial/Lateral", "%4.2f, %4.2f", Adjaxial, Adjlateral);
             telemetry.addData("heading ", "%4.2f", heading);
 
             telemetry.addData("Linear Slide Elevator", linearSlideElevator.getCurrentPosition());
