@@ -18,6 +18,12 @@ import com.qualcomm.robotcore.hardware.PIDFCoefficients;
 @Config
 public class DriveConstants {
 
+    // This variable determines whether the following program
+    // uses field-centric or robot-centric driving styles. The
+    // differences between them can be read here in the docs:
+    // https://docs.ftclib.org/ftclib/features/drivebases#control-scheme
+    public static boolean FIELD_CENTRIC = true;// CONTROL HUB MUST BE ON THE ROBOT
+
     /*
      * These are motor constants that should be listed online for your motors. 560 ; 300
      */
