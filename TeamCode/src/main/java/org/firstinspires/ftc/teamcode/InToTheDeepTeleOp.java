@@ -31,20 +31,20 @@ rightDistanceSensor            control            i2cBus 3                rightD
 /*
         Driver Station key mapping
 
-        gamepad1.                  drive fwd                ||      gamepad2.          climbElevator up
-        gamepad1.                  drive back               ||      gamepad2.         climbElevator down
-        gamepad1.                  strafe left              ||      gamepad2.        Climbhook rotation (clockwise)
-        gamepad1.                  strafe right             ||      gamepad2.       Climbhook Rotation (anticlockwise)
-        gamepad1.                  turn left                ||      gamepad2.       IntakeElevator up
-        gamepad1.                  turn right               ||      gamepad2.       IntakeElevator down
-        gamepad1.                  all motor reset          ||      gamepad2.       IntakeARM fwd
-        gamepad1.                  Auto red Pos1            ||      gamepad2.       IntakeARM back
-        gamepad1.                  Auto Red Pos2            ||      gamepad2.       RotatingARMJoint up
-        gamepad1.                  Auto Blue Pos1           ||      gamepad2.       RotatingARMJoint down
-        gamepad1.                  Auto Blue Pos2           ||      gamepad2.       intakeRollerLefttoRight
-        gamepad1.                  Tele-Op operatorAssist   ||      gamepad2.       intakeRollerRighttoLeft
-        gamepad1.                  initialize/reset IMU     ||      gamepad2.       IntakeRollersample
-        gamepad1.                                           ||      gamepad2.       ReleaseRollersample
+        gamepad1.jpystick1                  drive fwd                ||      gamepad2.joystick2  y           climbElevator up
+        gamepad1.jpystick1                  drive back               ||      gamepad2.joystick2  y           climbElevator down
+        gamepad1.jpystick1                  strafe left              ||      gamepad2.dpadleft        Climbhook rotation (clockwise)
+        gamepad1.jpystick1                  strafe right             ||      gamepad2.dpadright       Climbhook Rotation (anticlockwise)
+        gamepad1.jpystick2                  turn left                ||      gamepad2.jpystick1 y         IntakeElevator up
+        gamepad1.jpystick2                  turn right               ||      gamepad2.jpystick1 y         IntakeElevator down
+        gamepad1.                  all motor reset                   ||      gamepad2.jpystick1 x         IntakeARM fwd
+        gamepad1.                  Auto red Pos1                     ||      gamepad2.jpystick1 x         IntakeARM back
+        gamepad1.                  Auto Red Pos2                     ||      gamepad2.joystick2 x       RotatingARMJoint up
+        gamepad1.                  Auto Blue Pos1                    ||      gamepad2.joystick2 x      RotatingARMJoint down
+        gamepad1.                  Auto Blue Pos2                    ||      gamepad2.a      intakeRollerLefttoRight
+        gamepad1.                  Tele-Op operatorAssist            ||      gamepad2.b       intakeRollerRighttoLeft
+        gamepad1.x                  initialize/reset IMU             ||      gamepad2.x       IntakeRollersample
+        gamepad1.                                                    ||      gamepad2.y      ReleaseRollersample
 
     // Potential Automated Routines @ EndGame & TeleOp
     Climb Stage 2
@@ -67,7 +67,7 @@ import com.qualcomm.robotcore.hardware.IMU;
 //import com.arcrobotics.ftclib.hardware.motors.Motor;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
-import com.qualcomm.robotcore.hardware.DcMotor;
+//import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
@@ -98,6 +98,7 @@ public class InToTheDeepTeleOp extends LinearOpMode {
     private DcMotorEx rightFrontDrive = null;
     private DcMotorEx rightBackDrive = null;
     private boolean driverAssistPickup = false;
+
 
     private DcMotorEx linearSlideElevator = null;
     private DcMotorEx linearSlideARM = null;
@@ -238,42 +239,39 @@ public class InToTheDeepTeleOp extends LinearOpMode {
         // Reverse the direction (flip FORWARD <-> REVERSE ) of any wheel that runs backward
         // Keep testing until ALL the wheels move the robot forward when you push the left joystick forward.
 //      Test Robot Drive base direction
-
-
         leftFrontDrive.setDirection(DcMotorEx.Direction.REVERSE);
         leftBackDrive.setDirection(DcMotorEx.Direction.FORWARD);
         rightFrontDrive.setDirection(DcMotorEx.Direction.REVERSE);
         rightBackDrive.setDirection(DcMotorEx.Direction.FORWARD);
 
-        linearSlideElevator.setDirection(DcMotor.Direction.FORWARD);
-        linearSlideARM.setDirection(DcMotor.Direction.FORWARD);
-        Intakerollerdirection.setPosition(.5);
-        IntakeWheelSpin.setPosition(0);
-        RotatingARMJoint.setDirection(DcMotor.Direction.FORWARD);
+        linearSlideElevator.setDirection(DcMotorEx.Direction.FORWARD);
+        linearSlideARM.setDirection(DcMotorEx.Direction.FORWARD);
+//        Intakerollerdirection.setPosition(0);
+//        IntakeWheelSpin.setPosition(0);
+        RotatingARMJoint.setDirection(DcMotorEx.Direction.FORWARD);
 
-        Climb.setDirection(DcMotor.Direction.FORWARD);
-        hook.setPosition(0);
-//         Competition Robot Direction
+        Climb.setDirection(DcMotorEx.Direction.FORWARD);
+//        hook.setPosition(0);
 
-
+        //         Competition Robot Direction
         leftBackDrive.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.BRAKE);
         rightBackDrive.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.BRAKE);
         rightFrontDrive.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.BRAKE);
         leftFrontDrive.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.BRAKE);
 
-        linearSlideElevator.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        linearSlideARM.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        RotatingARMJoint.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        linearSlideElevator.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.BRAKE);
+        linearSlideARM.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.BRAKE);
+        RotatingARMJoint.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.BRAKE);
 
-        Climb.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        Climb.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.BRAKE);
 
-        leftFrontDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        rightFrontDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        rightBackDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        leftBackDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-//        RotatingARMJoint.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-//        linearSlideUpDown.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-//        linearSlideLeftRight.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        leftFrontDrive.setMode(DcMotorEx.RunMode.RUN_USING_ENCODER);
+        rightFrontDrive.setMode(DcMotorEx.RunMode.RUN_USING_ENCODER);
+        rightBackDrive.setMode(DcMotorEx.RunMode.RUN_USING_ENCODER);
+        leftBackDrive.setMode(DcMotorEx.RunMode.RUN_USING_ENCODER);
+        RotatingARMJoint.setMode(DcMotorEx.RunMode.RUN_USING_ENCODER);
+        linearSlideElevator.setMode(DcMotorEx.RunMode.RUN_USING_ENCODER);
+        linearSlideARM.setMode(DcMotorEx.RunMode.RUN_USING_ENCODER);
         //Initialize the color sensor
         colorSensor = hardwareMap.get(NormalizedColorSensor.class, "colorSensor");
 
@@ -345,113 +343,62 @@ public class InToTheDeepTeleOp extends LinearOpMode {
             }
 
             if(gamepad1.circle)
-                driverAssistPickup = true;
+                driverAssistPickup = false;
             else
                 driverAssistPickup = false;
 
-            if(driverAssistPickup)
+            double      climbVar = gamepad2.right_stick_y;
+            double      ARMjointVar =gamepad2.right_stick_x;
+            double     elevatorVar =gamepad2.left_stick_y;
+            double      ARMVar =gamepad2.left_stick_x;
+
+            //Manual Operation & Calibration Routines
+            if(!driverAssistPickup)
             {
-            //  automated Driver assist functions Drop in lower basket
-                if ( gamepad2.left_bumper) {
-
-                //  automated Driver assist functions Drop in upper basket
-                if(gamepad2.left_bumper){
-
-                }
-
-                //  automated Driver assist functions specimen in lower rung
-                if(gamepad2.left_bumper){
-
-                }
-
-                //  automated Driver assist functions specimen in upper rung
-                if(gamepad2.left_bumper){
-
-                }
-
-                //  automated Driver assist functions specimen in lower rung climb
-                if(gamepad2.left_bumper){
-
-                }
-
-                //  automated Driver assist functions specimen in upper rung climb
-                if(gamepad2.left_bumper){
-
-                }
-
-
-            } else {
                 // Climber Logic
 //             Below this is code to get the arm and climb working
-                if ( gamepad2.left_bumper){
-                    Climb.setPower(1.0);
-
+                if ((climbVar !=0)
+//                && (Climb.getCurrentPosition() >= constants.CLIMBELEVATOR_RESET_RELEASE)
+//                && (Climb.getCurrentPosition() <= constants.CLIMBELEVATOR_TOP_RUNG_RELEASE)
+                ){
+                    Climb.setPower(climbVar);
+                }
+                if((ARMjointVar !=0)
+//                        &&  (RotatingARMJoint.getCurrentPosition() <= constants.ARMJOINT_UPPER_POSITION)
+//                        &&  (RotatingARMJoint.getCurrentPosition() >= constants.ARMJOINT_LOWER_POSITION)
+                ){
+                    RotatingARMJoint.setPower(ARMjointVar);
+                }
+                if((elevatorVar !=0)
+//                   &&     (linearSlideElevator.getCurrentPosition() >= constants.LINEARSLIDEELEVATOR_RESET_POSITION)
+//                   &&     (linearSlideElevator.getCurrentPosition() <= constants.LINEARSLIDEELEVATOR_TOP_RUNG_PLACE)
+                ){
+                    linearSlideElevator.setPower(elevatorVar);
+                }
+                if(ARMVar !=0) {
+                    linearSlideARM.setPower(ARMVar);
                 }
 
-                else if (gamepad2.right_bumper) {
-
-                    Climb.setPower(-1.0);
-                }
-                else {
-                    Climb.setPower(0.0); //
-                }
                 if ( gamepad2.dpad_left){
-                    hook.setPosition(1.0);
-
+                    hook.setPosition(0.1);
                 }
                 else if (gamepad2.dpad_right) {
-
-                    hook.setPosition(-1.0);
-                }
-                else {
-
+                    hook.setPosition(-0.1);
                 }
                 // Wheel SPin
-                if (gamepad2.x == true){
+                if (gamepad2.a){
                     IntakeWheelSpin.setPosition(-1);
-                } else if (gamepad2.b == true) {
+                } else if (gamepad2.b) {
                     IntakeWheelSpin.setPosition(1);
-                }
-                else {
-                    IntakeWheelSpin.setPosition(0);
                 }
 
                 // Intakerollerdirection -
-                if (gamepad2.y == true){
+                if (gamepad2.y){
                     Intakerollerdirection.setPosition(1);
                 }
 
-                else if (gamepad2.x == true) {
+                else if (gamepad2.x) {
                     Intakerollerdirection.setPosition(0.5);
-                }
-                else {
-                    Intakerollerdirection.setPosition(0);
-                }
-
-// Linear Slide Intake Up and Down
-                if ((gamepad2.x == true) &&  (linearSlideElevator.getCurrentPosition() > -7210)) {
-                    linearSlideElevator.setPower(1);
-
-                } else if ((gamepad2.y == true) && (linearSlideElevator.getCurrentPosition() < 3330)){
-                    linearSlideElevator.setPower(-1.0);
-                } else {
-                    linearSlideElevator.setPower(0.0);
-                }
-// Linear Slide Left Right\
-                if (gamepad2.a == true) {
-                    linearSlideARM.setPower(1.0);
-                } else if (gamepad2.b == true) {
-                    linearSlideARM.setPower(-1.0);
-                } else {
-                    linearSlideARM.setPower(0.0);
-                }
-                //  ARM Rotation
-                if (gamepad2.left_stick_y != 0)
-                    RotatingARMJoint.setPower(0.5);
-                else if (gamepad2.left_stick_x != 0) {
-                    RotatingARMJoint.setPower(-0.5);
-                } else {
-                    RotatingARMJoint.setPower(0);
                 }
 
             }
@@ -508,7 +455,4 @@ public class InToTheDeepTeleOp extends LinearOpMode {
         }
     }
 
-// limits
- //   Linear Up - -7210, down 3330
-    // Climb -
-}}
+}
