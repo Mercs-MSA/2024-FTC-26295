@@ -21,6 +21,7 @@ import com.qualcomm.hardware.lynx.LynxModule;
 import com.qualcomm.hardware.rev.RevHubOrientationOnRobot;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.IMU;
 import com.qualcomm.robotcore.hardware.PIDFCoefficients;
@@ -29,6 +30,7 @@ import com.qualcomm.robotcore.hardware.configuration.typecontainers.MotorConfigu
 
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
+import org.firstinspires.ftc.robotcore.external.stream.CameraStreamServer;
 import org.firstinspires.ftc.teamcode.trajectorysequence.TrajectorySequence;
 import org.firstinspires.ftc.teamcode.trajectorysequence.TrajectorySequenceBuilder;
 import org.firstinspires.ftc.teamcode.trajectorysequence.TrajectorySequenceRunner;
@@ -163,37 +165,12 @@ public class SampleMecanumDrive extends MecanumDrive {
                 lastEncPositions, lastEncVels, lastTrackingEncPositions, lastTrackingEncVels
         );
 
-        int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier(
-                "cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
-        camera = OpenCvCameraFactory.getInstance().createWebcam(hardwareMap.get(WebcamName.class, "Webcam 1"), cameraMonitorViewId);
+        // Camera Detection and Initialization
+      //  detectCameras(hardwareMap);
+        initCamera(hardwareMap);
 
-        camera.setPipeline(new OpenCvPipeline() {
-            @Override
-            public Mat processFrame(Mat input) {
-                Point targetCenter = detectTargetColor(input); // Detect yellow
-                if (targetCenter != null) {
-                    Imgproc.circle(input, targetCenter, 10, new Scalar(0, 255, 0), -1);
-                }
-                return input;
-            }
-        });
-
-        visionPortal = new VisionPortal.Builder()
-                .setCamera(hardwareMap.get(WebcamName.class, "Webcam 1"))
-                .build();
-
-        camera.openCameraDeviceAsync(new OpenCvCamera.AsyncCameraOpenListener() {
-            @Override
-            public void onOpened() {
-                camera.startStreaming(320, 240, OpenCvCameraRotation.UPRIGHT);
-            }
-
-            @Override
-            public void onError(int errorCode) {
-                telemetry.addData("Camera Error", errorCode);
-                telemetry.update();
-            }
-        });
+        // Start camera stream server
+        visionPortal.resumeStreaming();
     }
 
     public TrajectoryBuilder trajectoryBuilder(Pose2d startPose) {
@@ -367,6 +344,43 @@ public class SampleMecanumDrive extends MecanumDrive {
 
     public static TrajectoryAccelerationConstraint getAccelerationConstraint(double maxAccel) {
         return new ProfileAccelerationConstraint(maxAccel);
+    }
+
+
+
+    // Initialize your USB camera
+    private void initCamera(HardwareMap hardwareMap) {
+        int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier(
+                "cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
+        camera = OpenCvCameraFactory.getInstance().createWebcam(hardwareMap.get(WebcamName.class, "Webcam 1"), cameraMonitorViewId);
+
+        camera.setPipeline(new OpenCvPipeline() {
+            @Override
+            public Mat processFrame(Mat input) {
+                Point targetCenter = detectTargetColor(input); // Detect yellow
+                if (targetCenter != null) {
+                    Imgproc.circle(input, targetCenter, 10, new Scalar(0, 255, 0), -1);
+                }
+                return input;
+            }
+        });
+
+        visionPortal = new VisionPortal.Builder()
+                .setCamera(hardwareMap.get(WebcamName.class, "Webcam 1"))
+                .build();
+
+        camera.openCameraDeviceAsync(new OpenCvCamera.AsyncCameraOpenListener() {
+            @Override
+            public void onOpened() {
+                camera.startStreaming(320, 240, OpenCvCameraRotation.UPRIGHT);
+            }
+
+            @Override
+            public void onError(int errorCode) {
+                telemetry.addData("Camera Error", errorCode);
+                telemetry.update();
+            }
+        });
     }
 
     // Color Detection Logic (returns center point or null)
