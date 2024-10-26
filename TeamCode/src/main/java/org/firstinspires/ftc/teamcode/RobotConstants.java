@@ -2,7 +2,11 @@ package org.firstinspires.ftc.teamcode;
 
 public class RobotConstants
 {
-    public static final double LINEARSLIDEELEVATOR_MULTIPLIER = 1.0;//-1.2;//Bot A = 1.0, Bot B = -1.0
+
+    public static final double OPERATOR_ERROR_MARGIN = 0.5;//wrounding error on joysticlk
+    public static final double OPERATOR_MULTIPLIER = 0.5;//50 % power
+    public static final double COLORSENSOR_DISTANCE = 5;//5 cm
+
     public static final double DRIVEBASE_MULTIPLIER = 1.0;//-1.2;//Bot A = 1.0, Bot B = -1.0
     //Intake Mechanism
     public static final int LINEARSLIDEELEVATOR_RESET_POSITION = -7210;//Lowest position, on the floor

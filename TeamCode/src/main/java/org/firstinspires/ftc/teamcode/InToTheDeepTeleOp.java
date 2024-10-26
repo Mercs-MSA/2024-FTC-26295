@@ -35,10 +35,10 @@ rightDistanceSensor            control            i2cBus 3                rightD
         gamepad1.jpystick1                  drive back               ||      gamepad2.joystick2  y      climbElevator down
         gamepad1.jpystick1                  strafe left              ||      gamepad2.dpadleft          Climbhook rotation (clockwise)
         gamepad1.jpystick1                  strafe right             ||      gamepad2.dpadright         Climbhook Rotation (anticlockwise)
-        gamepad1.jpystick2                  turn left                ||      gamepad2.jpystick1 y       IntakeElevator up
-        gamepad1.jpystick2                  turn right               ||      gamepad2.jpystick1 y       IntakeElevator down
-        gamepad1.a                  all motor reset                   ||      gamepad2.jpystick1 x      IntakeARM fwd
-        gamepad1.dpadleft                  Auto red Pos1              ||      gamepad2.jpystick1 x      IntakeARM back
+        gamepad1.jpystick2                  turn left                ||      gamepad2.jpystick1 y  LB      IntakeElevator up
+        gamepad1.jpystick2                  turn right               ||      gamepad2.jpystick1 y  LT     IntakeElevator down
+        gamepad1.a                  all motor reset                   ||      gamepad2.jpystick1 x RB     IntakeARM fwd
+        gamepad1.dpadleft                  Auto red Pos1              ||      gamepad2.jpystick1 x RT     IntakeARM back
         gamepad1.dpadright                  Auto Red Pos2             ||      gamepad2.joystick2 x      RotatingARMJoint up
         gamepad1.dpadup                  Auto Blue Pos1               ||      gamepad2.joystick2 x      RotatingARMJoint down
         gamepad1.dpaddown                  Auto Blue Pos2             ||      gamepad2.a                intakeRollerLefttoRight
@@ -55,6 +55,11 @@ rightDistanceSensor            control            i2cBus 3                rightD
     sample high basket
 */
 
+import static org.firstinspires.ftc.teamcode.RobotConstants.ARMJOINT_LOWER_POSITION;
+import static org.firstinspires.ftc.teamcode.RobotConstants.ARMJOINT_UPPER_POSITION;
+import static org.firstinspires.ftc.teamcode.RobotConstants.COLORSENSOR_DISTANCE;
+import static org.firstinspires.ftc.teamcode.RobotConstants.OPERATOR_ERROR_MARGIN;
+import static org.firstinspires.ftc.teamcode.RobotConstants.OPERATOR_MULTIPLIER;
 import static org.firstinspires.ftc.teamcode.drive.DriveConstants.MaxVelocity;
 import static org.firstinspires.ftc.teamcode.drive.DriveConstants.FIELD_CENTRIC;
 
@@ -125,7 +130,7 @@ public class InToTheDeepTeleOp extends LinearOpMode {
 
         String sample = "Nothing";
 
-        if (distance < 3.0) {
+        if (distance < COLORSENSOR_DISTANCE) {
             if (r == 1.0) {
                 sample = "Red";
                 blinkinLedDriver.setPattern(RevBlinkinLedDriver.BlinkinPattern.RED);
@@ -170,7 +175,7 @@ public class InToTheDeepTeleOp extends LinearOpMode {
         rightDistanceSensor = hardwareMap.get(Rev2mDistanceSensor.class, "rightDistanceSensor");
 
         blinkinLedDriver = hardwareMap.get(RevBlinkinLedDriver.class, "blinkin");
-        blinkinLedDriver.setPattern(RevBlinkinLedDriver.BlinkinPattern.RAINBOW_RAINBOW_PALETTE);
+        blinkinLedDriver.setPattern(RevBlinkinLedDriver.BlinkinPattern.DARK_GREEN);
 
         // Configure Hardware for correct state
 //      Robot Drive base direction
@@ -204,10 +209,9 @@ public class InToTheDeepTeleOp extends LinearOpMode {
         rightFrontDrive.setMode(DcMotorEx.RunMode.RUN_USING_ENCODER);
         rightBackDrive.setMode(DcMotorEx.RunMode.RUN_USING_ENCODER);
         leftBackDrive.setMode(DcMotorEx.RunMode.RUN_USING_ENCODER);
-        RotatingARMJoint.setMode(DcMotorEx.RunMode.RUN_USING_ENCODER);
-        linearSlideElevator.setMode(DcMotorEx.RunMode.RUN_USING_ENCODER);
-        linearSlideARM.setMode(DcMotorEx.RunMode.RUN_USING_ENCODER);
-
+//        RotatingARMJoint.setMode(DcMotorEx.RunMode.RUN_USING_ENCODER);
+//        linearSlideElevator.setMode(DcMotorEx.RunMode.RUN_USING_ENCODER);
+//        linearSlideARM.setMode(DcMotorEx.RunMode.RUN_USING_ENCODER);
     }
 
     public void updatedrivebase(double lf, double lb, double rf, double rb) {
@@ -292,11 +296,6 @@ public void runOpMode() throws InterruptedException {
                 RevHubOrientationOnRobot.LogoFacingDirection.BACKWARD,
             RevHubOrientationOnRobot.UsbFacingDirection.RIGHT));
 */
-/*        // Competition Robot Directions
-        IMU.Parameters parameters = new IMU.Parameters(new RevHubOrientationOnRobot(
-                RevHubOrientationOnRobot.LogoFacingDirection.LEFT,
-                RevHubOrientationOnRobot.UsbFacingDirection.BACKWARD);
- */
         // Competition Robot Directions
         IMU.Parameters parameters = new IMU.Parameters(new RevHubOrientationOnRobot(
                 RevHubOrientationOnRobot.LogoFacingDirection.BACKWARD,
@@ -384,11 +383,20 @@ public void runOpMode() throws InterruptedException {
             else
                 driverAssistPickup = false;
 
+            // Read joystick for DC motor operation.
             double climbVar = gamepad2.right_stick_y;
             double ARMjointVar = gamepad2.right_stick_x;
             double elevatorVar = gamepad2.left_stick_y;
             double ARMVar = gamepad2.left_stick_x;
-
+//          minimize opertor error with accidental angle push
+//            if (climbVar < OPERATOR_ERROR_MARGIN)
+//                climbVar =0;
+//            if(ARMjointVar < OPERATOR_ERROR_MARGIN)
+//                ARMjointVar =0;
+//            if (elevatorVar < OPERATOR_ERROR_MARGIN)
+//                elevatorVar =0;
+//            if (ARMVar < OPERATOR_ERROR_MARGIN)
+//                ARMVar=0;
             //Manual Operation & Calibration Routines
             if (!driverAssistPickup) {
                 // Climber Logic
@@ -397,67 +405,74 @@ public void runOpMode() throws InterruptedException {
 //                && (Climb.getCurrentPosition() >= constants.CLIMBELEVATOR_RESET_RELEASE)
 //                && (Climb.getCurrentPosition() <= constants.CLIMBELEVATOR_TOP_RUNG_RELEASE)
                 ) {
-//
-                    Climb.setPower(climbVar*0.5);
-//                    Climb.setVelocity(climbVar * 0.2);
-//                    sleep(50);
-//                    Climb.setVelocity(0);
-//                    telemetry.addData("Climb: ", climbVar);
+                    Climb.setPower(climbVar);
                     climbVar=0;
                 }
+                else {
+                    Climb.setPower(0);
+                }
+
                 if ((ARMjointVar != 0)
 //                        &&  (RotatingARMJoint.getCurrentPosition() <= constants.ARMJOINT_UPPER_POSITION)
-//                        &&  (RotatingARMJoint.getCurrentPosition() >= constants.ARMJOINT_LOWER_POSITION)
+//                        &&  (RotatingARMJoint.getCurrentPosition() >= ARMJOINT_LOWER_POSITION)
                 ) {
-//                    RotatingARMJoint.setVelocity(ARMjointVar);
-//                    sleep(500);
-//                    RotatingARMJoint.setVelocity(0);
-                    RotatingARMJoint.setPower(ARMjointVar*0.5);
-//                    telemetry.addData("ARM Joint: ", ARMjointVar);
+                    RotatingARMJoint.setPower(ARMjointVar);
                     ARMjointVar=0;
                 }
+                else {
+                    RotatingARMJoint.setPower(0);
+                }
                 if ((elevatorVar != 0)
-//                   &&     (linearSlideElevator.getCurrentPosition() >= constants.LINEARSLIDEELEVATOR_RESET_POSITION)
-//                   &&     (linearSlideElevator.getCurrentPosition() <= constants.LINEARSLIDEELEVATOR_TOP_RUNG_PLACE)
+//                   &&     (linearSlideElevator.getCurrentPosition() >= LINEARSLIDEELEVATOR_RESET_POSITION)
+//                   &&     (linearSlideElevator.getCurrentPosition() <= LINEARSLIDEELEVATOR_TOP_RUNG_PLACE)
                 ) {
-//                    linearSlideElevator.setVelocity(elevatorVar);
-//                    sleep(500);
-//                    linearSlideElevator.setVelocity(0);
-                    linearSlideElevator.setPower(elevatorVar * 0.5);
-//                    telemetry.addData("elevatorVar: ", elevatorVar);
+                    linearSlideElevator.setPower(elevatorVar);
                     elevatorVar=0;
                 }
+                else {
+                    linearSlideElevator.setPower(0);
+                }
                 if (ARMVar != 0) {
-//                    linearSlideARM.setVelocity(ARMVar);
-//                    sleep(500);
-//                    linearSlideARM.setVelocity(0);
-                    linearSlideARM.setPower(ARMVar *0.5);
-//                    telemetry.addData("ARMVar: ", ARMVar);
+                    linearSlideARM.setPower(ARMVar*OPERATOR_MULTIPLIER);
                     ARMVar=0;
+                }
+                else {
+                    linearSlideARM.setPower(0);
+
                 }
 
                 if (gamepad2.dpad_left) {
-                    hook.setDirection(DcMotorSimple.Direction.FORWARD);
+                    hook.setPower(1.0);
+//                   hook.setDirection(DcMotorSimple.Direction.FORWARD);
                 } else if (gamepad2.dpad_right) {
-                    hook.setDirection(DcMotorSimple.Direction.REVERSE);
-//                    hook.setDirection(Servo.Direction.REVERSE);
+                    hook.setPower(-1.0);
+//                    hook.setDirection(DcMotorSimple.Direction.REVERSE);
+                }
+                else {
+                    hook.setPower(0);
                 }
                 // Wheel SPin
                 if (gamepad2.a) {
-//                    IntakeWheelSpin.setDirection(Servo.Direction.REVERSE);
-                    IntakeWheelSpin.setDirection(DcMotorSimple.Direction.FORWARD);
+                    IntakeWheelSpin.setPower(1.0);
+//                    IntakeWheelSpin.setDirection(CRServo.Direction.FORWARD);
                 } else if (gamepad2.b) {
-//                    IntakeWheelSpin.setDirection(Servo.Direction.FORWARD);
-                    IntakeWheelSpin.setDirection(DcMotorSimple.Direction.REVERSE);
+                    IntakeWheelSpin.setPower(-1.0);
+//                    IntakeWheelSpin.setDirection(CRServo.Direction.REVERSE);
+                }
+                else {
+                    IntakeWheelSpin.setPower(0);
                 }
 
                 // Intakerollerdirection
                 if (gamepad2.y) {
-//                    Intakerollerdirection.setDirection(Servo.Direction.REVERSE);
-                    Intakerollerdirection.setDirection(CRServo.Direction.FORWARD);
+                    Intakerollerdirection.setPower(-1.0);
+//                    Intakerollerdirection.setDirection(CRServo.Direction.FORWARD);
                 } else if (gamepad2.x) {
-//                    Intakerollerdirection.setDirection(Servo.Direction.FORWARD);
-                    Intakerollerdirection.setDirection(CRServo.Direction.REVERSE);
+                    Intakerollerdirection.setPower(1.0);
+//                    Intakerollerdirection.setDirection(CRServo.Direction.REVERSE);
+                }
+                else {
+                    Intakerollerdirection.setPower(0);
                 }
 
             }
