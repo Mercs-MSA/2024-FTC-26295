@@ -31,20 +31,20 @@ rightDistanceSensor            control            i2cBus 3                rightD
 /*
         Driver Station key mapping
 
-        gamepad1.jpystick1                  drive fwd                ||      gamepad2.joystick2  y           climbElevator up
-        gamepad1.jpystick1                  drive back               ||      gamepad2.joystick2  y           climbElevator down
-        gamepad1.jpystick1                  strafe left              ||      gamepad2.dpadleft        Climbhook rotation (clockwise)
-        gamepad1.jpystick1                  strafe right             ||      gamepad2.dpadright       Climbhook Rotation (anticlockwise)
-        gamepad1.jpystick2                  turn left                ||      gamepad2.jpystick1 y         IntakeElevator up
-        gamepad1.jpystick2                  turn right               ||      gamepad2.jpystick1 y         IntakeElevator down
-        gamepad1.a                  all motor reset                   ||      gamepad2.jpystick1 x         IntakeARM fwd
-        gamepad1.dpadleft                  Auto red Pos1              ||      gamepad2.jpystick1 x         IntakeARM back
-        gamepad1.dpadright                  Auto Red Pos2             ||      gamepad2.joystick2 x       RotatingARMJoint up
+        gamepad1.jpystick1                  drive fwd                ||      gamepad2.joystick2  y      climbElevator up
+        gamepad1.jpystick1                  drive back               ||      gamepad2.joystick2  y      climbElevator down
+        gamepad1.jpystick1                  strafe left              ||      gamepad2.dpadleft          Climbhook rotation (clockwise)
+        gamepad1.jpystick1                  strafe right             ||      gamepad2.dpadright         Climbhook Rotation (anticlockwise)
+        gamepad1.jpystick2                  turn left                ||      gamepad2.jpystick1 y       IntakeElevator up
+        gamepad1.jpystick2                  turn right               ||      gamepad2.jpystick1 y       IntakeElevator down
+        gamepad1.a                  all motor reset                   ||      gamepad2.jpystick1 x      IntakeARM fwd
+        gamepad1.dpadleft                  Auto red Pos1              ||      gamepad2.jpystick1 x      IntakeARM back
+        gamepad1.dpadright                  Auto Red Pos2             ||      gamepad2.joystick2 x      RotatingARMJoint up
         gamepad1.dpadup                  Auto Blue Pos1               ||      gamepad2.joystick2 x      RotatingARMJoint down
-        gamepad1.dpaddown                  Auto Blue Pos2             ||      gamepad2.a      intakeRollerLefttoRight
-        gamepad1.y                  Tele-Op operatorAssist            ||      gamepad2.b       intakeRollerRighttoLeft
-        gamepad1.x                  initialize/reset IMU             ||      gamepad2.x       IntakeRollersample
-        gamepad1.                                                    ||      gamepad2.y      ReleaseRollersample
+        gamepad1.dpaddown                  Auto Blue Pos2             ||      gamepad2.a                intakeRollerLefttoRight
+        gamepad1.y                  Tele-Op operatorAssist            ||      gamepad2.b                intakeRollerRighttoLeft
+        gamepad1.x                  initialize/reset IMU             ||      gamepad2.x                 IntakeRollersample
+        gamepad1.                                                    ||      gamepad2.y                 ReleaseRollersample
 
     // Potential Automated Routines @ EndGame & TeleOp
     Climb Stage 2
@@ -59,6 +59,8 @@ import static org.firstinspires.ftc.teamcode.drive.DriveConstants.MaxVelocity;
 import static org.firstinspires.ftc.teamcode.drive.DriveConstants.FIELD_CENTRIC;
 
 import com.qualcomm.hardware.rev.Rev2mDistanceSensor;
+import com.qualcomm.robotcore.hardware.CRServo;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.NormalizedColorSensor;
 import com.qualcomm.robotcore.hardware.NormalizedRGBA;
 import com.qualcomm.hardware.rev.RevBlinkinLedDriver;
@@ -102,11 +104,11 @@ public class InToTheDeepTeleOp extends LinearOpMode {
     private DcMotorEx linearSlideElevator = null;
     private DcMotorEx linearSlideARM = null;
     private DcMotorEx RotatingARMJoint;
-    private Servo Intakerollerdirection;
-    private Servo IntakeWheelSpin;
+    private CRServo Intakerollerdirection;
+    private CRServo IntakeWheelSpin;
 
     private DcMotorEx Climb = null;
-    private Servo hook;
+    private CRServo hook;
 
     NormalizedColorSensor colorSensor;
     RevBlinkinLedDriver blinkinLedDriver;
@@ -135,8 +137,8 @@ public class InToTheDeepTeleOp extends LinearOpMode {
                 blinkinLedDriver.setPattern(RevBlinkinLedDriver.BlinkinPattern.YELLOW);
             }
         } else {
-            //RAINBOW_RAINBOW_PALETTE
-            blinkinLedDriver.setPattern(RevBlinkinLedDriver.BlinkinPattern.COLOR_WAVES_OCEAN_PALETTE);
+            //Bluegreen color - I'm chicking it to see if it can do stuff :)
+            blinkinLedDriver.setPattern(RevBlinkinLedDriver.BlinkinPattern.DARK_GREEN);
         }
         return sample;
     }
@@ -154,11 +156,11 @@ public class InToTheDeepTeleOp extends LinearOpMode {
         linearSlideARM = hardwareMap.get(DcMotorEx.class, "linearSlideARM");
         RotatingARMJoint = hardwareMap.get(DcMotorEx.class, "RotatingARMJoint");
         //Servos
-        Intakerollerdirection = hardwareMap.get(Servo.class, "rollerLeftRight");
-        IntakeWheelSpin = hardwareMap.get(Servo.class, "wheelSpin");
+        Intakerollerdirection = hardwareMap.get(CRServo.class, "rollerLeftRight");
+        IntakeWheelSpin = hardwareMap.get(CRServo.class, "wheelSpin");
         //Ascent HW Init
         Climb = hardwareMap.get(DcMotorEx.class, "climb");
-        hook = hardwareMap.get(Servo.class, "hook");
+        hook = hardwareMap.get(CRServo.class, "hook");
 
         //Initialize the color sensor
         colorSensor = hardwareMap.get(NormalizedColorSensor.class, "colorSensor");
@@ -227,11 +229,11 @@ public class InToTheDeepTeleOp extends LinearOpMode {
         telemetry.addData("Linear Slide Elevator", linearSlideElevator.getCurrentPosition());
         telemetry.addData("Linear SlideARM ", linearSlideARM.getCurrentPosition());
         telemetry.addData("rotatingARM", RotatingARMJoint.getCurrentPosition());
-        telemetry.addData("IntakeWheel", IntakeWheelSpin.getPosition());
-        telemetry.addData("IntakeWheelDirection ", Intakerollerdirection.getPosition());
+        telemetry.addData("IntakeWheel", IntakeWheelSpin.getDirection());
+        telemetry.addData("IntakeWheelDirection ", Intakerollerdirection.getDirection());
 
         telemetry.addData("climb ", Climb.getCurrentPosition());
-        telemetry.addData("Hook Position", hook.getPosition());
+        telemetry.addData("Hook Direction", hook.getDirection());
         telemetry.addData("Sample detected", getSampleColor());
         telemetry.addData("Left distance", leftDistanceSensor.getDistance(DistanceUnit.MM));
         telemetry.addData("Front distance", rightDistanceSensor.getDistance(DistanceUnit.MM));
@@ -259,7 +261,7 @@ public class InToTheDeepTeleOp extends LinearOpMode {
     }
 
     @Override
-    public void runOpMode() throws InterruptedException {
+public void runOpMode() throws InterruptedException {
 
 
         // Initialize the hardware variables. Note that the strings used here must correspond
@@ -396,10 +398,10 @@ public class InToTheDeepTeleOp extends LinearOpMode {
 //                && (Climb.getCurrentPosition() <= constants.CLIMBELEVATOR_TOP_RUNG_RELEASE)
                 ) {
 //
-//                    Climb.setPower(climbVar);
-                    Climb.setVelocity(climbVar * 0.2);
-                    sleep(50);
-                    Climb.setVelocity(0);
+                    Climb.setPower(climbVar*0.5);
+//                    Climb.setVelocity(climbVar * 0.2);
+//                    sleep(50);
+//                    Climb.setVelocity(0);
 //                    telemetry.addData("Climb: ", climbVar);
                     climbVar=0;
                 }
@@ -407,10 +409,10 @@ public class InToTheDeepTeleOp extends LinearOpMode {
 //                        &&  (RotatingARMJoint.getCurrentPosition() <= constants.ARMJOINT_UPPER_POSITION)
 //                        &&  (RotatingARMJoint.getCurrentPosition() >= constants.ARMJOINT_LOWER_POSITION)
                 ) {
-                    RotatingARMJoint.setVelocity(ARMjointVar * 0.2);
-                    sleep(50);
-                    RotatingARMJoint.setVelocity(0);
-//                    RotatingARMJoint.setPower(ARMjointVar);
+//                    RotatingARMJoint.setVelocity(ARMjointVar);
+//                    sleep(500);
+//                    RotatingARMJoint.setVelocity(0);
+                    RotatingARMJoint.setPower(ARMjointVar*0.5);
 //                    telemetry.addData("ARM Joint: ", ARMjointVar);
                     ARMjointVar=0;
                 }
@@ -418,39 +420,44 @@ public class InToTheDeepTeleOp extends LinearOpMode {
 //                   &&     (linearSlideElevator.getCurrentPosition() >= constants.LINEARSLIDEELEVATOR_RESET_POSITION)
 //                   &&     (linearSlideElevator.getCurrentPosition() <= constants.LINEARSLIDEELEVATOR_TOP_RUNG_PLACE)
                 ) {
-                    linearSlideElevator.setVelocity(elevatorVar * 0.2);
-                    sleep(50);
-                    linearSlideElevator.setVelocity(0);
-//                    linearSlideElevator.setPower(elevatorVar);
+//                    linearSlideElevator.setVelocity(elevatorVar);
+//                    sleep(500);
+//                    linearSlideElevator.setVelocity(0);
+                    linearSlideElevator.setPower(elevatorVar * 0.5);
 //                    telemetry.addData("elevatorVar: ", elevatorVar);
                     elevatorVar=0;
                 }
                 if (ARMVar != 0) {
-                    linearSlideARM.setVelocity(ARMVar * 0.2);
-                    sleep(50);
-                    linearSlideARM.setVelocity(0);
-//                    linearSlideARM.setPower(ARMVar);
+//                    linearSlideARM.setVelocity(ARMVar);
+//                    sleep(500);
+//                    linearSlideARM.setVelocity(0);
+                    linearSlideARM.setPower(ARMVar *0.5);
 //                    telemetry.addData("ARMVar: ", ARMVar);
-//                    ARMVar=0;
+                    ARMVar=0;
                 }
 
                 if (gamepad2.dpad_left) {
-                    hook.setPosition(0.1);
+                    hook.setDirection(DcMotorSimple.Direction.FORWARD);
                 } else if (gamepad2.dpad_right) {
-                    hook.setPosition(-0.1);
+                    hook.setDirection(DcMotorSimple.Direction.REVERSE);
+//                    hook.setDirection(Servo.Direction.REVERSE);
                 }
                 // Wheel SPin
                 if (gamepad2.a) {
-                    IntakeWheelSpin.setPosition(-1);
+//                    IntakeWheelSpin.setDirection(Servo.Direction.REVERSE);
+                    IntakeWheelSpin.setDirection(DcMotorSimple.Direction.FORWARD);
                 } else if (gamepad2.b) {
-                    IntakeWheelSpin.setPosition(1);
+//                    IntakeWheelSpin.setDirection(Servo.Direction.FORWARD);
+                    IntakeWheelSpin.setDirection(DcMotorSimple.Direction.REVERSE);
                 }
 
-                // Intakerollerdirection -
+                // Intakerollerdirection
                 if (gamepad2.y) {
-                    Intakerollerdirection.setPosition(1);
+//                    Intakerollerdirection.setDirection(Servo.Direction.REVERSE);
+                    Intakerollerdirection.setDirection(CRServo.Direction.FORWARD);
                 } else if (gamepad2.x) {
-                    Intakerollerdirection.setPosition(0.5);
+//                    Intakerollerdirection.setDirection(Servo.Direction.FORWARD);
+                    Intakerollerdirection.setDirection(CRServo.Direction.REVERSE);
                 }
 
             }
