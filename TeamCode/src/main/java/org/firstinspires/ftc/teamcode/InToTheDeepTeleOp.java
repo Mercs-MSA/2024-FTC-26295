@@ -408,20 +408,22 @@ public void runOpMode() throws InterruptedException {
                     Climb.setPower(climbVar);
                     climbVar=0;
                 }
-                else {
-                    Climb.setPower(0);
-                }
+//                else {
+//                    Climb.setPower(0);
+//                }
 
                 if ((ARMjointVar != 0)
 //                        &&  (RotatingARMJoint.getCurrentPosition() <= constants.ARMJOINT_UPPER_POSITION)
 //                        &&  (RotatingARMJoint.getCurrentPosition() >= ARMJOINT_LOWER_POSITION)
                 ) {
+                    if(ARMjointVar < 0)
+                        ARMjointVar=ARMjointVar*0.5;
                     RotatingARMJoint.setPower(ARMjointVar);
                     ARMjointVar=0;
                 }
-                else {
-                    RotatingARMJoint.setPower(0);
-                }
+//                else {
+//                    RotatingARMJoint.setPower(0);
+//                }
                 if ((elevatorVar != 0)
 //                   &&     (linearSlideElevator.getCurrentPosition() >= LINEARSLIDEELEVATOR_RESET_POSITION)
 //                   &&     (linearSlideElevator.getCurrentPosition() <= LINEARSLIDEELEVATOR_TOP_RUNG_PLACE)
@@ -429,18 +431,17 @@ public void runOpMode() throws InterruptedException {
                     linearSlideElevator.setPower(elevatorVar);
                     elevatorVar=0;
                 }
-                else {
-                    linearSlideElevator.setPower(0);
-                }
+//                else {
+//                    linearSlideElevator.setPower(0);
+//                }
                 if (ARMVar != 0) {
                     linearSlideARM.setPower(ARMVar*OPERATOR_MULTIPLIER);
                     ARMVar=0;
                 }
-                else {
-                    linearSlideARM.setPower(0);
-
-                }
-
+//                else {
+//                    linearSlideARM.setPower(0);
+//
+//                }
                 if (gamepad2.dpad_left) {
                     hook.setPower(1.0);
 //                   hook.setDirection(DcMotorSimple.Direction.FORWARD);
@@ -451,7 +452,7 @@ public void runOpMode() throws InterruptedException {
                 else {
                     hook.setPower(0);
                 }
-                // Wheel SPin
+                // Wheel Spinr
                 if (gamepad2.a) {
                     IntakeWheelSpin.setPower(1.0);
 //                    IntakeWheelSpin.setDirection(CRServo.Direction.FORWARD);
@@ -460,7 +461,7 @@ public void runOpMode() throws InterruptedException {
 //                    IntakeWheelSpin.setDirection(CRServo.Direction.REVERSE);
                 }
                 else {
-                    IntakeWheelSpin.setPower(0);
+ //                   IntakeWheelSpin.setPower(0);
                 }
 
                 // Intakerollerdirection
@@ -472,7 +473,7 @@ public void runOpMode() throws InterruptedException {
 //                    Intakerollerdirection.setDirection(CRServo.Direction.REVERSE);
                 }
                 else {
-                    Intakerollerdirection.setPower(0);
+ //                   Intakerollerdirection.setPower(0);
                 }
 
             }
