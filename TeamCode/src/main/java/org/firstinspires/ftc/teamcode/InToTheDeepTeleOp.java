@@ -157,11 +157,11 @@ public class InToTheDeepTeleOp extends LinearOpMode {
         rightFrontDrive = hardwareMap.get(DcMotorEx.class, "rightFrontDrive");
         rightBackDrive = hardwareMap.get(DcMotorEx.class, "rightBackDrive");
         // Intake Mechanism Init
-        linearSlideElevator = hardwareMap.get(DcMotorEx.class, "linearSlide");
+        linearSlideElevator = hardwareMap.get(DcMotorEx.class, "linearSlideElevator");
         linearSlideARM = hardwareMap.get(DcMotorEx.class, "linearSlideARM");
         RotatingARMJoint = hardwareMap.get(DcMotorEx.class, "RotatingARMJoint");
         //Servos
-        Intakerollerdirection = hardwareMap.get(CRServo.class, "rollerLeftRight");
+        Intakerollerdirection = hardwareMap.get(CRServo.class, "IntakeRotation");
         IntakeWheelSpin = hardwareMap.get(CRServo.class, "wheelSpin");
         //Ascent HW Init
         Climb = hardwareMap.get(DcMotorEx.class, "climb");
