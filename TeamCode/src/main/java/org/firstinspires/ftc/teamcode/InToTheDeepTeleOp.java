@@ -439,7 +439,7 @@ public void runOpMode() throws InterruptedException {
                     linearSlideElevator.setPower(0);
                 }
                 if (ARMVar != 0) {
-                    linearSlideARM.setPower(ARMVar*OPERATOR_MULTIPLIER);
+                    linearSlideARM.setPower(ARMVar);
 //                    ARMVar=0;
                 }
                 else {
@@ -458,7 +458,7 @@ public void runOpMode() throws InterruptedException {
 //                    hook.setDirection(DcMotorSimple.Direction.REVERSE);
                 }
                 else {
-                    hook.setPower(0);
+ //                   hook.setPower(0);
                 }
                 // Intake Wheel Spin
                 boolean wheelspinVar1 =gamepad2.dpad_left;
@@ -478,21 +478,21 @@ public void runOpMode() throws InterruptedException {
                 }
 
                 // Intakerollerdirection
-                boolean Intakerollerdir1 =gamepad2.y;
-                boolean Intakerollerdir2 = gamepad2.x;
-
-                if (Intakerollerdir1) {
-                    Intakerollerdirection.setPower(-1.0);
-                    Intakerollerdir1 = false;
-//                    Intakerollerdirection.setDirection(CRServo.Direction.FORWARD);
-                } else if (Intakerollerdir2) {
-                    Intakerollerdirection.setPower(1.0);
-                    Intakerollerdir2= false;
-//                    Intakerollerdirection.setDirection(CRServo.Direction.REVERSE);
-                }
-                else {
-                    Intakerollerdirection.setPower(0);
-                }
+//                boolean Intakerollerdir1 =gamepad2.y;
+//                boolean Intakerollerdir2 = gamepad2.x;
+//
+//                if (Intakerollerdir1) {
+//                    Intakerollerdirection.setPower(-1.0);
+//                    Intakerollerdir1 = false;
+////                    Intakerollerdirection.setDirection(CRServo.Direction.FORWARD);
+//                } else if (Intakerollerdir2) {
+//                    Intakerollerdirection.setPower(1.0);
+//                    Intakerollerdir2= false;
+////                    Intakerollerdirection.setDirection(CRServo.Direction.REVERSE);
+//                }
+//                else {
+////                    Intakerollerdirection.setPower(0);
+//                }
 
             }
             else {
