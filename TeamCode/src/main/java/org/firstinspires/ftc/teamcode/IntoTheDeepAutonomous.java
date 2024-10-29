@@ -10,8 +10,9 @@ import com.qualcomm.robotcore.hardware.IMU;
 import com.qualcomm.robotcore.util.ElapsedTime;
 //import com.qualcomm.hardware.limelightvision.Limelight3A;
 import org.firstinspires.ftc.teamcode.drive.DriveConstants;
-import org.firstinspires.ftc.teamcode.drive.SampleMecanumDrive;
+import org.firstinspires.ftc.teamcode.InToTheDeepTeleOp;
 import org.firstinspires.ftc.teamcode.trajectorysequence.TrajectorySequence;
+import org.firstinspires.ftc.teamcode.drive.SampleMecanumDrive;
 
 @Autonomous
 public class IntoTheDeepAutonomous extends LinearOpMode {
@@ -70,7 +71,6 @@ public class IntoTheDeepAutonomous extends LinearOpMode {
         SampleMecanumDrive drive = new SampleMecanumDrive(hardwareMap); // Drive object declared and initialized here
 
         Pose2d startPose = new Pose2d(-36, -36, Math.toRadians(0)); //  start pose
-
         // Define your trajectory sequence here (replace with MeepMeep output)
         TrajectorySequence trajSeq = drive.trajectorySequenceBuilder(startPose)
 
