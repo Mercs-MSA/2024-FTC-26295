@@ -407,7 +407,7 @@ public void runOpMode() throws InterruptedException {
                     climbVar=0;
                 }
 //                else {
-//                    Climb.setPower(0);
+                    Climb.setPower(0);
 //                }
 
                 if ((ARMjointVar != 0)
@@ -420,7 +420,7 @@ public void runOpMode() throws InterruptedException {
                     ARMjointVar=0;
                 }
 //                else {
-//                    RotatingARMJoint.setPower(0);
+                    RotatingARMJoint.setPower(0);
 //                }
                 if ((elevatorVar != 0)
 //                   &&     (linearSlideElevator.getCurrentPosition() >= LINEARSLIDEELEVATOR_RESET_POSITION)
@@ -430,14 +430,14 @@ public void runOpMode() throws InterruptedException {
                     elevatorVar=0;
                 }
 //                else {
-//                    linearSlideElevator.setPower(0);
+                    linearSlideElevator.setPower(0);
 //                }
                 if (ARMVar != 0) {
                     linearSlideARM.setPower(ARMVar*OPERATOR_MULTIPLIER);
                     ARMVar=0;
                 }
 //                else {
-//                    linearSlideARM.setPower(0);
+                    linearSlideARM.setPower(0);
 //
 //                }
                 boolean dpad_left = gamepad2.dpad_left;
@@ -453,7 +453,7 @@ public void runOpMode() throws InterruptedException {
 //                    hook.setDirection(DcMotorSimple.Direction.REVERSE);
                 }
                 else {
- //                   hook.setPower(0);
+                    hook.setPower(0);
                 }
                 // Intake Wheel Spin
                 boolean wheelspinVar1 =gamepad2.a;
@@ -469,7 +469,7 @@ public void runOpMode() throws InterruptedException {
 //                    IntakeWheelSpin.setDirection(CRServo.Direction.REVERSE);
                 }
                 else {
- //                   IntakeWheelSpin.setPower(0);
+                    IntakeWheelSpin.setPower(0);
                 }
 
                 // Intakerollerdirection
@@ -486,7 +486,7 @@ public void runOpMode() throws InterruptedException {
 //                    Intakerollerdirection.setDirection(CRServo.Direction.REVERSE);
                 }
                 else {
- //                   Intakerollerdirection.setPower(0);
+                    Intakerollerdirection.setPower(0);
                 }
 
             }
