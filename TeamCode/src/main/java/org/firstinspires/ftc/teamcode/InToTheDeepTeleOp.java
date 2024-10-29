@@ -16,10 +16,10 @@ Climb Motors:
 climbElevator                  expansion         motor 0
 
 Servos:
-IntakeRotation                 control
-wheelSpin                      control
-hook                           control
-blinkIn                        control            servo 2                 ledDriver
+IntakeRotation                 control              servo 1
+wheelSpin                      control              servo 1
+hook                           control             servo 2
+blinkIn                        control            servo 3                 ledDriver
 
 Sensors
 imu                            control            i2cBus 0                revInternalIMU
@@ -37,14 +37,14 @@ rightDistanceSensor            control            i2cBus 3                rightD
         gamepad1.jpystick1                  strafe right             ||      gamepad2.dpadright         Climbhook Rotation (anticlockwise)
         gamepad1.jpystick2                  turn left                ||      gamepad2.jpystick1 y        IntakeElevator up
         gamepad1.jpystick2                  turn right               ||      gamepad2.jpystick1 y       IntakeElevator down
-        gamepad1.a                         initialize/reset IMU      ||      gamepad2.jpystick1 x      IntakeARM fwd
+        gamepad1.dpadright                  Auto  Pos2                ||      gamepad2.jpystick1 x      IntakeARM fwd
         gamepad1.dpadleft                  Auto  Pos1                ||      gamepad2.jpystick1 x      IntakeARM back
-        gamepad1.dpadright                  Auto  Pos2               ||      gamepad2.joystick2 x      RotatingARMJoint up
+        gamepad1.dpaddown                                 ||      gamepad2.joystick2 x      RotatingARMJoint up
         gamepad1.dpadup                                              ||      gamepad2.joystick2 x      RotatingARMJoint down
-        gamepad1.dpaddown                                            ||      gamepad2.a                intakeRollerLefttoRight
+        gamepad1.b                       Climb 0                     ||      gamepad2.a                intakeRollerLefttoRight
         gamepad1.y                       Tele-Op operatorAssist      ||      gamepad2.b                intakeRollerRighttoLeft
         gamepad1.x                         all motor reset           ||      gamepad2.x                 IntakeRollersample
-        gamepad1.                                                    ||      gamepad2.y                 ReleaseRollersample
+        gamepad1.a                           initialize/reset IMU                         ||      gamepad2.y                 ReleaseRollersample
 
     // Potential Automated Routines @ EndGame & TeleOp
     Climb Stage 2
@@ -55,6 +55,7 @@ rightDistanceSensor            control            i2cBus 3                rightD
     sample high basket
 */
 
+import static org.firstinspires.ftc.teamcode.IntoTheDeepAuto.COUNTS_PER_INCH;
 import static org.firstinspires.ftc.teamcode.RobotConstants.ARMJOINT_LOWER_POSITION;
 import static org.firstinspires.ftc.teamcode.RobotConstants.ARMJOINT_UPPER_POSITION;
 import static org.firstinspires.ftc.teamcode.RobotConstants.COLORSENSOR_DISTANCE;
@@ -62,6 +63,7 @@ import static org.firstinspires.ftc.teamcode.RobotConstants.OPERATOR_ERROR_MARGI
 import static org.firstinspires.ftc.teamcode.RobotConstants.OPERATOR_MULTIPLIER;
 import static org.firstinspires.ftc.teamcode.drive.DriveConstants.MaxVelocity;
 import static org.firstinspires.ftc.teamcode.drive.DriveConstants.FIELD_CENTRIC;
+import static org.firstinspires.ftc.teamcode.drive.DriveConstants.PARK_ASSIST_LEVEL0;
 
 import com.qualcomm.hardware.rev.Rev2mDistanceSensor;
 import com.qualcomm.robotcore.hardware.CRServo;
@@ -232,6 +234,8 @@ public class InToTheDeepTeleOp extends LinearOpMode {
         telemetry.addData("Linear Slide Elevator", linearSlideElevator.getCurrentPosition());
         telemetry.addData("Linear SlideARM ", linearSlideARM.getCurrentPosition());
         telemetry.addData("rotatingARM", RotatingARMJoint.getCurrentPosition());
+        telemetry.addData("Intake: ", "%4.2f, %4.2f, %4.2f", linearSlideElevator.getPower(), RotatingARMJoint.getPower(), linearSlideARM.getPower());
+        telemetry.addData("Climb", "%4.2f",  Climb.getPower());
 
         telemetry.addData("IntakeWheel", IntakeWheelSpin.getDirection());
         telemetry.addData("IntakeWheelDirection ", Intakerollerdirection.getDirection());
@@ -408,9 +412,9 @@ public void runOpMode() throws InterruptedException {
                     Climb.setPower(climbVar);
 //                    climbVar=0;
                 }
-//               else {
+               else {
                     Climb.setPower(0);
-//                }
+                }
 
                 if ((ARMjointVar != 0)
 //                        &&  (RotatingARMJoint.getCurrentPosition() <= constants.ARMJOINT_UPPER_POSITION)
@@ -421,9 +425,9 @@ public void runOpMode() throws InterruptedException {
                     RotatingARMJoint.setPower(ARMjointVar);
 //                    ARMjointVar=0;
                 }
-//                else {
+                else {
                     RotatingARMJoint.setPower(0);
-//               }
+               }
                 if ((elevatorVar != 0)
 //                   &&     (linearSlideElevator.getCurrentPosition() >= LINEARSLIDEELEVATOR_RESET_POSITION)
 //                   &&     (linearSlideElevator.getCurrentPosition() <= LINEARSLIDEELEVATOR_TOP_RUNG_PLACE)
@@ -431,17 +435,16 @@ public void runOpMode() throws InterruptedException {
                     linearSlideElevator.setPower(elevatorVar);
 //                    elevatorVar=0;
                 }
-  //              else {
+                else {
                     linearSlideElevator.setPower(0);
-    //            }
+                }
                 if (ARMVar != 0) {
                     linearSlideARM.setPower(ARMVar*OPERATOR_MULTIPLIER);
 //                    ARMVar=0;
                 }
-    //            else {
+                else {
                     linearSlideARM.setPower(0);
-//
-      //          }
+                }
                 boolean dpad_left = gamepad2.dpad_left;
                 boolean dpad_right = gamepad2.dpad_right;
 
@@ -454,12 +457,12 @@ public void runOpMode() throws InterruptedException {
                     dpad_right = false;
 //                    hook.setDirection(DcMotorSimple.Direction.REVERSE);
                 }
-//                else {
+                else {
                     hook.setPower(0);
-//                }
+                }
                 // Intake Wheel Spin
-                boolean wheelspinVar1 =gamepad2.a;
-                boolean wheelspinVar2 = gamepad2.b;
+                boolean wheelspinVar1 =gamepad2.dpad_left;
+                boolean wheelspinVar2 = gamepad2.dpad_right;
 
                 if (wheelspinVar1) {
                     IntakeWheelSpin.setPower(1.0);
@@ -470,9 +473,9 @@ public void runOpMode() throws InterruptedException {
 //                    wheelspinVar2 = false;
 //                    IntakeWheelSpin.setDirection(CRServo.Direction.REVERSE);
                 }
-//                else {
-                    IntakeWheelSpin.setPower(0);
-//                }
+                else {
+//                    IntakeWheelSpin.setPower(0);
+                }
 
                 // Intakerollerdirection
                 boolean Intakerollerdir1 =gamepad2.y;
@@ -487,13 +490,36 @@ public void runOpMode() throws InterruptedException {
                     Intakerollerdir2= false;
 //                    Intakerollerdirection.setDirection(CRServo.Direction.REVERSE);
                 }
-//                else {
+                else {
                     Intakerollerdirection.setPower(0);
-//                }
+                }
 
             }
             else {
                 // This code for Driver Assist Functionality
+//                if(gamepad1.b){
+//                    // Park assist for Level0
+//                   double parkdistance = PARK_ASSIST_LEVEL0 - leftDistanceSensor.getDistance(DistanceUnit.INCH);
+//                   // Calculate distance travel.
+//                    int moveCounts = (int)(parkdistance * COUNTS_PER_INCH);
+//                    int moveTargetPosition = leftFrontDrive.getCurrentPosition() + moveCounts;
+//                    // Set Target FIRST, then turn on RUN_TO_POSITION
+//                    leftFrontDrive.setTargetPosition(moveTargetPosition);
+//                    leftBackDrive.setTargetPosition(moveTargetPosition);
+//                    rightFrontDrive.setTargetPosition(moveTargetPosition);
+//                    rightBackDrive.setTargetPosition(moveTargetPosition);
+//
+//                    leftFrontDrive.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+//                    leftBackDrive.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+//                    rightFrontDrive.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+//                    rightBackDrive.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+//
+//                    rightFrontDrive.setPower(0.5);
+//                    leftBackDrive.setPower(0.5);
+//                    rightBackDrive.setPower(0.5);
+//                    leftFrontDrive.setPower(0.5);
+//                }
+
             }
 
 //            }
