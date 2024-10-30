@@ -388,17 +388,17 @@ public class InToTheDeepTeleOp extends LinearOpMode {
             double elevatorVar = gamepad2.left_stick_y;
             double ARMVar = gamepad2.left_stick_x;
 //          minimize opertor error with accidental angle push
-//            if (climbVar < OPERATOR_ERROR_MARGIN)
-//                climbVar =0;
-//            if(ARMjointVar < OPERATOR_ERROR_MARGIN)
-//                ARMjointVar =0;
-//            if (elevatorVar < OPERATOR_ERROR_MARGIN)
-//                elevatorVar =0;
-//            if (ARMVar < OPERATOR_ERROR_MARGIN)
-//                ARMVar=0;
-            //Manual Operation & Calibration Routines
+            if ((climbVar > -OPERATOR_ERROR_MARGIN) && (climbVar < OPERATOR_ERROR_MARGIN))
+                climbVar =0;
+            if ((ARMjointVar > -OPERATOR_ERROR_MARGIN) && (ARMjointVar < OPERATOR_ERROR_MARGIN))
+                ARMjointVar =0;
+            if ((elevatorVar > -OPERATOR_ERROR_MARGIN) && (elevatorVar < OPERATOR_ERROR_MARGIN))
+                elevatorVar =0;
+            if ((ARMVar > -OPERATOR_ERROR_MARGIN) && (ARMVar < OPERATOR_ERROR_MARGIN))
+                ARMVar=0;
             if (!driverAssistPickup) {
-                // Climber Logic
+                //Manual Operation for ARM, sholder, Elevator, Climb, Hook
+            //          Climber Logic
 //             Below this is code to get the arm and climb working
                 if ((climbVar != 0)
 //                && (Climb.getCurrentPosition() >= constants.CLIMBELEVATOR_RESET_RELEASE)
@@ -407,9 +407,9 @@ public class InToTheDeepTeleOp extends LinearOpMode {
                     Climb.setPower(climbVar);
                     climbVar=0;
                 }
-//                else {
-//                    Climb.setPower(0);
-//                }
+                else {
+                    Climb.setPower(0);
+                }
 
                 if ((ARMjointVar != 0)
 //                        &&  (RotatingARMJoint.getCurrentPosition() <= constants.ARMJOINT_UPPER_POSITION)
@@ -420,9 +420,9 @@ public class InToTheDeepTeleOp extends LinearOpMode {
                     RotatingARMJoint.setPower(ARMjointVar);
                     ARMjointVar=0;
                 }
-//                else {
-//                    RotatingARMJoint.setPower(0);
-//                }
+                else {
+                    RotatingARMJoint.setPower(0);
+                }
                 if ((elevatorVar != 0)
 //                   &&     (linearSlideElevator.getCurrentPosition() >= LINEARSLIDEELEVATOR_RESET_POSITION)
 //                   &&     (linearSlideElevator.getCurrentPosition() <= LINEARSLIDEELEVATOR_TOP_RUNG_PLACE)
@@ -430,26 +430,26 @@ public class InToTheDeepTeleOp extends LinearOpMode {
                     linearSlideElevator.setPower(elevatorVar);
                     elevatorVar=0;
                 }
-//                else {
-//                    linearSlideElevator.setPower(0);
-//                }
+                else {
+                    linearSlideElevator.setPower(0);
+                }
                 if (ARMVar != 0) {
                     linearSlideARM.setPower(ARMVar*OPERATOR_MULTIPLIER);
                     ARMVar=0;
                 }
-//                else {
-//                    linearSlideARM.setPower(0);
-//
-//                }
+                else {
+                    linearSlideARM.setPower(0);
+
+                }
                 if (gamepad2.dpad_left) {
-                    hook.setDirection(CRServo.Direction.FORWARD);
+                    hook.setPower(1);
                 } else if (gamepad2.dpad_right) {
-                    hook.setPower(CRServo.Direction.REVERSE.ordinal());
+                    hook.setPower(-1);
                 }
                 else {
                     hook.setPower(0);
                 }
-                // Wheel Spinr
+                // Wheel Spine
                 if (gamepad2.a) {
                     IntakeWheelSpin.setPower(1.0);
 //                    IntakeWheelSpin.setDirection(CRServo.Direction.FORWARD);
@@ -458,7 +458,7 @@ public class InToTheDeepTeleOp extends LinearOpMode {
 //                    IntakeWheelSpin.setDirection(CRServo.Direction.REVERSE);
                 }
                 else {
- //                   IntakeWheelSpin.setPower(0);
+                    IntakeWheelSpin.setPower(0);
                 }
 
                 // Intakerollerdirection
@@ -470,7 +470,7 @@ public class InToTheDeepTeleOp extends LinearOpMode {
 //                    Intakerollerdirection.setDirection(CRServo.Direction.REVERSE);
                 }
                 else {
- //                   Intakerollerdirection.setPower(0);
+                    Intakerollerdirection.setPower(0);
                 }
 
             }
