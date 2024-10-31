@@ -55,16 +55,19 @@ rightDistanceSensor            control            i2cBus 3                rightD
     sample high basket
 */
 
-import static org.firstinspires.ftc.teamcode.RobotConstants.ARMJOINT_LOWER_POSITION;
-import static org.firstinspires.ftc.teamcode.RobotConstants.ARMJOINT_UPPER_POSITION;
 import static org.firstinspires.ftc.teamcode.RobotConstants.COLORSENSOR_DISTANCE;
+import static org.firstinspires.ftc.teamcode.RobotConstants.ELEVATOR_HIGH_BASKET_POSITION;
+import static org.firstinspires.ftc.teamcode.RobotConstants.ELEVATOR_RESET_POSITION;
 import static org.firstinspires.ftc.teamcode.RobotConstants.OPERATOR_ERROR_MARGIN;
 import static org.firstinspires.ftc.teamcode.RobotConstants.OPERATOR_MULTIPLIER;
+import static org.firstinspires.ftc.teamcode.RobotConstants.ROTATING_ARM_JOINT_BASKET_POSITION;
+import static org.firstinspires.ftc.teamcode.RobotConstants.ROTATING_ARM_JOINT_RESET_POSITION;
 import static org.firstinspires.ftc.teamcode.drive.DriveConstants.MaxVelocity;
 import static org.firstinspires.ftc.teamcode.drive.DriveConstants.FIELD_CENTRIC;
 
 import com.qualcomm.hardware.rev.Rev2mDistanceSensor;
 import com.qualcomm.robotcore.hardware.CRServo;
+import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.NormalizedColorSensor;
 import com.qualcomm.robotcore.hardware.NormalizedRGBA;
@@ -88,6 +91,8 @@ import org.firstinspires.ftc.robotcore.internal.system.Deadline;
 import org.firstinspires.ftc.teamcode.drive.DriveConstants;
 
 import java.util.concurrent.TimeUnit;
+
+import kotlin.reflect.KClassesImplKt;
 
 @TeleOp
 
@@ -210,8 +215,10 @@ public class InToTheDeepTeleOp extends LinearOpMode {
         rightBackDrive.setMode(DcMotorEx.RunMode.RUN_USING_ENCODER);
         leftBackDrive.setMode(DcMotorEx.RunMode.RUN_USING_ENCODER);
 //        RotatingARMJoint.setMode(DcMotorEx.RunMode.RUN_USING_ENCODER);
-//        linearSlideElevator.setMode(DcMotorEx.RunMode.RUN_USING_ENCODER);
-//        linearSlideARM.setMode(DcMotorEx.RunMode.RUN_USING_ENCODER);
+        linearSlideARM.setMode(DcMotorEx.RunMode.RUN_USING_ENCODER);
+        linearSlideElevator.setMode(DcMotorEx.RunMode.RUN_TO_POSITION);
+        RotatingARMJoint.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        Climb.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
     }
 
     public void updatedrivebase(double lf, double lb, double rf, double rb) {
@@ -418,20 +425,25 @@ public class InToTheDeepTeleOp extends LinearOpMode {
 //                    if(ARMjointVar < 0)
 //                        ARMjointVar=ARMjointVar*0.5;
                     RotatingARMJoint.setPower(ARMjointVar);
+                    // keep running motor to control loop
+//                    RotatingARMJoint.setTargetPosition(ROTATING_ARM_JOINT_BASKET_POSITION);
                     ARMjointVar=0;
                 }
                 else {
                     RotatingARMJoint.setPower(0);
+     //               RotatingARMJoint.setTargetPosition(ROTATING_ARM_JOINT_RESET_POSITION);
                 }
                 if ((elevatorVar != 0)
 //                   &&     (linearSlideElevator.getCurrentPosition() >= LINEARSLIDEELEVATOR_RESET_POSITION)
 //                   &&     (linearSlideElevator.getCurrentPosition() <= LINEARSLIDEELEVATOR_TOP_RUNG_PLACE)
                 ) {
                     linearSlideElevator.setPower(elevatorVar);
+//                    linearSlideElevator.setTargetPosition(ELEVATOR_HIGH_BASKET_POSITION);
                     elevatorVar=0;
                 }
                 else {
                     linearSlideElevator.setPower(0);
+//                    linearSlideElevator.setTargetPosition(ELEVATOR_RESET_POSITION);
                 }
                 if (ARMVar != 0) {
                     linearSlideARM.setPower(ARMVar*OPERATOR_MULTIPLIER);
