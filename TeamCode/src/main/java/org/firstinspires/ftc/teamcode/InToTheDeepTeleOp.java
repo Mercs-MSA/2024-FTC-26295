@@ -16,10 +16,10 @@ Climb Motors:
 climbElevator                  expansion         motor 0
 
 Servos:
-IntakeRotation                 control
-wheelSpin                      control
-hook                           control
-blinkIn                        control            servo 2                 ledDriver
+IntakeRotation                 control            servo 1
+wheelSpin                      control            servo 3
+hook                           control            servo 0
+blinkIn                        control            servo 2                  ledDriver
 
 Sensors
 imu                            control            i2cBus 0                revInternalIMU
@@ -109,7 +109,7 @@ public class InToTheDeepTeleOp extends LinearOpMode {
     private DcMotorEx linearSlideElevator = null;
     private DcMotorEx linearSlideARM = null;
     private DcMotorEx RotatingARMJoint;
-    private CRServo Intakerollerdirection;
+    private Servo Intakerollerdirection;
     private CRServo IntakeWheelSpin;
 
     private DcMotorEx Climb = null;
@@ -157,11 +157,11 @@ public class InToTheDeepTeleOp extends LinearOpMode {
         rightFrontDrive = hardwareMap.get(DcMotorEx.class, "rightFrontDrive");
         rightBackDrive = hardwareMap.get(DcMotorEx.class, "rightBackDrive");
         // Intake Mechanism Init
-        linearSlideElevator = hardwareMap.get(DcMotorEx.class, "linearSlide");
+        linearSlideElevator = hardwareMap.get(DcMotorEx.class, "linearSlideElevator");
         linearSlideARM = hardwareMap.get(DcMotorEx.class, "linearSlideARM");
         RotatingARMJoint = hardwareMap.get(DcMotorEx.class, "RotatingARMJoint");
         //Servos
-        Intakerollerdirection = hardwareMap.get(CRServo.class, "rollerLeftRight");
+        Intakerollerdirection = hardwareMap.get(Servo.class, "IntakeRotation");
         IntakeWheelSpin = hardwareMap.get(CRServo.class, "wheelSpin");
         //Ascent HW Init
         Climb = hardwareMap.get(DcMotorEx.class, "climb");
@@ -233,11 +233,11 @@ public class InToTheDeepTeleOp extends LinearOpMode {
         telemetry.addData("Linear Slide Elevator", linearSlideElevator.getCurrentPosition());
         telemetry.addData("Linear SlideARM ", linearSlideARM.getCurrentPosition());
         telemetry.addData("rotatingARM", RotatingARMJoint.getCurrentPosition());
-        telemetry.addData("IntakeWheel", IntakeWheelSpin.getDirection());
-        telemetry.addData("IntakeWheelDirection ", Intakerollerdirection.getDirection());
+        telemetry.addData("IntakeWheel", IntakeWheelSpin.getPower());
+        telemetry.addData("IntakeWheel Position ", Intakerollerdirection.getPosition());
 
         telemetry.addData("climb ", Climb.getCurrentPosition());
-        telemetry.addData("Hook Direction", hook.getDirection());
+        telemetry.addData("Hook Direction", hook.getPower());
         telemetry.addData("Sample detected", getSampleColor());
         telemetry.addData("Left distance", leftDistanceSensor.getDistance(DistanceUnit.MM));
         telemetry.addData("Front distance", rightDistanceSensor.getDistance(DistanceUnit.MM));
@@ -264,8 +264,7 @@ public class InToTheDeepTeleOp extends LinearOpMode {
         rightBackDrive.setVelocity(0);
     }
 
-    @Override
-public void runOpMode() throws InterruptedException {
+    public void runOpMode() throws InterruptedException {
 
 
         // Initialize the hardware variables. Note that the strings used here must correspond
@@ -389,17 +388,17 @@ public void runOpMode() throws InterruptedException {
             double elevatorVar = gamepad2.left_stick_y;
             double ARMVar = gamepad2.left_stick_x;
 //          minimize opertor error with accidental angle push
-//            if (climbVar < OPERATOR_ERROR_MARGIN)
-//                climbVar =0;
-//            if(ARMjointVar < OPERATOR_ERROR_MARGIN)
-//                ARMjointVar =0;
-//            if (elevatorVar < OPERATOR_ERROR_MARGIN)
-//                elevatorVar =0;
-//            if (ARMVar < OPERATOR_ERROR_MARGIN)
-//                ARMVar=0;
-            //Manual Operation & Calibration Routines
+            if ((climbVar > -OPERATOR_ERROR_MARGIN) && (climbVar < OPERATOR_ERROR_MARGIN))
+                climbVar =0;
+            if ((ARMjointVar > -OPERATOR_ERROR_MARGIN) && (ARMjointVar < OPERATOR_ERROR_MARGIN))
+                ARMjointVar =0;
+            if ((elevatorVar > -OPERATOR_ERROR_MARGIN) && (elevatorVar < OPERATOR_ERROR_MARGIN))
+                elevatorVar =0;
+            if ((ARMVar > -OPERATOR_ERROR_MARGIN) && (ARMVar < OPERATOR_ERROR_MARGIN))
+                ARMVar=0;
             if (!driverAssistPickup) {
-                // Climber Logic
+                //Manual Operation for ARM, sholder, Elevator, Climb, Hook
+            //          Climber Logic
 //             Below this is code to get the arm and climb working
                 if ((climbVar != 0)
 //                && (Climb.getCurrentPosition() >= constants.CLIMBELEVATOR_RESET_RELEASE)
@@ -408,9 +407,9 @@ public void runOpMode() throws InterruptedException {
                     Climb.setPower(climbVar);
                     climbVar=0;
                 }
-//                else {
-//                    Climb.setPower(0);
-//                }
+                else {
+                    Climb.setPower(0);
+                }
 
                 if ((ARMjointVar != 0)
 //                        &&  (RotatingARMJoint.getCurrentPosition() <= constants.ARMJOINT_UPPER_POSITION)
@@ -421,9 +420,9 @@ public void runOpMode() throws InterruptedException {
                     RotatingARMJoint.setPower(ARMjointVar);
                     ARMjointVar=0;
                 }
-//                else {
-//                    RotatingARMJoint.setPower(0);
-//                }
+                else {
+                    RotatingARMJoint.setPower(0);
+                }
                 if ((elevatorVar != 0)
 //                   &&     (linearSlideElevator.getCurrentPosition() >= LINEARSLIDEELEVATOR_RESET_POSITION)
 //                   &&     (linearSlideElevator.getCurrentPosition() <= LINEARSLIDEELEVATOR_TOP_RUNG_PLACE)
@@ -431,49 +430,50 @@ public void runOpMode() throws InterruptedException {
                     linearSlideElevator.setPower(elevatorVar);
                     elevatorVar=0;
                 }
-//                else {
-//                    linearSlideElevator.setPower(0);
-//                }
+                else {
+                    linearSlideElevator.setPower(0);
+                }
                 if (ARMVar != 0) {
                     linearSlideARM.setPower(ARMVar*OPERATOR_MULTIPLIER);
                     ARMVar=0;
                 }
-//                else {
-//                    linearSlideARM.setPower(0);
-//
-//                }
-                if (gamepad2.dpad_left) {
-                    hook.setPower(1.0);
-//                   hook.setDirection(DcMotorSimple.Direction.FORWARD);
-                } else if (gamepad2.dpad_right) {
-                    hook.setPower(-1.0);
-//                    hook.setDirection(DcMotorSimple.Direction.REVERSE);
-                }
                 else {
-                    hook.setPower(0);
+                    linearSlideARM.setPower(0);
+
                 }
-                // Wheel Spinr
-                if (gamepad2.a) {
+                while (gamepad2.dpad_left) {
+                    hook.setPower(1);
+                }
+                while (gamepad2.dpad_right) {
+                    hook.setPower(-1);
+                }
+//                else {
+                    hook.setPower(0);
+//                }
+                // Wheel Spine
+                while (gamepad2.a) {
                     IntakeWheelSpin.setPower(1.0);
 //                    IntakeWheelSpin.setDirection(CRServo.Direction.FORWARD);
-                } else if (gamepad2.b) {
+                }
+                while(gamepad2.b) {
                     IntakeWheelSpin.setPower(-1.0);
 //                    IntakeWheelSpin.setDirection(CRServo.Direction.REVERSE);
                 }
-                else {
- //                   IntakeWheelSpin.setPower(0);
-                }
+//                else {
+                    IntakeWheelSpin.setPower(0);
+//                }
 
                 // Intakerollerdirection
-                if (gamepad2.y) {
-                    Intakerollerdirection.setPower(-1.0);
+                if(gamepad2.y) {
+                    Intakerollerdirection.setPosition(-1.0);
 //                    Intakerollerdirection.setDirection(CRServo.Direction.FORWARD);
-                } else if (gamepad2.x) {
-                    Intakerollerdirection.setPower(1.0);
+                }
+                else if (gamepad2.x) {
+                    Intakerollerdirection.setPosition(1.0);
 //                    Intakerollerdirection.setDirection(CRServo.Direction.REVERSE);
                 }
                 else {
- //                   Intakerollerdirection.setPower(0);
+                    Intakerollerdirection.setPosition(0);
                 }
 
             }
