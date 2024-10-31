@@ -27,8 +27,8 @@ import com.qualcomm.robotcore.hardware.IMU;
 import com.qualcomm.robotcore.hardware.PIDFCoefficients;
 import com.qualcomm.robotcore.hardware.VoltageSensor;
 import com.qualcomm.robotcore.hardware.configuration.typecontainers.MotorConfigurationType;
-
-import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
+//
+//import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.robotcore.external.stream.CameraStreamServer;
 import org.firstinspires.ftc.teamcode.trajectorysequence.TrajectorySequence;
@@ -166,11 +166,11 @@ public class SampleMecanumDrive extends MecanumDrive {
         );
 
         // Camera Detection and Initialization
-      //  detectCameras(hardwareMap);
-        initCamera(hardwareMap);
+//      //  detectCameras(hardwareMap);
+//        initCamera(hardwareMap);
 
         // Start camera stream server
-        visionPortal.resumeStreaming();
+//        visionPortal.resumeStreaming();
     }
 
     public TrajectoryBuilder trajectoryBuilder(Pose2d startPose) {
@@ -344,60 +344,60 @@ public class SampleMecanumDrive extends MecanumDrive {
 
     public static TrajectoryAccelerationConstraint getAccelerationConstraint(double maxAccel) {
         return new ProfileAccelerationConstraint(maxAccel);
-    }
+    }}
 
 
 
-    // Initialize your USB camera
-    private void initCamera(HardwareMap hardwareMap) {
-        int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier(
-                "cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
-        camera = OpenCvCameraFactory.getInstance().createWebcam(hardwareMap.get(WebcamName.class, "Webcam 1"), cameraMonitorViewId);
-
-        camera.setPipeline(new OpenCvPipeline() {
-            @Override
-            public Mat processFrame(Mat input) {
-                Point targetCenter = detectTargetColor(input); // Detect yellow
-                if (targetCenter != null) {
-                    Imgproc.circle(input, targetCenter, 10, new Scalar(0, 255, 0), -1);
-                }
-                return input;
-            }
-        });
-
-        visionPortal = new VisionPortal.Builder()
-                .setCamera(hardwareMap.get(WebcamName.class, "Webcam 1"))
-                .build();
-
-        camera.openCameraDeviceAsync(new OpenCvCamera.AsyncCameraOpenListener() {
-            @Override
-            public void onOpened() {
-                camera.startStreaming(320, 240, OpenCvCameraRotation.UPRIGHT);
-            }
-
-            @Override
-            public void onError(int errorCode) {
-                telemetry.addData("Camera Error", errorCode);
-                telemetry.update();
-            }
-        });
-    }
-
-    // Color Detection Logic (returns center point or null)
-    private Point detectTargetColor(Mat inputFrame) {
-        Mat hsvFrame = new Mat();
-        Imgproc.cvtColor(inputFrame, hsvFrame, Imgproc.COLOR_RGB2HSV);
-
-        Mat yellowMask = new Mat();
-        Core.inRange(hsvFrame, YELLOW_LOWER, YELLOW_UPPER, yellowMask);
-
-        Moments yellowMoments = Imgproc.moments(yellowMask);
-        if (yellowMoments.m00 > 0) {
-            int cX = (int) (yellowMoments.m10 / yellowMoments.m00);
-            int cY = (int) (yellowMoments.m01 / yellowMoments.m00);
-            return new Point(cX, cY);
-        } else {
-            return null;
-        }
-    }
-}
+//    // Initialize your USB camera
+//    private void initCamera(HardwareMap hardwareMap) {
+//        int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier(
+//                "cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
+////        camera = OpenCvCameraFactory.getInstance().createWebcam(hardwareMap.get(WebcamName.class, "Webcam 1"), cameraMonitorViewId);
+////
+////        camera.setPipeline(new OpenCvPipeline() {
+//            @Override
+//            public Mat processFrame(Mat input) {
+//                Point targetCenter = detectTargetColor(input); // Detect yellow
+//                if (targetCenter != null) {
+//                    Imgproc.circle(input, targetCenter, 10, new Scalar(0, 255, 0), -1);
+//                }
+//                return input;
+//            }
+//        });
+//
+//        visionPortal = new VisionPortal.Builder()
+//                .setCamera(hardwareMap.get(WebcamName.class, "Webcam 1"))
+//                .build();
+//
+//        camera.openCameraDeviceAsync(new OpenCvCamera.AsyncCameraOpenListener() {
+//            @Override
+//            public void onOpened() {
+//                camera.startStreaming(320, 240, OpenCvCameraRotation.UPRIGHT);
+//            }
+//
+//            @Override
+//            public void onError(int errorCode) {
+//                telemetry.addData("Camera Error", errorCode);
+//                telemetry.update();
+//            }
+//        });
+//    }
+//
+//    // Color Detection Logic (returns center point or null)
+//    private Point detectTargetColor(Mat inputFrame) {
+//        Mat hsvFrame = new Mat();
+//        Imgproc.cvtColor(inputFrame, hsvFrame, Imgproc.COLOR_RGB2HSV);
+//
+//        Mat yellowMask = new Mat();
+//        Core.inRange(hsvFrame, YELLOW_LOWER, YELLOW_UPPER, yellowMask);
+//
+//        Moments yellowMoments = Imgproc.moments(yellowMask);
+//        if (yellowMoments.m00 > 0) {
+//            int cX = (int) (yellowMoments.m10 / yellowMoments.m00);
+//            int cY = (int) (yellowMoments.m01 / yellowMoments.m00);
+//            return new Point(cX, cY);
+//        } else {
+//            return null;
+//        }
+//    }
+//}
