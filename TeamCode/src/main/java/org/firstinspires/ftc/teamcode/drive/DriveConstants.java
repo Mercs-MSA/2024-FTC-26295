@@ -88,9 +88,9 @@ public class DriveConstants {
      * Adjust the orientations here to match your robot. See the FTC SDK documentation for details.
      */
     public static RevHubOrientationOnRobot.LogoFacingDirection LOGO_FACING_DIR =
-            RevHubOrientationOnRobot.LogoFacingDirection.BACKWARD;// Test BACKWARD // Comp : FORWARD
+            RevHubOrientationOnRobot.LogoFacingDirection.LEFT;// Test BACKWARD // Comp : FORWARD
     public static RevHubOrientationOnRobot.UsbFacingDirection USB_FACING_DIR =
-            RevHubOrientationOnRobot.UsbFacingDirection.RIGHT;// Test RIGHT // Comp : LEFT
+            RevHubOrientationOnRobot.UsbFacingDirection.FORWARD;// Test RIGHT // Comp : LEFT
 
 
     public static double encoderTicksToInches(double ticks) {

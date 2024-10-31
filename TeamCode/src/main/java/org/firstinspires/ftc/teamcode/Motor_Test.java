@@ -54,6 +54,10 @@ public class Motor_Test extends LinearOpMode {
 //        leftBackDrive.setDirection(DcMotor.Direction.REVERSE);
 //        rightFrontDrive.setDirection(DcMotor.Direction.FORWARD);
 //        rightBackDrive.setDirection(DcMotor.Direction.REVERSE);
+        leftFrontDrive.setDirection(DcMotorEx.Direction.FORWARD);
+        leftBackDrive.setDirection(DcMotorEx.Direction.FORWARD);
+        rightFrontDrive.setDirection(DcMotorEx.Direction.FORWARD);
+        rightBackDrive.setDirection(DcMotorEx.Direction.FORWARD);
 
         leftBackDrive.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         rightBackDrive.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
