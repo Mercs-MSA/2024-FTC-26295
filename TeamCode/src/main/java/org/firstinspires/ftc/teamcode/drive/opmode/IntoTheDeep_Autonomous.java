@@ -59,11 +59,22 @@ public class IntoTheDeep_Autonomous extends LinearOpMode {
 
         // Define your trajectory sequence here (replace with MeepMeep output)
         TrajectorySequence trajSeq = drive.trajectorySequenceBuilder(startPose)
-                .forward(25)
-                .turn(Math.toRadians(-120))
-              .strafeLeft(20)
+//                .forward(25)
+//                .strafeLeft(-85)
+//                .forward(13.2)
+//                .strafeLeft(86.5)
+//                .strafeLeft(-85)
+//                .forward(12.5)
+//                .strafeLeft(86.35)
+//                .strafeLeft(-85)
+//                .forward(11.5)
+                .strafeLeft(-86.3)
+               .forward(40.2)
+
+//                .turn(Math.toRadians(-120))
+//              .strafeLeft(20)
 //                .splineTo(new Vector2d(0, 36), Math.toRadians(0))
-                .forward(30)
+//                .forward(30)
                .build();
 
 
