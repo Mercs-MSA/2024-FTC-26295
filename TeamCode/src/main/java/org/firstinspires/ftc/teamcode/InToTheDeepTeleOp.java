@@ -31,19 +31,19 @@ rightDistanceSensor            control            i2cBus 3                rightD
 /*
         Driver Station key mapping
 
-        gamepad1.jpystick1                  drive fwd                ||      gamepad2.joystick2  y      climbElevator up
-        gamepad1.jpystick1                  drive back               ||      gamepad2.joystick2  y      climbElevator down
-        gamepad1.jpystick1                  strafe left              ||      gamepad2.dpadleft          Climbhook rotation (clockwise)
-        gamepad1.jpystick1                  strafe right             ||      gamepad2.dpadright         Climbhook Rotation (anticlockwise)
-        gamepad1.jpystick2                  turn left                ||      gamepad2.jpystick1 y  LB      IntakeElevator up
-        gamepad1.jpystick2                  turn right               ||      gamepad2.jpystick1 y  LT     IntakeElevator down
-        gamepad1.a                  all motor reset                   ||      gamepad2.jpystick1 x RB     IntakeARM fwd
+        gamepad1.jpystick1                  drive fwd                 ||      gamepad2.joystick2  y      climbElevator up
+        gamepad1.jpystick1                  drive back                ||      gamepad2.joystick2  y      climbElevator down
+        gamepad1.jpystick1                  strafe left               ||      gamepad2.dpadleft          Climbhook rotation (clockwise)
+        gamepad1.jpystick1                  strafe right              ||      gamepad2.dpadright         Climbhook Rotation (anticlockwise)
+        gamepad1.jpystick2                  turn left                 ||      gamepad2.jpystick1 y  LB      IntakeElevator up
+        gamepad1.jpystick2                  turn right                ||      gamepad2.jpystick1 y  LT     IntakeElevator down
+        gamepad1.a                         initialize/reset IMU       ||      gamepad2.jpystick1 x RB     IntakeARM fwd
         gamepad1.dpadleft                  Auto red Pos1              ||      gamepad2.jpystick1 x RT     IntakeARM back
         gamepad1.dpadright                  Auto Red Pos2             ||      gamepad2.joystick2 x      RotatingARMJoint up
         gamepad1.dpadup                  Auto Blue Pos1               ||      gamepad2.joystick2 x      RotatingARMJoint down
         gamepad1.dpaddown                  Auto Blue Pos2             ||      gamepad2.a                intakeRollerLefttoRight
         gamepad1.y                  Tele-Op operatorAssist            ||      gamepad2.b                intakeRollerRighttoLeft
-        gamepad1.x                  initialize/reset IMU             ||      gamepad2.x                 IntakeRollersample
+        gamepad1.x                  all motor reset             ||      gamepad2.x                 IntakeRollersample
         gamepad1.                                                    ||      gamepad2.y                 ReleaseRollersample
 
     // Potential Automated Routines @ EndGame & TeleOp
@@ -56,24 +56,20 @@ rightDistanceSensor            control            i2cBus 3                rightD
 */
 
 import static org.firstinspires.ftc.teamcode.RobotConstants.COLORSENSOR_DISTANCE;
-import static org.firstinspires.ftc.teamcode.RobotConstants.ELEVATOR_HIGH_BASKET_POSITION;
-import static org.firstinspires.ftc.teamcode.RobotConstants.ELEVATOR_RESET_POSITION;
 import static org.firstinspires.ftc.teamcode.RobotConstants.OPERATOR_ERROR_MARGIN;
-import static org.firstinspires.ftc.teamcode.RobotConstants.OPERATOR_MULTIPLIER;
-import static org.firstinspires.ftc.teamcode.RobotConstants.ROTATING_ARM_JOINT_BASKET_POSITION;
-import static org.firstinspires.ftc.teamcode.RobotConstants.ROTATING_ARM_JOINT_RESET_POSITION;
+import static org.firstinspires.ftc.teamcode.RobotConstants.OPERATOR_GAIN_MULTIPLIER;
+import static org.firstinspires.ftc.teamcode.RobotConstants.TELEOP_ASSIST_DRIVETRAIN_GAIN;
+import static org.firstinspires.ftc.teamcode.RobotConstants.TELEOP_ASSIST_DRIVETRAIN_TURN_GAIN;
 import static org.firstinspires.ftc.teamcode.drive.DriveConstants.MaxVelocity;
 import static org.firstinspires.ftc.teamcode.drive.DriveConstants.FIELD_CENTRIC;
 
 import com.qualcomm.hardware.rev.Rev2mDistanceSensor;
 import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.DcMotor;
-import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.NormalizedColorSensor;
 import com.qualcomm.robotcore.hardware.NormalizedRGBA;
 import com.qualcomm.hardware.rev.RevBlinkinLedDriver;
 import com.qualcomm.hardware.rev.RevHubOrientationOnRobot;
-import com.qualcomm.robotcore.hardware.ColorSensor;
 import com.qualcomm.robotcore.hardware.DistanceSensor;
 import com.qualcomm.robotcore.hardware.IMU;
 //import com.arcrobotics.ftclib.hardware.motors.Motor;
@@ -88,11 +84,8 @@ import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.robotcore.internal.system.Deadline;
-import org.firstinspires.ftc.teamcode.drive.DriveConstants;
 
 import java.util.concurrent.TimeUnit;
-
-import kotlin.reflect.KClassesImplKt;
 
 @TeleOp
 
@@ -214,11 +207,13 @@ public class InToTheDeepTeleOp extends LinearOpMode {
         rightFrontDrive.setMode(DcMotorEx.RunMode.RUN_USING_ENCODER);
         rightBackDrive.setMode(DcMotorEx.RunMode.RUN_USING_ENCODER);
         leftBackDrive.setMode(DcMotorEx.RunMode.RUN_USING_ENCODER);
-//        RotatingARMJoint.setMode(DcMotorEx.RunMode.RUN_USING_ENCODER);
         linearSlideARM.setMode(DcMotorEx.RunMode.RUN_USING_ENCODER);
+        // Elevator and shoulder rotation needs control running continuously, need to run power continuously
+        // hence set more run to position and set position and give power
+//        RotatingARMJoint.setMode(DcMotorEx.RunMode.RUN_USING_ENCODER);
         linearSlideElevator.setMode(DcMotorEx.RunMode.RUN_TO_POSITION);
         RotatingARMJoint.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        Climb.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        Climb.setMode(DcMotor.RunMode.RUN_TO_POSITION);
     }
 
     public void updatedrivebase(double lf, double lb, double rf, double rb) {
@@ -329,9 +324,10 @@ public class InToTheDeepTeleOp extends LinearOpMode {
             double max;
 
             // POV Mode uses left joystick to go forward & rotate, and right joystick to strafe.
-            double axial = -gamepad1.left_stick_y;  //FWD
-            double lateral = gamepad1.left_stick_x;  //TUR
-            double yaw = gamepad1.right_stick_x; //STR
+            double axial = -gamepad1.left_stick_y * TELEOP_ASSIST_DRIVETRAIN_GAIN;  //FWD
+            double lateral = gamepad1.left_stick_x * TELEOP_ASSIST_DRIVETRAIN_GAIN;  //TUR
+            //Test This code to check drive and turn operation.
+            double yaw = gamepad1.right_stick_x * TELEOP_ASSIST_DRIVETRAIN_TURN_GAIN; //STR
             //timeout happens then reset
             if (gamepadRateLimit.hasExpired() && gamepad1.a) {
                 imu.resetYaw();
@@ -424,9 +420,9 @@ public class InToTheDeepTeleOp extends LinearOpMode {
                 ) {
 //                    if(ARMjointVar < 0)
 //                        ARMjointVar=ARMjointVar*0.5;
+//                    RotatingARMJoint.setTargetPosition(ROTATING_ARM_JOINT_BASKET_POSITION);
                     RotatingARMJoint.setPower(ARMjointVar);
                     // keep running motor to control loop
-//                    RotatingARMJoint.setTargetPosition(ROTATING_ARM_JOINT_BASKET_POSITION);
                     ARMjointVar=0;
                 }
                 else {
@@ -437,21 +433,20 @@ public class InToTheDeepTeleOp extends LinearOpMode {
 //                   &&     (linearSlideElevator.getCurrentPosition() >= LINEARSLIDEELEVATOR_RESET_POSITION)
 //                   &&     (linearSlideElevator.getCurrentPosition() <= LINEARSLIDEELEVATOR_TOP_RUNG_PLACE)
                 ) {
-                    linearSlideElevator.setPower(elevatorVar);
 //                    linearSlideElevator.setTargetPosition(ELEVATOR_HIGH_BASKET_POSITION);
+                    linearSlideElevator.setPower(elevatorVar);
                     elevatorVar=0;
                 }
                 else {
-                    linearSlideElevator.setPower(0);
 //                    linearSlideElevator.setTargetPosition(ELEVATOR_RESET_POSITION);
+                    linearSlideElevator.setPower(0);
                 }
                 if (ARMVar != 0) {
-                    linearSlideARM.setPower(ARMVar*OPERATOR_MULTIPLIER);
+                    linearSlideARM.setPower(ARMVar* OPERATOR_GAIN_MULTIPLIER);
                     ARMVar=0;
                 }
                 else {
                     linearSlideARM.setPower(0);
-
                 }
                 while (gamepad2.dpad_left) {
                     hook.setPosition(1);
@@ -465,9 +460,6 @@ public class InToTheDeepTeleOp extends LinearOpMode {
                 // Wheel Spine
                 while (gamepad2.a) {
                     IntakeWheelSpin.setPower(+1.0);
-
-
-
 //                    IntakeWheelSpin.setDirection(CRServo.Direction.FORWARD);
                 }
                 while(gamepad2.b) {
@@ -475,7 +467,6 @@ public class InToTheDeepTeleOp extends LinearOpMode {
 //                    IntakeWheelSpin.setDirection(CRServo.Direction.REVERSE);
                 }
                 IntakeWheelSpin.setPower(0);
-
 //
                 sleep(200);
 //                }
