@@ -409,6 +409,7 @@ public class InToTheDeepTeleOp extends LinearOpMode {
                     Climb.setPower(0);
                 }
 
+
                 if (gamepad1.dpad_right) {
 //                        int ARMJointPosition = RotatingARMJoint.getCurrentPosition();
                     RotatingARMJoint.setTargetPosition(ROTATING_ARM_JOINT_HIGH_POSITION);
