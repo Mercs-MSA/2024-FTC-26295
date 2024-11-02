@@ -4,26 +4,25 @@ public class RobotConstants
 {
 
     public static final double OPERATOR_ERROR_MARGIN = 0.5;//wrounding error on joysticlk
-    public static final double OPERATOR_GAIN_MULTIPLIER = 1;//50 % power
-    //adjust this value to ensure smooth drive operation
-    public static double TELEOP_ASSIST_DRIVETRAIN_GAIN = 0.8; // 80% multiplier for drive smooth operation
-    public static double TELEOP_ASSIST_DRIVETRAIN_TURN_GAIN = 0.5; // % gain multiplier for smooth turning operation - slower is better
-
+    public static final double OPERATOR_MULTIPLIER = 1;//50 % power
     public static final double COLORSENSOR_DISTANCE = 5;//5 cm
 
-    //Climber Constants
-    public static int CLIMB_HIGH_RUNG_POSITION = 10;// position for shoulder for basket drop
-    public static int CLIMB_LOWER_RUNG_POSITION = 10;// position for shoulder for basket drop
-    public static int CLIMB_RESET_POSITION =0; // start position
+    public static int ELEVATOR_HIGH_LIMIT_POSITION = -17484;
+    public static int ELEVATOR_HIGH_BASKET_POSITION = -5508;// position for shoulder for basket drop
+    public static int ELEVATOR_HIGH_SPECIMEN_HANG_POSITION = -5508;// position for shoulder for basket drop
+    public static int ELEVATOR_RESET_POSITION =-6; // start position
 
-    public static int ELEVATOR_HIGH_BASKET_POSITION = 10;// position for shoulder for basket drop
-    public static int ELEVATOR_HIGH_SPECIMEN_HANG_POSITION = 10;// position for shoulder for basket drop
-    public static int ELEVATOR_RESET_POSITION =0; // start position
-
-    public static int ROTATING_ARM_JOINT_HIGH_POSITION = 300;   // vertical position
-    public static int ROTATING_ARM_JOINT_BASKET_POSITION = 10;// position for shoulder for basket drop
-    public static int ROTATING_ARM_JOINT_SPECIMEN_HANG_POSITION = 10;// position for shoulder for basket drop
+    public static int ROTATING_ARM_JOINT_HIGH_POSITION = 520;   // vertical position
+    public static int ROTATING_ARM_JOINT_BASKET_POSITION = 278;// position for shoulder for basket drop
+    public static int ROTATING_ARM_JOINT_SPECIMEN_HANG_POSITION = 278;// position for shoulder for basket drop
     public static int ROTATING_ARM_JOINT_RESET_POSITION =0; // start position
+
+    public static int LINEAR_ARM_RESET_POSITION =-126; // start position
+    public static int LINEAR_ARM_BASKET_POSITION = 1176; // start position
+
+    //adjust this value to ensure smooth drive operation
+    public static int TELEOP_ASSIST_DRIVETRAIN_GAIN = 1; // % multiplier for drive smooth operation
+    public static int TELEOP_ASSIST_DRIVETRAIN_TURN_GAIN = (int) 0.5; // % gain multiplier for smooth turning operation - slower is better
 
     //Specimen assist function
     public static int HIGH_RUNG_SPECIMEN_ROBOT_FRONT_POSITION =0; // distance sensor
@@ -57,6 +56,25 @@ public class RobotConstants
 
 //  pickup
     public static final int DISTANCE_SPECIMEN_PICKUP = -725;
+    /*
+    Start:
+        Rotating Arm Start constant; 0
+        Linear Slide elevator : -6
+        Drive motors ; Unimportant
+        Linear SLide Arm -126
+
+    Lower Basket;
+        Rotiaing arm : 278
+        Linear Slide Arm: 1176
+        Right Disatnce: 540
+        Left Diatance: 540
+        INtake Rotoation: NTFO
+        Linaer Slide elevator : -6
+
+    Upper Basket:
+        Linear slide elevatrot: -5508
+        ALL OTHER PARAMETERS ARE THE SAME
+     */
 
 
 
