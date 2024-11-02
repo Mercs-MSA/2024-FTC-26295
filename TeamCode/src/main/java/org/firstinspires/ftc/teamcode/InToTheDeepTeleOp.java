@@ -66,6 +66,7 @@ import static org.firstinspires.ftc.teamcode.drive.DriveConstants.FIELD_CENTRIC;
 import com.qualcomm.hardware.rev.Rev2mDistanceSensor;
 import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.NormalizedColorSensor;
 import com.qualcomm.robotcore.hardware.NormalizedRGBA;
 import com.qualcomm.hardware.rev.RevBlinkinLedDriver;
@@ -107,11 +108,11 @@ public class InToTheDeepTeleOp extends LinearOpMode {
     private DcMotorEx linearSlideElevator = null;
     private DcMotorEx linearSlideARM = null;
     private DcMotorEx RotatingARMJoint;
-    private Servo Intakerollerdirection;
+    private CRServo Intakerollerdirection;
     private CRServo IntakeWheelSpin;
 
     private DcMotorEx Climb = null;
-    private Servo hook;
+    private CRServo hook;
 
     NormalizedColorSensor colorSensor;
     RevBlinkinLedDriver blinkinLedDriver;
@@ -159,11 +160,11 @@ public class InToTheDeepTeleOp extends LinearOpMode {
         linearSlideARM = hardwareMap.get(DcMotorEx.class, "linearSlideARM");
         RotatingARMJoint = hardwareMap.get(DcMotorEx.class, "RotatingARMJoint");
         //Servos
-        Intakerollerdirection = hardwareMap.get(Servo.class, "IntakeRotation");
+        Intakerollerdirection = hardwareMap.get(CRServo.class, "IntakeRotation");
         IntakeWheelSpin = hardwareMap.get(CRServo.class, "wheelSpin");
         //Ascent HW Init
         Climb = hardwareMap.get(DcMotorEx.class, "climb");
-        hook = hardwareMap.get(Servo.class, "hook");
+        hook = hardwareMap.get(CRServo.class, "hook");
 
         //Initialize the color sensor
         colorSensor = hardwareMap.get(NormalizedColorSensor.class, "colorSensor");
@@ -177,8 +178,8 @@ public class InToTheDeepTeleOp extends LinearOpMode {
 
         // Configure Hardware for correct state
 //      Robot Drive base direction
-        leftFrontDrive.setDirection(DcMotorEx.Direction.FORWARD);
-        leftBackDrive.setDirection(DcMotorEx.Direction.REVERSE);
+        leftFrontDrive.setDirection(DcMotorEx.Direction.REVERSE);
+        leftBackDrive.setDirection(DcMotorEx.Direction.FORWARD);
         rightFrontDrive.setDirection(DcMotorEx.Direction.REVERSE);
         rightBackDrive.setDirection(DcMotorEx.Direction.FORWARD);
 
@@ -210,10 +211,10 @@ public class InToTheDeepTeleOp extends LinearOpMode {
         linearSlideARM.setMode(DcMotorEx.RunMode.RUN_USING_ENCODER);
         // Elevator and shoulder rotation needs control running continuously, need to run power continuously
         // hence set more run to position and set position and give power
-//        RotatingARMJoint.setMode(DcMotorEx.RunMode.RUN_USING_ENCODER);
-        linearSlideElevator.setMode(DcMotorEx.RunMode.RUN_TO_POSITION);
-        RotatingARMJoint.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        Climb.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        RotatingARMJoint.setMode(DcMotorEx.RunMode.RUN_USING_ENCODER);
+        linearSlideElevator.setMode(DcMotorEx.RunMode.RUN_USING_ENCODER);
+//        RotatingARMJoint.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        Climb.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
     }
 
     public void updatedrivebase(double lf, double lb, double rf, double rb) {
@@ -236,7 +237,7 @@ public class InToTheDeepTeleOp extends LinearOpMode {
         telemetry.addData("Linear SlideARM ", linearSlideARM.getCurrentPosition());
         telemetry.addData("rotatingARM", RotatingARMJoint.getCurrentPosition());
 
-        telemetry.addData("IntakeWheel Position ", Intakerollerdirection.getPosition());
+        telemetry.addData("IntakeWheel Power ", Intakerollerdirection.getPower());
 
         telemetry.addData("climb ", Climb.getCurrentPosition());
         telemetry.addData("Sample detected", getSampleColor());
@@ -299,8 +300,8 @@ public class InToTheDeepTeleOp extends LinearOpMode {
 */
         // Competition Robot Directions
         IMU.Parameters parameters = new IMU.Parameters(new RevHubOrientationOnRobot(
-                RevHubOrientationOnRobot.LogoFacingDirection.BACKWARD,
-                RevHubOrientationOnRobot.UsbFacingDirection.RIGHT));
+                RevHubOrientationOnRobot.LogoFacingDirection.LEFT,
+                RevHubOrientationOnRobot.UsbFacingDirection.FORWARD));
 
         imu.initialize(parameters);
 //      IMU calibration
@@ -449,13 +450,13 @@ public class InToTheDeepTeleOp extends LinearOpMode {
                     linearSlideARM.setPower(0);
                 }
                 while (gamepad2.dpad_left) {
-                    hook.setPosition(1);
+                    hook.setPower(1);
                 }
                 while (gamepad2.dpad_right) {
-                    hook.setPosition(-1);
+                    hook.setPower(-1);
                 }
 //                else {
-                    hook.setPosition(0);
+                    hook.setPower(0);
 //                }
                 // Wheel Spine
                 while (gamepad2.a) {
@@ -473,15 +474,15 @@ public class InToTheDeepTeleOp extends LinearOpMode {
 
                 // Intakerollerdirection
                 if(gamepad2.y) {
-                    Intakerollerdirection.setPosition(-0.25);
+                    Intakerollerdirection.setPower(-0.25);
 //                    Intakerollerdirection.setDirection(CRServo.Direction.FORWARD);
                 }
                 else if (gamepad2.x) {
-                    Intakerollerdirection.setPosition(0.25);
+                    Intakerollerdirection.setPower(0.25);
 //                    Intakerollerdirection.setDirection(CRServo.Direction.REVERSE);
                 }
                 else {
-//                    Intakerollerdirection.setPosition(1);
+                    Intakerollerdirection.setPower(0);
                 }
 
             }
