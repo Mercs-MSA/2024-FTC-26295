@@ -1,10 +1,13 @@
 package org.firstinspires.ftc.teamcode.drive.opmode;
 
+import static org.firstinspires.ftc.teamcode.RobotConstants.ROTATING_ARM_JOINT_BASKET_POSITION;
+
 import com.acmerobotics.roadrunner.geometry.Pose2d;
 import com.acmerobotics.roadrunner.geometry.Vector2d;
 import com.qualcomm.hardware.rev.RevHubOrientationOnRobot;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
@@ -23,6 +26,8 @@ public class IntoTheDeep_Autonomous extends LinearOpMode {
     private DcMotorEx rightFrontDrive = null;
     private DcMotorEx rightBackDrive = null;
     private IMU imu = null;
+    private DcMotorEx RotatingARMJoint;
+    CRServo IntakeWheelSpin;
 
     @Override
     public void runOpMode() throws InterruptedException {
@@ -57,20 +62,59 @@ public class IntoTheDeep_Autonomous extends LinearOpMode {
 
         Pose2d startPose = new Pose2d(-36, -36, Math.toRadians(0)); //  start pose
 
+        RotatingARMJoint.setDirection(DcMotorEx.Direction.FORWARD);
+        RotatingARMJoint.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.BRAKE);
+        RotatingARMJoint.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        RotatingARMJoint.setTargetPosition(ROTATING_ARM_JOINT_BASKET_POSITION);
+        RotatingARMJoint.setPower(1);
+        IntakeWheelSpin.
+                IntakeWheelSpin.setPower(+1.0);
+
+
         // Define your trajectory sequence here (replace with MeepMeep output)
         TrajectorySequence trajSeq = drive.trajectorySequenceBuilder(startPose)
-//                .forward(25)
+////                .forward(25)
 //                .strafeLeft(-85)
 //                .forward(13.2)
-//                .strafeLeft(86.5)
+//                .strafeLeft(84.5)
 //                .strafeLeft(-85)
 //                .forward(12.5)
 //                .strafeLeft(86.35)
 //                .strafeLeft(-85)
 //                .forward(11.5)
-                .strafeLeft(-86.3)
-               .forward(40.2)
+//                .strafeLeft(-86.3)
+////               .forward(40.2)
+                .forward(87.2)
+                .strafeLeft(-13.2)
+                .forward(-84.5)
+                .forward(87.2)
+                .strafeLeft(13.2)
+                .forward(-84.7)
+                .forward(85)
+                .strafeLeft(13.2)
+                .forward(84.2)
 
+
+
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+
+
+
+
+
+//
+//
+//
 //                .turn(Math.toRadians(-120))
 //              .strafeLeft(20)
 //                .splineTo(new Vector2d(0, 36), Math.toRadians(0))
@@ -85,3 +129,12 @@ public class IntoTheDeep_Autonomous extends LinearOpMode {
         drive.followTrajectorySequence(trajSeq);
     }
 }
+//Distance for Auton 1 start position: 704
+// Lift arm for Auton 1 reset position: 0
+// ;linear slide elevator position : -6
+//linear slide arm position :126
+//lower basket position rotating arm :278
+//lower basket position linear slide : 116
+//left distance senson : 540
+//wheel rotarion : no value
+// linear slide elevation : -6
