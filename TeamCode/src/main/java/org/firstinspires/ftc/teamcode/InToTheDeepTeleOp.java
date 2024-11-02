@@ -463,7 +463,7 @@ public class InToTheDeepTeleOp extends LinearOpMode {
 //                    IntakeWheelSpin.setDirection(CRServo.Direction.FORWARD);
                 }
                 while(gamepad2.b) {
-                        IntakeWheelSpin.setPower(-1.0);
+                    IntakeWheelSpin.setPower(-1.0);
 //                    IntakeWheelSpin.setDirection(CRServo.Direction.REVERSE);
                 }
                 IntakeWheelSpin.setPower(0);
