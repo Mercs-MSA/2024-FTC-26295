@@ -73,7 +73,9 @@ public class IntoTheDeep_Autonomous extends LinearOpMode {
 
         // Define your trajectory sequence here (replace with MeepMeep output)
         TrajectorySequence trajSeq = drive.trajectorySequenceBuilder(startPose)
-////                .forward(25)
+////                 Practice robot / might work if comp bot is positioned straight
+
+//                  .forward(25)
 //                .strafeLeft(-85)
 //                .forward(13.2)
 //                .strafeLeft(84.5)
@@ -84,6 +86,10 @@ public class IntoTheDeep_Autonomous extends LinearOpMode {
 //                .forward(11.5)
 //                .strafeLeft(-86.3)
 ////               .forward(40.2)
+
+                //Comp robot
+                .strafeLeft(12.2) //might work to drop specimen first
+                .strafeLeft(12.2) // //might work to drop specimen first
                 .forward(87.2)
                 .strafeLeft(-13.2)
                 .forward(-84.5)
@@ -93,6 +99,10 @@ public class IntoTheDeep_Autonomous extends LinearOpMode {
                 .forward(85)
                 .strafeLeft(13.2)
                 .forward(84.2)
+
+
+
+
 
 
 
