@@ -68,7 +68,7 @@ public class IntoTheDeep_Autonomous extends LinearOpMode {
         RotatingARMJoint.setTargetPosition(ROTATING_ARM_JOINT_BASKET_POSITION);
         RotatingARMJoint.setPower(1);
         IntakeWheelSpin.
-                IntakeWheelSpin.setPower(+1.0);
+//                IntakeWheelSpin.setPower(+1.0);
 
 
         // Define your trajectory sequence here (replace with MeepMeep output)
