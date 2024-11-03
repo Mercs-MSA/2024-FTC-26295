@@ -4,7 +4,7 @@ public class RobotConstants
 {
 
     public static final double OPERATOR_ERROR_MARGIN = 0.5;//wrounding error on joysticlk
-    public static final double OPERATOR_MULTIPLIER = 1;//50 % power
+    public static final double OPERATOR_GAIN_MULTIPLIER = 1;//50 % power
     public static final double COLORSENSOR_DISTANCE = 5;//5 cm
 
     public static int ELEVATOR_HIGH_LIMIT_POSITION = -17484;
@@ -22,7 +22,7 @@ public class RobotConstants
 
     //adjust this value to ensure smooth drive operation
     public static int TELEOP_ASSIST_DRIVETRAIN_GAIN = 1; // % multiplier for drive smooth operation
-    public static int TELEOP_ASSIST_DRIVETRAIN_TURN_GAIN = (int) 0.5; // % gain multiplier for smooth turning operation - slower is better
+    public static int TELEOP_ASSIST_DRIVETRAIN_TURN_GAIN = 1; // % gain multiplier for smooth turning operation - slower is better
 
     //Specimen assist function
     public static int HIGH_RUNG_SPECIMEN_ROBOT_FRONT_POSITION =0; // distance sensor

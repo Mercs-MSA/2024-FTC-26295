@@ -114,38 +114,37 @@ public class InToTheDeepTeleOp extends LinearOpMode {
     private DcMotorEx Climb = null;
     private CRServo hook;
 
-    NormalizedColorSensor colorSensor;
-    RevBlinkinLedDriver blinkinLedDriver;
+//    RevBlinkinLedDriver blinkinLedDriver;
     Rev2mDistanceSensor leftDistanceSensor;
     Rev2mDistanceSensor rightDistanceSensor;
 
-    public String getSampleColor() {
-        NormalizedRGBA colors = colorSensor.getNormalizedColors();
-        double distance = ((DistanceSensor) colorSensor).getDistance(DistanceUnit.CM);
-        float maxsat = Math.max(Math.max(colors.red, colors.green), colors.blue);
-        float r = colors.red / maxsat;
-        float g = colors.green / maxsat;
-        float b = colors.blue / maxsat;
-
-        String sample = "Nothing";
-
-        if (distance < COLORSENSOR_DISTANCE) {
-            if (r == 1.0) {
-                sample = "Red";
-                blinkinLedDriver.setPattern(RevBlinkinLedDriver.BlinkinPattern.RED);
-            } else if (b == 1.00) {
-                sample = "Blue";
-                blinkinLedDriver.setPattern(RevBlinkinLedDriver.BlinkinPattern.BLUE);
-            } else {
-                sample = "Yellow";
-                blinkinLedDriver.setPattern(RevBlinkinLedDriver.BlinkinPattern.YELLOW);
-            }
-        } else {
-            //Bluegreen color - I'm chicking it to see if it can do stuff :)
-            blinkinLedDriver.setPattern(RevBlinkinLedDriver.BlinkinPattern.DARK_GREEN);
-        }
-        return sample;
-    }
+//    public String getSampleColor() {
+////        NormalizedRGBA colors = colorSensor.getNormalizedColors();
+////        double distance = ((DistanceSensor) colorSensor).getDistance(DistanceUnit.CM);
+//        float maxsat = Math.max(Math.max(colors.red, colors.green), colors.blue);
+//        float r = colors.red / maxsat;
+//        float g = colors.green / maxsat;
+//        float b = colors.blue / maxsat;
+//
+//        String sample = "Nothing";
+//
+//        if (distance < COLORSENSOR_DISTANCE) {
+//            if (r == 1.0) {
+//                sample = "Red";
+//                blinkinLedDriver.setPattern(RevBlinkinLedDriver.BlinkinPattern.RED);
+//            } else if (b == 1.00) {
+//                sample = "Blue";
+//                blinkinLedDriver.setPattern(RevBlinkinLedDriver.BlinkinPattern.BLUE);
+//            } else {
+//                sample = "Yellow";
+//                blinkinLedDriver.setPattern(RevBlinkinLedDriver.BlinkinPattern.YELLOW);
+//            }
+//        } else {
+//            //Bluegreen color - I'm chicking it to see if it can do stuff :)
+//            blinkinLedDriver.setPattern(RevBlinkinLedDriver.BlinkinPattern.DARK_GREEN);
+//        }
+//        return sample;
+//    }
 
     public void initializemotor() {
         // to the names assigned during the robot co
@@ -167,14 +166,14 @@ public class InToTheDeepTeleOp extends LinearOpMode {
         hook = hardwareMap.get(CRServo.class, "hook");
 
         //Initialize the color sensor
-        colorSensor = hardwareMap.get(NormalizedColorSensor.class, "colorSensor");
+ //       colorSensor = hardwareMap.get(NormalizedColorSensor.class, "colorSensor");
 
         //Initialize distance sensors
-        leftDistanceSensor = hardwareMap.get(Rev2mDistanceSensor.class, "leftDistanceSensor");
-        rightDistanceSensor = hardwareMap.get(Rev2mDistanceSensor.class, "rightDistanceSensor");
+//        leftDistanceSensor = hardwareMap.get(Rev2mDistanceSensor.class, "leftDistanceSensor");
+  //      rightDistanceSensor = hardwareMap.get(Rev2mDistanceSensor.class, "rightDistanceSensor");
 
-        blinkinLedDriver = hardwareMap.get(RevBlinkinLedDriver.class, "blinkin");
-        blinkinLedDriver.setPattern(RevBlinkinLedDriver.BlinkinPattern.DARK_GREEN);
+    //    blinkinLedDriver = hardwareMap.get(RevBlinkinLedDriver.class, "blinkin");
+ //       blinkinLedDriver.setPattern(RevBlinkinLedDriver.BlinkinPattern.DARK_GREEN);
 
         // Configure Hardware for correct state
 //      Robot Drive base direction
@@ -189,7 +188,7 @@ public class InToTheDeepTeleOp extends LinearOpMode {
 //        IntakeWheelSpin.setPosition(0);
         RotatingARMJoint.setDirection(DcMotorEx.Direction.FORWARD);
 
-        Climb.setDirection(DcMotorEx.Direction.FORWARD);
+        Climb.setDirection(DcMotorEx.Direction.REVERSE);
 //        hook.setPosition(0);
 
         //         Competition Robot Direction
@@ -240,9 +239,9 @@ public class InToTheDeepTeleOp extends LinearOpMode {
         telemetry.addData("IntakeWheel Power ", Intakerollerdirection.getPower());
 
         telemetry.addData("climb ", Climb.getCurrentPosition());
-        telemetry.addData("Sample detected", getSampleColor());
-        telemetry.addData("Left distance", leftDistanceSensor.getDistance(DistanceUnit.MM));
-        telemetry.addData("Front distance", rightDistanceSensor.getDistance(DistanceUnit.MM));
+//        telemetry.addData("Sample detected", getSampleColor());
+ //       telemetry.addData("Left distance", leftDistanceSensor.getDistance(DistanceUnit.MM));
+   //     telemetry.addData("Front distance", rightDistanceSensor.getDistance(DistanceUnit.MM));
         telemetry.addData("WheelIntake", IntakeWheelSpin.getPower());
         telemetry.update();
 
@@ -447,30 +446,32 @@ public class InToTheDeepTeleOp extends LinearOpMode {
                     ARMVar=0;
                 }
                 else {
-                    linearSlideARM.setPower(0);
+//                    linearSlideARM.setPower(0);
                 }
-                while (gamepad2.dpad_left) {
+                if (gamepad2.dpad_up) {
                     hook.setPower(1);
                 }
-                while (gamepad2.dpad_right) {
+                else if (gamepad2.dpad_down) {
                     hook.setPower(-1);
                 }
-//                else {
+                else {
                     hook.setPower(0);
-//                }
+                }
                 // Wheel Spine
-                while (gamepad2.a) {
+                if (gamepad2.a) {
                     IntakeWheelSpin.setPower(+1.0);
 //                    IntakeWheelSpin.setDirection(CRServo.Direction.FORWARD);
                 }
-                while(gamepad2.b) {
+                else if(gamepad2.b) {
                     IntakeWheelSpin.setPower(-1.0);
 //                    IntakeWheelSpin.setDirection(CRServo.Direction.REVERSE);
                 }
-                IntakeWheelSpin.setPower(0);
-//
-                sleep(200);
-//                }
+                else {
+                    IntakeWheelSpin.setPower(0);
+                }
+                //
+//                sleep(200);
+                }
 
                 // Intakerollerdirection
                 if(gamepad2.y) {
@@ -484,7 +485,14 @@ public class InToTheDeepTeleOp extends LinearOpMode {
                 else {
                     Intakerollerdirection.setPower(0);
                 }
-
+                if (gamepad2.dpad_left) {
+                    linearSlideARM.setPower(1);
+                }
+                else if (gamepad2.dpad_right) {
+                    linearSlideARM.setPower(-1);
+                }
+                else {
+                    linearSlideARM.setPower(0);
             }
 
 //            }

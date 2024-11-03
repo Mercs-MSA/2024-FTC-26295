@@ -49,10 +49,10 @@ import org.firstinspires.ftc.teamcode.trajectorysequence.TrajectorySequence;
             rightBackDrive = hardwareMap.get(DcMotorEx.class, "rightBackDrive");
 
             // Set motor directions (adjust these based on your robot)
-            leftFrontDrive.setDirection(DcMotorSimple.Direction.FORWARD);
-            rightFrontDrive.setDirection(DcMotorSimple.Direction.FORWARD);
-            leftBackDrive.setDirection(DcMotorSimple.Direction.FORWARD);
-            rightBackDrive.setDirection(DcMotorSimple.Direction.REVERSE);
+            leftFrontDrive.setDirection(DcMotorEx.Direction.REVERSE);
+            leftBackDrive.setDirection(DcMotorEx.Direction.FORWARD);
+            rightFrontDrive.setDirection(DcMotorEx.Direction.REVERSE);
+            rightBackDrive.setDirection(DcMotorEx.Direction.FORWARD);
 
 
             leftBackDrive.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
@@ -76,15 +76,15 @@ import org.firstinspires.ftc.teamcode.trajectorysequence.TrajectorySequence;
             // Define your trajectory sequence here (replace with MeepMeep output)
             TrajectorySequence trajSeq = drive.trajectorySequenceBuilder(startPose)
 //                .forward(25)
-                .strafeLeft(-85)
-                .forward(-13.2)
-                .strafeLeft(86.5)
-                .strafeLeft(-85)
-                .forward(-12.5)
-                .strafeLeft(86.35)
-                .strafeLeft(-84.7)
-                .forward(-11.8)
-                    .strafeLeft(86.3)
+                .forward(85)
+                .strafeLeft(13.2)
+                .forward(-86.5)
+                .forward(85)
+                .strafeLeft(12.5)
+                .forward(-86.35)
+                .forward(84.7)
+                .strafeLeft(11.8)
+                    .forward(-86.3)
 //                    .forward(40.2)
 
 //                .turn(Math.toRadians(-120))
