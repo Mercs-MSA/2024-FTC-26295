@@ -21,8 +21,8 @@ public class RobotConstants
     public static int LINEAR_ARM_BASKET_POSITION = 1176; // start position
 
     //adjust this value to ensure smooth drive operation
-    public static int TELEOP_ASSIST_DRIVETRAIN_GAIN = 1; // % multiplier for drive smooth operation
-    public static int TELEOP_ASSIST_DRIVETRAIN_TURN_GAIN = 1; // % gain multiplier for smooth turning operation - slower is better
+    public static float TELEOP_ASSIST_DRIVETRAIN_GAIN = 1; // % multiplier for drive smooth operation
+    public static float TELEOP_ASSIST_DRIVETRAIN_TURN_GAIN = 1; // % gain multiplier for smooth turning operation - slower is better
 
     //Specimen assist function
     public static int HIGH_RUNG_SPECIMEN_ROBOT_FRONT_POSITION =0; // distance sensor

@@ -38,10 +38,10 @@ rightDistanceSensor            control            i2cBus 3                rightD
         gamepad1.jpystick2                  turn left                 ||      gamepad2.jpystick1 y  LB      IntakeElevator up
         gamepad1.jpystick2                  turn right                ||      gamepad2.jpystick1 y  LT     IntakeElevator down
         gamepad1.a                         initialize/reset IMU       ||      gamepad2.jpystick1 x RB     IntakeARM fwd
-        gamepad1.dpadleft                  Auto red Pos1              ||      gamepad2.jpystick1 x RT     IntakeARM back
-        gamepad1.dpadright                  Auto Red Pos2             ||      gamepad2.joystick2 x      RotatingARMJoint up
-        gamepad1.dpadup                  Auto Blue Pos1               ||      gamepad2.joystick2 x      RotatingARMJoint down
-        gamepad1.dpaddown                  Auto Blue Pos2             ||      gamepad2.a                intakeRollerLefttoRight
+        gamepad1.dpadleft                  specimen high rung         ||      gamepad2.jpystick1 x RT     IntakeARM back
+        gamepad1.dpadright                 specimen lower rung        ||      gamepad2.joystick2 x      RotatingARMJoint up
+        gamepad1.dpadup                    samples high basket        ||      gamepad2.joystick2 x      RotatingARMJoint down
+        gamepad1.dpaddown                  samples lower basket       ||      gamepad2.a                intakeRollerLefttoRight
         gamepad1.y                  Tele-Op operatorAssist            ||      gamepad2.b                intakeRollerRighttoLeft
         gamepad1.x                  all motor reset             ||      gamepad2.x                 IntakeRollersample
         gamepad1.                                                    ||      gamepad2.y                 ReleaseRollersample
@@ -58,6 +58,7 @@ rightDistanceSensor            control            i2cBus 3                rightD
 import static org.firstinspires.ftc.teamcode.RobotConstants.COLORSENSOR_DISTANCE;
 import static org.firstinspires.ftc.teamcode.RobotConstants.OPERATOR_ERROR_MARGIN;
 import static org.firstinspires.ftc.teamcode.RobotConstants.OPERATOR_GAIN_MULTIPLIER;
+import static org.firstinspires.ftc.teamcode.RobotConstants.ROTATING_ARM_JOINT_RESET_POSITION;
 import static org.firstinspires.ftc.teamcode.RobotConstants.TELEOP_ASSIST_DRIVETRAIN_GAIN;
 import static org.firstinspires.ftc.teamcode.RobotConstants.TELEOP_ASSIST_DRIVETRAIN_TURN_GAIN;
 import static org.firstinspires.ftc.teamcode.drive.DriveConstants.MaxVelocity;
@@ -380,11 +381,6 @@ public class InToTheDeepTeleOp extends LinearOpMode {
                 rightBackPower /= max;
             }
 
-            if (gamepad1.y)
-                driverAssistPickup = false;
-            else
-                driverAssistPickup = false;
-
             // Read joystick for DC motor operation.
             double climbVar = gamepad2.right_stick_y;
             double ARMjointVar = gamepad2.right_stick_x;
@@ -399,13 +395,11 @@ public class InToTheDeepTeleOp extends LinearOpMode {
                 elevatorVar =0;
             if ((ARMVar > -OPERATOR_ERROR_MARGIN) && (ARMVar < OPERATOR_ERROR_MARGIN))
                 ARMVar=0;
-            if (!driverAssistPickup) {
-                //Manual Operation for ARM, sholder, Elevator, Climb, Hook
+
+            //Manual Operation for ARM, sholder, Elevator, Climb, Hook
             //          Climber Logic
 //             Below this is code to get the arm and climb working
                 if ((climbVar != 0)
-//                && (Climb.getCurrentPosition() >= constants.CLIMBELEVATOR_RESET_RELEASE)
-//                && (Climb.getCurrentPosition() <= constants.CLIMBELEVATOR_TOP_RUNG_RELEASE)
                 ) {
                     Climb.setPower(climbVar);
                     climbVar=0;
@@ -414,32 +408,38 @@ public class InToTheDeepTeleOp extends LinearOpMode {
                     Climb.setPower(0);
                 }
 
+                // Move ARM Joint (Shoulder) to desired Position.
                 if ((ARMjointVar != 0)
-//                        &&  (RotatingARMJoint.getCurrentPosition() <= constants.ARMJOINT_UPPER_POSITION)
-//                        &&  (RotatingARMJoint.getCurrentPosition() >= ARMJOINT_LOWER_POSITION)
                 ) {
-//                    if(ARMjointVar < 0)
-//                        ARMjointVar=ARMjointVar*0.5;
-//                    RotatingARMJoint.setTargetPosition(ROTATING_ARM_JOINT_BASKET_POSITION);
+                    //Ensure that downward drop is controlled motion with position controlled movement.
+                    if(ARMjointVar < 0) {
+                        RotatingARMJoint.setTargetPosition(ROTATING_ARM_JOINT_RESET_POSITION);
+                        RotatingARMJoint.setPower(1);
+                    }
+                    RotatingARMJoint.setMode(DcMotorEx.RunMode.RUN_USING_ENCODER);
                     RotatingARMJoint.setPower(ARMjointVar);
                     // keep running motor to control loop
                     ARMjointVar=0;
                 }
                 else {
-                    RotatingARMJoint.setPower(0);
-     //               RotatingARMJoint.setTargetPosition(ROTATING_ARM_JOINT_RESET_POSITION);
+                    RotatingARMJoint.setTargetPosition(RotatingARMJoint.getCurrentPosition());
+                    RotatingARMJoint.setMode(DcMotorEx.RunMode.RUN_TO_POSITION);
+    //                RotatingARMJoint.setPower(0);
+    //               RotatingARMJoint.setTargetPosition(ROTATING_ARM_JOINT_RESET_POSITION);
                 }
                 if ((elevatorVar != 0)
-//                   &&     (linearSlideElevator.getCurrentPosition() >= LINEARSLIDEELEVATOR_RESET_POSITION)
-//                   &&     (linearSlideElevator.getCurrentPosition() <= LINEARSLIDEELEVATOR_TOP_RUNG_PLACE)
                 ) {
+                    // Move Elevator to desired Position.
 //                    linearSlideElevator.setTargetPosition(ELEVATOR_HIGH_BASKET_POSITION);
+                    linearSlideElevator.setMode(DcMotorEx.RunMode.RUN_USING_ENCODER);
                     linearSlideElevator.setPower(elevatorVar);
                     elevatorVar=0;
                 }
                 else {
 //                    linearSlideElevator.setTargetPosition(ELEVATOR_RESET_POSITION);
-                    linearSlideElevator.setPower(0);
+                    linearSlideElevator.setTargetPosition(linearSlideElevator.getCurrentPosition());
+                    linearSlideElevator.setMode(DcMotorEx.RunMode.RUN_TO_POSITION);
+//                    linearSlideElevator.setPower(0);
                 }
                 if (ARMVar != 0) {
                     linearSlideARM.setPower(ARMVar* OPERATOR_GAIN_MULTIPLIER);
@@ -469,18 +469,14 @@ public class InToTheDeepTeleOp extends LinearOpMode {
                 else {
                     IntakeWheelSpin.setPower(0);
                 }
-                //
-//                sleep(200);
-                }
+
 
                 // Intakerollerdirection
                 if(gamepad2.y) {
                     Intakerollerdirection.setPower(-0.25);
-//                    Intakerollerdirection.setDirection(CRServo.Direction.FORWARD);
                 }
                 else if (gamepad2.x) {
                     Intakerollerdirection.setPower(0.25);
-//                    Intakerollerdirection.setDirection(CRServo.Direction.REVERSE);
                 }
                 else {
                     Intakerollerdirection.setPower(0);
@@ -493,31 +489,25 @@ public class InToTheDeepTeleOp extends LinearOpMode {
                 }
                 else {
                     linearSlideARM.setPower(0);
-            }
+                }
 
-//            }
-            // This is test code:
-            //
-            // Uncomment the following code to test your motor directions.
-            // Each button should make the corresponding motor run FORWARD.
-            //   1) First get all the motors to take to correct positions on the robot
-            //      by adjusting your Robot Configuration if necessary.
-            //   2) Then make sure they run in the correct direction by modifying the
-            //      the setDirection() calls above.
-            // Once the correct motors move in the correct direction re-comment this code.
-//            if(gamepad1.circle){
-//          armAndClimb  = gamepad1.x ? 1.0 : 0.0;  // X gamepad
-//            leftBackPower   = gamepad1.a ? 1.0 : 0.0;  // A gamepad
-//            rightFrontPower = gamepad1.y ? 1.0 : 0.0;  // Y gamepad
-//            rightBackPower  = gamepad1.b ? 1.0 : 0.0;  // B gamepad
-//            }
+                if(gamepad1.dpad_left){            //High rung Specimen
+                    //go to set distance
+                    //raise elevator to desired height
+                    // raise Shoulder
+                    // extend ARM
+                    // retract elevator
+                }
+                else if (gamepad1.dpad_right){                    //Lower Rung specimen
+                    //go to set distance
+                    //raise elevator to desired height
+                    // raise Shoulder
+                    // extend ARM
+                    // retract elevator
+                }
 
             // Send calculated power to wheels double lf, double lb, double rf, double rb
             updatedrivebase(leftFrontPower, leftBackPower, rightFrontPower, rightBackPower);
-//            leftFrontDrive.setPower(leftFrontPower);
-//            rightFrontDrive.setPower(rightFrontPower);
-//            leftBackDrive.setPower(leftBackPower);
-//            rightBackDrive.setPower(rightBackPower);
 
             // Show the elapsed game time and wheel power.c
             updatetelemetry_26295(heading);
