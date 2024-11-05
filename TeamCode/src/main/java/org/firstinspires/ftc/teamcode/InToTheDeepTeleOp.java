@@ -65,6 +65,7 @@ import static org.firstinspires.ftc.teamcode.drive.DriveConstants.MaxVelocity;
 import static org.firstinspires.ftc.teamcode.drive.DriveConstants.FIELD_CENTRIC;
 
 import com.qualcomm.hardware.rev.Rev2mDistanceSensor;
+import com.qualcomm.hardware.rev.RevColorSensorV3;
 import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
@@ -115,37 +116,38 @@ public class InToTheDeepTeleOp extends LinearOpMode {
     private DcMotorEx Climb = null;
     private CRServo hook;
 
-//    RevBlinkinLedDriver blinkinLedDriver;
+    RevBlinkinLedDriver blinkinLedDriver;
     Rev2mDistanceSensor leftDistanceSensor;
     Rev2mDistanceSensor rightDistanceSensor;
+    RevColorSensorV3 colorSensor;
 
-//    public String getSampleColor() {
-////        NormalizedRGBA colors = colorSensor.getNormalizedColors();
-////        double distance = ((DistanceSensor) colorSensor).getDistance(DistanceUnit.CM);
-//        float maxsat = Math.max(Math.max(colors.red, colors.green), colors.blue);
-//        float r = colors.red / maxsat;
-//        float g = colors.green / maxsat;
-//        float b = colors.blue / maxsat;
-//
-//        String sample = "Nothing";
-//
-//        if (distance < COLORSENSOR_DISTANCE) {
-//            if (r == 1.0) {
-//                sample = "Red";
-//                blinkinLedDriver.setPattern(RevBlinkinLedDriver.BlinkinPattern.RED);
-//            } else if (b == 1.00) {
-//                sample = "Blue";
-//                blinkinLedDriver.setPattern(RevBlinkinLedDriver.BlinkinPattern.BLUE);
-//            } else {
-//                sample = "Yellow";
-//                blinkinLedDriver.setPattern(RevBlinkinLedDriver.BlinkinPattern.YELLOW);
-//            }
-//        } else {
-//            //Bluegreen color - I'm chicking it to see if it can do stuff :)
-//            blinkinLedDriver.setPattern(RevBlinkinLedDriver.BlinkinPattern.DARK_GREEN);
-//        }
-//        return sample;
-//    }
+    public String getSampleColor() {
+        NormalizedRGBA colors = colorSensor.getNormalizedColors();
+        double distance = ((DistanceSensor) colorSensor).getDistance(DistanceUnit.CM);
+        float maxsat = Math.max(Math.max(colors.red, colors.green), colors.blue);
+        float r = colors.red / maxsat;
+        float g = colors.green / maxsat;
+        float b = colors.blue / maxsat;
+
+        String sample = "Nothing";
+
+        if (distance < COLORSENSOR_DISTANCE) {
+            if (r == 1.0) {
+                sample = "Red";
+                blinkinLedDriver.setPattern(RevBlinkinLedDriver.BlinkinPattern.RED);
+            } else if (b == 1.00) {
+                sample = "Blue";
+                blinkinLedDriver.setPattern(RevBlinkinLedDriver.BlinkinPattern.BLUE);
+            } else {
+                sample = "Yellow";
+                blinkinLedDriver.setPattern(RevBlinkinLedDriver.BlinkinPattern.YELLOW);
+            }
+        } else {
+            //Bluegreen color - I'm chicking it to see if it can do stuff :)
+            blinkinLedDriver.setPattern(RevBlinkinLedDriver.BlinkinPattern.DARK_GREEN);
+        }
+        return sample;
+    }
 
     public void initializemotor() {
         // to the names assigned during the robot co
@@ -167,14 +169,15 @@ public class InToTheDeepTeleOp extends LinearOpMode {
         hook = hardwareMap.get(CRServo.class, "hook");
 
         //Initialize the color sensor
- //       colorSensor = hardwareMap.get(NormalizedColorSensor.class, "colorSensor");
+//        colorSensor = hardwareMap.get(NormalizedColorSensor.class, "colorSensor");
+        colorSensor = hardwareMap.get(RevColorSensorV3.class, "colorSensor");
 
         //Initialize distance sensors
-//        leftDistanceSensor = hardwareMap.get(Rev2mDistanceSensor.class, "leftDistanceSensor");
-  //      rightDistanceSensor = hardwareMap.get(Rev2mDistanceSensor.class, "rightDistanceSensor");
+        leftDistanceSensor = hardwareMap.get(Rev2mDistanceSensor.class, "leftDistanceSensor");
+        rightDistanceSensor = hardwareMap.get(Rev2mDistanceSensor.class, "rightDistanceSensor");
 
-    //    blinkinLedDriver = hardwareMap.get(RevBlinkinLedDriver.class, "blinkin");
- //       blinkinLedDriver.setPattern(RevBlinkinLedDriver.BlinkinPattern.DARK_GREEN);
+        blinkinLedDriver = hardwareMap.get(RevBlinkinLedDriver.class, "blinkin");
+        blinkinLedDriver.setPattern(RevBlinkinLedDriver.BlinkinPattern.DARK_GREEN);
 
         // Configure Hardware for correct state
 //      Robot Drive base direction
@@ -399,8 +402,8 @@ public class InToTheDeepTeleOp extends LinearOpMode {
             //Manual Operation for ARM, sholder, Elevator, Climb, Hook
             //          Climber Logic
 //             Below this is code to get the arm and climb working
-                if ((climbVar != 0)
-                ) {
+                if(climbVar != 0)
+                 {
                     Climb.setPower(climbVar);
                     climbVar=0;
                 }
