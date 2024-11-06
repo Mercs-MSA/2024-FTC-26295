@@ -76,21 +76,41 @@ import org.firstinspires.ftc.teamcode.trajectorysequence.TrajectorySequence;
             // Define your trajectory sequence here (replace with MeepMeep output)
             TrajectorySequence trajSeq = drive.trajectorySequenceBuilder(startPose)
 //                .forward(25)
-                .forward(85)
-                .strafeLeft(13.2)
-                .forward(-86.5)
-                .forward(85)
-                .strafeLeft(12.5)
-                .forward(-86.35)
-                .forward(84.7)
-                .strafeLeft(11.8)
-                    .forward(-86.3)
-//                    .forward(40.2)
+//                .forward(85)
+//                .strafeLeft(13.2)
+//                .forward(-86.5)
+//                .forward(85)
+//                .strafeLeft(12.5)
+//                .forward(-86.35)
+//                .forward(84.7)
+//                .strafeLeft(11.8)
+//                    .forward(-86.3)
+////                    .forward(40.2)
 
 //                .turn(Math.toRadians(-120))
 //              .strafeLeft(20)
 //                .splineTo(new Vector2d(0, 36), Math.toRadians(0))
 //                .forward(30)
+                    .forward(25)
+                    .forward(-25)
+                    .strafeLeft(-40.3)
+                    .forward(55)
+                    .strafeLeft(-22)
+                    .forward(-55)
+                    .forward(55)
+                    .strafeLeft(-21.3)
+                    .forward(-55)
+                    .forward(55)
+                    .strafeLeft(-20)
+                    .forward(-55)
+
+
+
+
+
+
+
+
                     .build();
 
 

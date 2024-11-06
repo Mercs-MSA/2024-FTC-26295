@@ -76,32 +76,32 @@ public class IntoTheDeep_Autonomous extends LinearOpMode {
         TrajectorySequence trajSeq = drive.trajectorySequenceBuilder(startPose)
 ////                 Practice robot / might work if comp bot is positioned straight
 
-//                  .forward(25)
-//                .strafeLeft(-85)
-//                .forward(13.2)
-//                .strafeLeft(84.5)
-//                .strafeLeft(-85)
-//                .forward(12.5)
-//                .strafeLeft(86.35)
-//                .strafeLeft(-85)
-//                .forward(11.5)
-//                .strafeLeft(-86.3)
-////               .forward(40.2)
+                 // .forward(25)
+                .strafeLeft(-85)
+                .forward(13.2)
+                .strafeLeft(84.5)
+                .strafeLeft(-85)
+                .forward(12.5)
+                .strafeLeft(86.35)
+                .strafeLeft(-85)
+                .forward(11.5)
+                .strafeLeft(-86.3)
+              .forward(40.2)
 
                 //Comp robot
 //                .strafeLeft(12.2) //might work to drop specimen first
 //                .strafeLeft(12.2) // //might work to drop specimen first
-                .forward(97)
-                .strafeLeft(-13.2)
-                .forward(-89.65)
-                .forward(89.2)
-                .strafeLeft(-13.2)
-                .forward(-86.7)
-                .forward(87)
-                .strafeLeft(-12.2)
-                .forward(-86.2)
-                .forward(86.2)
-                .strafeLeft(12.5)
+//                .forward(97)
+//                .strafeLeft(-13.2)
+//                .forward(-89.65)
+//                .forward(89.2)
+//                .strafeLeft(-13.2)
+//                .forward(-86.7)
+//                .forward(87)
+//                .strafeLeft(-12.2)
+//                .forward(-86.2)
+//                .forward(86.2)
+//                .strafeLeft(12.5)
 
 
 
@@ -109,8 +109,8 @@ public class IntoTheDeep_Autonomous extends LinearOpMode {
 
 
 
-//
-//
+// 147cm or 58in in strafing actual distance
+// forward is goo
 //
 //
 //
