@@ -402,64 +402,64 @@ public class InToTheDeepTeleOp extends LinearOpMode {
             //Manual Operation for ARM, sholder, Elevator, Climb, Hook
             //          Climber Logic
 //             Below this is code to get the arm and climb working
-                if(climbVar != 0)
-                 {
-                    Climb.setPower(climbVar);
-                    climbVar=0;
-                }
-                else {
-                    Climb.setPower(0);
-                }
+            if(climbVar != 0)
+             {
+                Climb.setPower(climbVar);
+                climbVar=0;
+            }
+            else {
+                Climb.setPower(0);
+            }
 
-                // Move ARM Joint (Shoulder) to desired Position.
-                if ((ARMjointVar != 0)
-                ) {
-                    //Ensure that downward drop is controlled motion with position controlled movement.
-                    if(ARMjointVar < 0) {
-                        RotatingARMJoint.setTargetPosition(ROTATING_ARM_JOINT_RESET_POSITION);
-                        RotatingARMJoint.setPower(1);
-                    }
-                    RotatingARMJoint.setMode(DcMotorEx.RunMode.RUN_USING_ENCODER);
-                    RotatingARMJoint.setPower(ARMjointVar);
-                    // keep running motor to control loop
-                    ARMjointVar=0;
+            // Move ARM Joint (Shoulder) to desired Position.
+            if ((ARMjointVar != 0)
+            ) {
+                //Ensure that downward drop is controlled motion with position controlled movement.
+                if(ARMjointVar < 0) {
+                    RotatingARMJoint.setTargetPosition(ROTATING_ARM_JOINT_RESET_POSITION);
+                    RotatingARMJoint.setPower(1);
                 }
-                else {
-                    RotatingARMJoint.setTargetPosition(RotatingARMJoint.getCurrentPosition());
-                    RotatingARMJoint.setMode(DcMotorEx.RunMode.RUN_TO_POSITION);
-    //                RotatingARMJoint.setPower(0);
-    //               RotatingARMJoint.setTargetPosition(ROTATING_ARM_JOINT_RESET_POSITION);
-                }
-                if ((elevatorVar != 0)
-                ) {
-                    // Move Elevator to desired Position.
+                RotatingARMJoint.setMode(DcMotorEx.RunMode.RUN_USING_ENCODER);
+                RotatingARMJoint.setPower(ARMjointVar);
+                // keep running motor to control loop
+                ARMjointVar=0;
+            }
+            else {
+                RotatingARMJoint.setTargetPosition(RotatingARMJoint.getCurrentPosition());
+                RotatingARMJoint.setMode(DcMotorEx.RunMode.RUN_TO_POSITION);
+//                RotatingARMJoint.setPower(0);
+//               RotatingARMJoint.setTargetPosition(ROTATING_ARM_JOINT_RESET_POSITION);
+            }
+            if ((elevatorVar != 0)
+            ) {
+                // Move Elevator to desired Position.
 //                    linearSlideElevator.setTargetPosition(ELEVATOR_HIGH_BASKET_POSITION);
-                    linearSlideElevator.setMode(DcMotorEx.RunMode.RUN_USING_ENCODER);
-                    linearSlideElevator.setPower(elevatorVar);
-                    elevatorVar=0;
-                }
-                else {
+                linearSlideElevator.setMode(DcMotorEx.RunMode.RUN_USING_ENCODER);
+                linearSlideElevator.setPower(elevatorVar);
+                elevatorVar=0;
+            }
+            else {
 //                    linearSlideElevator.setTargetPosition(ELEVATOR_RESET_POSITION);
-                    linearSlideElevator.setTargetPosition(linearSlideElevator.getCurrentPosition());
-                    linearSlideElevator.setMode(DcMotorEx.RunMode.RUN_TO_POSITION);
+                linearSlideElevator.setTargetPosition(linearSlideElevator.getCurrentPosition());
+                linearSlideElevator.setMode(DcMotorEx.RunMode.RUN_TO_POSITION);
 //                    linearSlideElevator.setPower(0);
-                }
-                if (ARMVar != 0) {
-                    linearSlideARM.setPower(ARMVar* OPERATOR_GAIN_MULTIPLIER);
-                    ARMVar=0;
-                }
-                else {
+            }
+            if (ARMVar != 0) {
+                linearSlideARM.setPower(ARMVar* OPERATOR_GAIN_MULTIPLIER);
+                ARMVar=0;
+            }
+            else {
 //                    linearSlideARM.setPower(0);
-                }
-                if (gamepad2.dpad_up) {
-                    hook.setPower(1);
-                }
-                else if (gamepad2.dpad_down) {
-                    hook.setPower(-1);
-                }
-                else {
-                    hook.setPower(0);
-                }
+            }
+            if (gamepad2.dpad_up) {
+                hook.setPower(1);
+            }
+            else if (gamepad2.dpad_down) {
+                hook.setPower(-1);
+            }
+            else {
+                hook.setPower(0);
+            }
                 // Wheel Spine
                 if (gamepad2.a) {
                     IntakeWheelSpin.setPower(+1.0);
@@ -472,7 +472,6 @@ public class InToTheDeepTeleOp extends LinearOpMode {
                 else {
                     IntakeWheelSpin.setPower(0);
                 }
-
 
                 // Intakerollerdirection
                 if(gamepad2.y) {
