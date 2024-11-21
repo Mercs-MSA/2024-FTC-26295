@@ -111,10 +111,11 @@ public class InToTheDeepTeleOp extends LinearOpMode {
     private DcMotorEx linearSlideARM = null;
     private DcMotorEx RotatingARMJoint;
     private CRServo Intakerollerdirection;
-    private CRServo IntakeWheelSpin;
-
+    private Servo RightClaw;
+    private Servo LeftClaw;
     private DcMotorEx Climb = null;
     private CRServo hook;
+    private CRServo IntakeWheelSpin;
 
     RevBlinkinLedDriver blinkinLedDriver;
     Rev2mDistanceSensor leftDistanceSensor;
@@ -163,7 +164,10 @@ public class InToTheDeepTeleOp extends LinearOpMode {
         RotatingARMJoint = hardwareMap.get(DcMotorEx.class, "RotatingARMJoint");
         //Servos
         Intakerollerdirection = hardwareMap.get(CRServo.class, "IntakeRotation");
-        IntakeWheelSpin = hardwareMap.get(CRServo.class, "wheelSpin");
+        RightClaw = hardwareMap.get(Servo.class, "RightClaw");
+        LeftClaw = hardwareMap.get(Servo.class, "LeftClaw");
+//        IntakeWheelSpin = hardwareMap.get(CRServo.class, "WheelSpin");
+
         //Ascent HW Init
         Climb = hardwareMap.get(DcMotorEx.class, "climb");
         hook = hardwareMap.get(CRServo.class, "hook");
@@ -246,7 +250,7 @@ public class InToTheDeepTeleOp extends LinearOpMode {
 //        telemetry.addData("Sample detected", getSampleColor());
  //       telemetry.addData("Left distance", leftDistanceSensor.getDistance(DistanceUnit.MM));
    //     telemetry.addData("Front distance", rightDistanceSensor.getDistance(DistanceUnit.MM));
-        telemetry.addData("WheelIntake", IntakeWheelSpin.getPower());
+//        telemetry.addData("WheelIntake", IntakeWheelSpin.getPower());
         telemetry.update();
 
     }
@@ -460,18 +464,32 @@ public class InToTheDeepTeleOp extends LinearOpMode {
             else {
                 hook.setPower(0);
             }
-                // Wheel Spine
-                if (gamepad2.a) {
-                    IntakeWheelSpin.setPower(+1.0);
+//                // Wheel Spine
+//                if (gamepad2.a) {
+//                    IntakeWheelSpin.setPower(+1.0);
+////                    IntakeWheelSpin.setDirection(CRServo.Direction.FORWARD);
+//                }
+//                else if(gamepad2.b) {
+//                    IntakeWheelSpin.setPower(-1.0);
+////                    IntakeWheelSpin.setDirection(CRServo.Direction.REVERSE);
+//                }
+//                else {
+//                    IntakeWheelSpin.setPower(0);
+//                }
+            if (gamepad2.a) {
+                RightClaw.setPosition(1.0);
 //                    IntakeWheelSpin.setDirection(CRServo.Direction.FORWARD);
-                }
-                else if(gamepad2.b) {
-                    IntakeWheelSpin.setPower(-1.0);
+            }
+            else if(gamepad2.b) {
+                RightClaw.setPosition(1.0);
 //                    IntakeWheelSpin.setDirection(CRServo.Direction.REVERSE);
-                }
-                else {
-                    IntakeWheelSpin.setPower(0);
-                }
+            }
+            if (gamepad1.a) {
+                LeftClaw.setPosition(1.0);
+//                    IntakeWheelSpin.setDirection(CRServo.Direction.FORWARD);
+            }
+            else if(gamepad1.b) {
+                LeftClaw.setPosition(1.0);
 
                 // Intakerollerdirection
                 if(gamepad2.y) {
