@@ -523,7 +523,7 @@ public class InToTheDeepTeleOp extends LinearOpMode {
                     //raise elevator to desired height
                     // raise Shoulder
                     // extend ARM
-                    // retract elevator
+                    // extract elevator
                 }
 
             // Send calculated power to wheels double lf, double lb, double rf, double rb
@@ -533,4 +533,4 @@ public class InToTheDeepTeleOp extends LinearOpMode {
             updatetelemetry_26295(heading);
         }
     }
-}
+}}
