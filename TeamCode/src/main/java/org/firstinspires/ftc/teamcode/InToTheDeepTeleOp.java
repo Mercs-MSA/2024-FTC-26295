@@ -174,7 +174,7 @@ public class InToTheDeepTeleOp extends LinearOpMode {
 
         //Initialize the color sensor
 //        colorSensor = hardwareMap.get(NormalizedColorSensor.class, "colorSensor");
-//        colorSensor = hardwareMap.get(RevColorSensorV3.class, "colorSensor");
+        colorSensor = hardwareMap.get(RevColorSensorV3.class, "colorSensor");
 
         //Initialize distance sensors
         leftDistanceSensor = hardwareMap.get(Rev2mDistanceSensor.class, "leftDistanceSensor");
