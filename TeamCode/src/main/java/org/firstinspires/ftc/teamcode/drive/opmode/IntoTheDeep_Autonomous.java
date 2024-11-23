@@ -86,6 +86,7 @@ public class IntoTheDeep_Autonomous extends LinearOpMode {
                 .forward(9.55)
                 .strafeLeft(-83.35)
                 .strafeLeft(83.4)
+
                 .forward(6.5)
                 .strafeLeft(-83.3)
                 .strafeLeft(83.3)
