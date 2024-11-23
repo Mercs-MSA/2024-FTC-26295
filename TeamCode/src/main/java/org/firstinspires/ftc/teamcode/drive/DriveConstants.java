@@ -61,7 +61,7 @@ public class DriveConstants {
      */
     public static double WHEEL_RADIUS = 1.99; // in
     public static double GEAR_RATIO = 1; // output (wheel) speed / input (motor) speed
-    public static double TRACK_WIDTH = 12.4; // in Width between Wheels COMP BOT : 13.4'  16.6
+    public static double TRACK_WIDTH = 12.4; // in Width between Wheels COMP BOT : 12.4'  16.6
     /*
      * These are the feedforward parameters used to model the drive motor behavior. If you are using
      * the built-in velocity PID, *these values are fine as is*. However, if you do not have drive
@@ -88,9 +88,9 @@ public class DriveConstants {
      * Adjust the orientations here to match your robot. See the FTC SDK documentation for details.
      */
     public static RevHubOrientationOnRobot.LogoFacingDirection LOGO_FACING_DIR =
-            RevHubOrientationOnRobot.LogoFacingDirection.UP;// Test BACKWARD // Comp : Left
+            RevHubOrientationOnRobot.LogoFacingDirection.RIGHT;// Test BACKWARD // Comp : UP
     public static RevHubOrientationOnRobot.UsbFacingDirection USB_FACING_DIR =
-            RevHubOrientationOnRobot.UsbFacingDirection.BACKWARD;// Test RIGHT // Comp : Forward
+            RevHubOrientationOnRobot.UsbFacingDirection.FORWARD;// Test RIGHT // Comp : BACKWARD
 
 
     public static double encoderTicksToInches(double ticks) {
@@ -104,5 +104,6 @@ public class DriveConstants {
     public static double getMotorVelocityF(double ticksPerSecond) {
         // see https://docs.google.com/document/d/1tyWrXDfMidwYyP_5H4mZyVgaEswhOC35gvdmP-V-5hA/edit#heading=h.61g9ixenznbx
         return 32767 / ticksPerSecond;
+
     }
 }
