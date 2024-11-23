@@ -422,7 +422,7 @@ public class InToTheDeepTeleOp extends LinearOpMode {
                 RotatingARMJoint.setMode(DcMotorEx.RunMode.RUN_USING_ENCODER);
                 //Ensure that downward drop is controlled motion with position controlled movement.
                 if(ARMjointVar < 0) {
-//                    RotatingARMJoint.setTargetPosition(ROTATING_ARM_JOINT_RESET_POSITION);
+//                   RotatingARMJoint.setTargetPosition(ROTATING_ARM_JOINT_RESET_POSITION);
                     RotatingARMJoint.setPower(ARMjointVar);
                 }
                 RotatingARMJoint.setPower(ARMjointVar);
