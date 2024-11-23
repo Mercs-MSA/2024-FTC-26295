@@ -37,8 +37,14 @@ public class IntoTheDeep_Autonomous extends LinearOpMode {
         leftBackDrive = hardwareMap.get(DcMotorEx.class, "leftBackDrive");
         rightBackDrive = hardwareMap.get(DcMotorEx.class, "rightBackDrive");
 
-        // Set motor directions (adjust these based on your robot)
-        leftFrontDrive.setDirection(DcMotorEx.Direction.REVERSE);
+        // Test Set motor directions (adjust these based on your robot)
+//        leftFrontDrive.setDirection(DcMotorEx.Direction.REVERSE);
+//        leftBackDrive.setDirection(DcMotorEx.Direction.FORWARD);
+//        rightFrontDrive.setDirection(DcMotorEx.Direction.REVERSE);
+//        rightBackDrive.setDirection(DcMotorEx.Direction.FORWARD);
+
+        //   Main  ROB   Robot Drive base direction
+        leftFrontDrive.setDirection(DcMotorEx.Direction.FORWARD);
         leftBackDrive.setDirection(DcMotorEx.Direction.FORWARD);
         rightFrontDrive.setDirection(DcMotorEx.Direction.REVERSE);
         rightBackDrive.setDirection(DcMotorEx.Direction.FORWARD);

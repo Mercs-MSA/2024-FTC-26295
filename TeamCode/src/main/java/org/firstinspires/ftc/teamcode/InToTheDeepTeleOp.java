@@ -151,7 +151,7 @@ public class InToTheDeepTeleOp extends LinearOpMode {
     }
 
     public void initializemotor() {
-        // to the names assigned during the robot co
+        // to the names assigned during the robot
         // Configuration step on the DS or RC devices.
         //Drive Base Init
         leftFrontDrive = hardwareMap.get(DcMotorEx.class, "leftFrontDrive");
@@ -185,7 +185,7 @@ public class InToTheDeepTeleOp extends LinearOpMode {
 
         // Configure Hardware for correct state
 //      Robot Drive base direction
-        leftFrontDrive.setDirection(DcMotorEx.Direction.REVERSE);
+        leftFrontDrive.setDirection(DcMotorEx.Direction.FORWARD);
         leftBackDrive.setDirection(DcMotorEx.Direction.FORWARD);
         rightFrontDrive.setDirection(DcMotorEx.Direction.REVERSE);
         rightBackDrive.setDirection(DcMotorEx.Direction.FORWARD);
@@ -234,8 +234,8 @@ public class InToTheDeepTeleOp extends LinearOpMode {
 
     public void updatetelemetry_26295(double heading) {
         telemetry.addData("Status", "Run Time: " + runtime.toString());
-        telemetry.addData("Front left/Right", "%4.2f, %4.2f", leftFrontDrive.getVelocity(), rightFrontDrive.getVelocity());
-        telemetry.addData("Back  left/Right", "%4.2f, %4.2f", leftBackDrive.getVelocity(), rightBackDrive.getVelocity());
+        telemetry.addData("Front left/Right", "%4.2f, %4.2f", leftFrontDrive.getPower(), rightFrontDrive.getPower());
+        telemetry.addData("Back  left/Right", "%4.2f, %4.2f", leftBackDrive.getPower(), rightBackDrive.getPower());
 //            telemetry.addData("non-Calibrated  Axial/Lateral", "%4.2f, %4.2f", axial, lateral);
 //            telemetry.addData("Calibrated  Axial/Lateral", "%4.2f, %4.2f", Adjaxial, Adjlateral);
         telemetry.addData("heading ", "%4.2f", heading);
