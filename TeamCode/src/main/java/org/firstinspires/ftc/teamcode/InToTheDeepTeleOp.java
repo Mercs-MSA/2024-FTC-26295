@@ -174,7 +174,7 @@ public class InToTheDeepTeleOp extends LinearOpMode {
 
         //Initialize the color sensor
 //        colorSensor = hardwareMap.get(NormalizedColorSensor.class, "colorSensor");
-        colorSensor = hardwareMap.get(RevColorSensorV3.class, "colorSensor");
+//        colorSensor = hardwareMap.get(RevColorSensorV3.class, "colorSensor");
 
         //Initialize distance sensors
         leftDistanceSensor = hardwareMap.get(Rev2mDistanceSensor.class, "leftDistanceSensor");
@@ -192,7 +192,7 @@ public class InToTheDeepTeleOp extends LinearOpMode {
 
         linearSlideElevator.setDirection(DcMotorEx.Direction.FORWARD);
         linearSlideARM.setDirection(DcMotorEx.Direction.FORWARD);
-//        Intakerollerdirection.setPosition(0);
+//        IntakeDirection.setPosition(0);
 //        IntakeWheelSpin.setPosition(0);
         RotatingARMJoint.setDirection(DcMotorEx.Direction.FORWARD);
 
@@ -418,12 +418,13 @@ public class InToTheDeepTeleOp extends LinearOpMode {
             // Move ARM Joint (Shoulder) to desired Position.
             if ((ARMjointVar != 0)
             ) {
+
+                RotatingARMJoint.setMode(DcMotorEx.RunMode.RUN_USING_ENCODER);
                 //Ensure that downward drop is controlled motion with position controlled movement.
                 if(ARMjointVar < 0) {
-                    RotatingARMJoint.setTargetPosition(ROTATING_ARM_JOINT_RESET_POSITION);
-                    RotatingARMJoint.setPower(1);
+//                    RotatingARMJoint.setTargetPosition(ROTATING_ARM_JOINT_RESET_POSITION);
+                    RotatingARMJoint.setPower(ARMjointVar);
                 }
-                RotatingARMJoint.setMode(DcMotorEx.RunMode.RUN_USING_ENCODER);
                 RotatingARMJoint.setPower(ARMjointVar);
                 // keep running motor to control loop
                 ARMjointVar=0;
@@ -431,6 +432,7 @@ public class InToTheDeepTeleOp extends LinearOpMode {
             else {
                 RotatingARMJoint.setTargetPosition(RotatingARMJoint.getCurrentPosition());
                 RotatingARMJoint.setMode(DcMotorEx.RunMode.RUN_TO_POSITION);
+                RotatingARMJoint.setTargetPosition(RotatingARMJoint.getCurrentPosition());
 //                RotatingARMJoint.setPower(0);
 //               RotatingARMJoint.setTargetPosition(ROTATING_ARM_JOINT_RESET_POSITION);
             }
@@ -466,26 +468,26 @@ public class InToTheDeepTeleOp extends LinearOpMode {
             }
 //                // Wheel Spine
                 if (gamepad2.a) {
-                    IntakeWheelSpin.setPower(+1.0);
-//                    IntakeWheelSpin.setDirection(CRServo.Direction.FORWARD);
+                    IntakeWheelSpin.setPower(1.0);
+                    IntakeWheelSpin.setDirection(CRServo.Direction.FORWARD);
                 }
                 else if(gamepad2.b) {
-                    IntakeWheelSpin.setPower(-1.0);
-//                    IntakeWheelSpin.setDirection(CRServo.Direction.REVERSE);
+                    IntakeWheelSpin.setPower(1.0);
+                    IntakeWheelSpin.setDirection(CRServo.Direction.REVERSE);
                 }
                 else {
                     IntakeWheelSpin.setPower(0);
                 }
-            if (gamepad2.a) {
-                RightClaw.setPosition(1.0);
-                LeftClaw.setPosition(1.0);
+//            if (gamepad2.a) {
+////                RightClaw.setPosition(1.0);
+////                LeftClaw.setPosition(1.0);
 //                    IntakeWheelSpin.setDirection(CRServo.Direction.FORWARD);
-            }
-            else if(gamepad2.b) {
-//                RightClaw.setPosition(1.0);
-//                LeftClaw.setPosition(1.0);
-                    IntakeWheelSpin.setDirection(CRServo.Direction.REVERSE);
-            }
+//            }
+//            else if(gamepad2.b) {
+////                RightClaw.setPosition(1.0);
+////                LeftClaw.setPosition(1.0);
+//                    IntakeWheelSpin.setDirection(CRServo.Direction.REVERSE);
+//            }
                 // Intakerollerdirection
                 if(gamepad2.y) {
                     IntakeDirection.setPower(-0.25);
