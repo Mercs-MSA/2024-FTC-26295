@@ -77,8 +77,8 @@ public class MecanumDrivingSampleField extends LinearOpMode {
 */
         // Competition Robot Directions
         IMU.Parameters parameters = new IMU.Parameters(new RevHubOrientationOnRobot(
-                RevHubOrientationOnRobot.LogoFacingDirection.FORWARD,
-                RevHubOrientationOnRobot.UsbFacingDirection.LEFT));
+                RevHubOrientationOnRobot.LogoFacingDirection.UP,
+                RevHubOrientationOnRobot.UsbFacingDirection.BACKWARD));
 
         // Test Robot Directions
 /*        IMU.Parameters parameters = new IMU.Parameters(new RevHubOrientationOnRobot(

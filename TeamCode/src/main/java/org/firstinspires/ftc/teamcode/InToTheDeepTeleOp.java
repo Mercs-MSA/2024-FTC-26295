@@ -110,7 +110,7 @@ public class InToTheDeepTeleOp extends LinearOpMode {
     private DcMotorEx linearSlideElevator = null;
     private DcMotorEx linearSlideARM = null;
     private DcMotorEx RotatingARMJoint;
-    private CRServo Intakerollerdirection;
+    private CRServo IntakeDirection;
     private Servo RightClaw;
     private Servo LeftClaw;
     private DcMotorEx Climb = null;
@@ -163,10 +163,10 @@ public class InToTheDeepTeleOp extends LinearOpMode {
         linearSlideARM = hardwareMap.get(DcMotorEx.class, "linearSlideARM");
         RotatingARMJoint = hardwareMap.get(DcMotorEx.class, "RotatingARMJoint");
         //Servos
-        Intakerollerdirection = hardwareMap.get(CRServo.class, "IntakeRotation");
-        RightClaw = hardwareMap.get(Servo.class, "RightClaw");
-        LeftClaw = hardwareMap.get(Servo.class, "LeftClaw");
-//        IntakeWheelSpin = hardwareMap.get(CRServo.class, "WheelSpin");
+        IntakeDirection = hardwareMap.get(CRServo.class, "IntakeDirection");
+//        RightClaw = hardwareMap.get(Servo.class, "RightClaw");
+//        LeftClaw = hardwareMap.get(Servo.class, "LeftClaw");
+        IntakeWheelSpin = hardwareMap.get(CRServo.class, "WheelSpin");
 
         //Ascent HW Init
         Climb = hardwareMap.get(DcMotorEx.class, "climb");
@@ -244,13 +244,13 @@ public class InToTheDeepTeleOp extends LinearOpMode {
         telemetry.addData("Linear SlideARM ", linearSlideARM.getCurrentPosition());
         telemetry.addData("rotatingARM", RotatingARMJoint.getCurrentPosition());
 
-        telemetry.addData("IntakeWheel Power ", Intakerollerdirection.getPower());
+        telemetry.addData("IntakeWheel Power ", IntakeDirection.getPower());
 
         telemetry.addData("climb ", Climb.getCurrentPosition());
 //        telemetry.addData("Sample detected", getSampleColor());
- //       telemetry.addData("Left distance", leftDistanceSensor.getDistance(DistanceUnit.MM));
-   //     telemetry.addData("Front distance", rightDistanceSensor.getDistance(DistanceUnit.MM));
-//        telemetry.addData("WheelIntake", IntakeWheelSpin.getPower());
+        telemetry.addData("Left distance", leftDistanceSensor.getDistance(DistanceUnit.MM));
+        telemetry.addData("Front distance", rightDistanceSensor.getDistance(DistanceUnit.MM));
+        telemetry.addData("WheelIntake", IntakeWheelSpin.getPower());
         telemetry.update();
 
     }
@@ -307,8 +307,8 @@ public class InToTheDeepTeleOp extends LinearOpMode {
 */
         // Competition Robot Directions
         IMU.Parameters parameters = new IMU.Parameters(new RevHubOrientationOnRobot(
-                RevHubOrientationOnRobot.LogoFacingDirection.LEFT,
-                RevHubOrientationOnRobot.UsbFacingDirection.FORWARD));
+                RevHubOrientationOnRobot.LogoFacingDirection.UP,
+                RevHubOrientationOnRobot.UsbFacingDirection.BACKWARD));
 
         imu.initialize(parameters);
 //      IMU calibration
@@ -465,41 +465,36 @@ public class InToTheDeepTeleOp extends LinearOpMode {
                 hook.setPower(0);
             }
 //                // Wheel Spine
-//                if (gamepad2.a) {
-//                    IntakeWheelSpin.setPower(+1.0);
-////                    IntakeWheelSpin.setDirection(CRServo.Direction.FORWARD);
-//                }
-//                else if(gamepad2.b) {
-//                    IntakeWheelSpin.setPower(-1.0);
-////                    IntakeWheelSpin.setDirection(CRServo.Direction.REVERSE);
-//                }
-//                else {
-//                    IntakeWheelSpin.setPower(0);
-//                }
+                if (gamepad2.a) {
+                    IntakeWheelSpin.setPower(+1.0);
+//                    IntakeWheelSpin.setDirection(CRServo.Direction.FORWARD);
+                }
+                else if(gamepad2.b) {
+                    IntakeWheelSpin.setPower(-1.0);
+//                    IntakeWheelSpin.setDirection(CRServo.Direction.REVERSE);
+                }
+                else {
+                    IntakeWheelSpin.setPower(0);
+                }
             if (gamepad2.a) {
                 RightClaw.setPosition(1.0);
+                LeftClaw.setPosition(1.0);
 //                    IntakeWheelSpin.setDirection(CRServo.Direction.FORWARD);
             }
             else if(gamepad2.b) {
-                RightClaw.setPosition(1.0);
-//                    IntakeWheelSpin.setDirection(CRServo.Direction.REVERSE);
+//                RightClaw.setPosition(1.0);
+//                LeftClaw.setPosition(1.0);
+                    IntakeWheelSpin.setDirection(CRServo.Direction.REVERSE);
             }
-            if (gamepad1.a) {
-                LeftClaw.setPosition(1.0);
-//                    IntakeWheelSpin.setDirection(CRServo.Direction.FORWARD);
-            }
-            else if(gamepad1.b) {
-                LeftClaw.setPosition(1.0);
-
                 // Intakerollerdirection
                 if(gamepad2.y) {
-                    Intakerollerdirection.setPower(-0.25);
+                    IntakeDirection.setPower(-0.25);
                 }
                 else if (gamepad2.x) {
-                    Intakerollerdirection.setPower(0.25);
+                    IntakeDirection.setPower(0.25);
                 }
                 else {
-                    Intakerollerdirection.setPower(0);
+                    IntakeDirection.setPower(0);
                 }
                 if (gamepad2.dpad_left) {
                     linearSlideARM.setPower(1);
@@ -511,21 +506,6 @@ public class InToTheDeepTeleOp extends LinearOpMode {
                     linearSlideARM.setPower(0);
                 }
 
-                if(gamepad1.dpad_left){            //High rung Specimen
-                    //go to set distance
-                    //raise elevator to desired height
-                    // raise Shoulder
-                    // extend ARM
-                    // retract elevator
-                }
-                else if (gamepad1.dpad_right){                    //Lower Rung specimen
-                    //go to set distance
-                    //raise elevator to desired height
-                    // raise Shoulder
-                    // extend ARM
-                    // extract elevator
-                }
-
             // Send calculated power to wheels double lf, double lb, double rf, double rb
             updatedrivebase(leftFrontPower, leftBackPower, rightFrontPower, rightBackPower);
 
@@ -533,4 +513,4 @@ public class InToTheDeepTeleOp extends LinearOpMode {
             updatetelemetry_26295(heading);
         }
     }
-}}
+}
