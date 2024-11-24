@@ -186,8 +186,8 @@ public class InToTheDeepTeleOp extends LinearOpMode {
         // Configure Hardware for correct state
 //      Robot Drive base direction
         leftFrontDrive.setDirection(DcMotorEx.Direction.REVERSE);
-        leftBackDrive.setDirection(DcMotorEx.Direction.REVERSE);
-        rightFrontDrive.setDirection(DcMotorEx.Direction.FORWARD);
+        leftBackDrive.setDirection(DcMotorEx.Direction.FORWARD);
+        rightFrontDrive.setDirection(DcMotorEx.Direction.REVERSE);
         rightBackDrive.setDirection(DcMotorEx.Direction.FORWARD);
 
         linearSlideElevator.setDirection(DcMotorEx.Direction.FORWARD);
@@ -419,15 +419,17 @@ public class InToTheDeepTeleOp extends LinearOpMode {
             ) {
                 // Move Elevator to desired Position.
 //                    linearSlideElevator.setTargetPosition(ELEVATOR_HIGH_BASKET_POSITION);
-                linearSlideElevator.setMode(DcMotorEx.RunMode.RUN_USING_ENCODER);
+//                linearSlideElevator.setMode(DcMotorEx.RunMode.RUN_USING_ENCODER);
                 linearSlideElevator.setPower(elevatorVar);
                 elevatorVar=0;
             }
             else {
-//                    linearSlideElevator.setTargetPosition(ELEVATOR_RESET_POSITION);
-                linearSlideElevator.setTargetPosition(linearSlideElevator.getCurrentPosition());
-                linearSlideElevator.setMode(DcMotorEx.RunMode.RUN_TO_POSITION);
-//                    linearSlideElevator.setPower(0);
+                linearSlideElevator.setPower(0);
+////                    linearSlideElevator.setTargetPosition(ELEVATOR_RESET_POSITION);
+//                linearSlideElevator.setTargetPosition(linearSlideElevator.getCurrentPosition());
+////                linearSlideElevator.setMode(DcMotorEx.RunMode.RUN_TO_POSITION);
+//                linearSlideElevator.setTargetPosition(linearSlideElevator.getCurrentPosition());
+                //                    linearSlideElevator.setPower(0);
             }
             if (ARMVar != 0) {
                 linearSlideARM.setPower(ARMVar* OPERATOR_GAIN_MULTIPLIER);
