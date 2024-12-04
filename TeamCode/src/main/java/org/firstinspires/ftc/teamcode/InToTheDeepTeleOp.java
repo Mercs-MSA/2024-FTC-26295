@@ -61,15 +61,11 @@ import static org.firstinspires.ftc.teamcode.RobotConstants.OPERATOR_GAIN_MULTIP
 import static org.firstinspires.ftc.teamcode.RobotConstants.ROTATING_ARM_JOINT_RESET_POSITION;
 import static org.firstinspires.ftc.teamcode.RobotConstants.TELEOP_ASSIST_DRIVETRAIN_GAIN;
 import static org.firstinspires.ftc.teamcode.RobotConstants.TELEOP_ASSIST_DRIVETRAIN_TURN_GAIN;
-import static org.firstinspires.ftc.teamcode.drive.DriveConstants.MaxVelocity;
 import static org.firstinspires.ftc.teamcode.drive.DriveConstants.FIELD_CENTRIC;
 
 import com.qualcomm.hardware.rev.Rev2mDistanceSensor;
 import com.qualcomm.hardware.rev.RevColorSensorV3;
 import com.qualcomm.robotcore.hardware.CRServo;
-import com.qualcomm.robotcore.hardware.DcMotor;
-import com.qualcomm.robotcore.hardware.DcMotorSimple;
-import com.qualcomm.robotcore.hardware.NormalizedColorSensor;
 import com.qualcomm.robotcore.hardware.NormalizedRGBA;
 import com.qualcomm.hardware.rev.RevBlinkinLedDriver;
 import com.qualcomm.hardware.rev.RevHubOrientationOnRobot;
@@ -80,7 +76,6 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 //import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
-import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
@@ -108,13 +103,14 @@ public class InToTheDeepTeleOp extends LinearOpMode {
 
 
     private DcMotorEx linearSlideElevator = null;
-    private DcMotorEx linearSlideARM = null;
-    private DcMotorEx RotatingARMJoint;
-    private CRServo IntakeDirection;
-    private Servo RightClaw;
-    private Servo LeftClaw;
-    private DcMotorEx Climb = null;
-    private CRServo hook;
+//    private DcMotorEx linearSlideARM = null;
+    private DcMotorEx Sprocket;
+    private CRServo IntakeLeftRight;
+//    private Servo RightClaw;
+//    private Servo LeftClaw;
+//    private DcMotorEx Climb = null;
+    private CRServo IntakeUpDown;
+//    private CRServo hook;
     private CRServo IntakeWheelSpin;
 
     RevBlinkinLedDriver blinkinLedDriver;
@@ -160,17 +156,18 @@ public class InToTheDeepTeleOp extends LinearOpMode {
         rightBackDrive = hardwareMap.get(DcMotorEx.class, "rightBackDrive");
         // Intake Mechanism Init
         linearSlideElevator = hardwareMap.get(DcMotorEx.class, "linearSlideElevator");
-        linearSlideARM = hardwareMap.get(DcMotorEx.class, "linearSlideARM");
-        RotatingARMJoint = hardwareMap.get(DcMotorEx.class, "RotatingARMJoint");
+        Sprocket = hardwareMap.get(DcMotorEx.class, "Sprocket");
+//        RotatingARMJoint = hardwareMap.get(DcMotorEx.class, "RotatingARMJoint");
         //Servos
-        IntakeDirection = hardwareMap.get(CRServo.class, "IntakeDirection");
+        IntakeLeftRight = hardwareMap.get(CRServo.class, "IntakeLeftRight");
+        IntakeUpDown = hardwareMap.get(CRServo.class,"IntakeUpDown");
 //        RightClaw = hardwareMap.get(Servo.class, "RightClaw");
 //        LeftClaw = hardwareMap.get(Servo.class, "LeftClaw");
         IntakeWheelSpin = hardwareMap.get(CRServo.class, "WheelSpin");
 
         //Ascent HW Init
-        Climb = hardwareMap.get(DcMotorEx.class, "climb");
-        hook = hardwareMap.get(CRServo.class, "hook");
+//        Climb = hardwareMap.get(DcMotorEx.class, "climb");
+//        hook = hardwareMap.get(CRServo.class, "hook");
 
         //Initialize the color sensor
 //        colorSensor = hardwareMap.get(NormalizedColorSensor.class, "colorSensor");
@@ -191,13 +188,13 @@ public class InToTheDeepTeleOp extends LinearOpMode {
         rightBackDrive.setDirection(DcMotorEx.Direction.FORWARD);
 
         linearSlideElevator.setDirection(DcMotorEx.Direction.FORWARD);
-        linearSlideARM.setDirection(DcMotorEx.Direction.FORWARD);
+        Sprocket.setDirection(DcMotorEx.Direction.FORWARD);
 //        Intakerollerdirection.setPosition(0);
 //        IntakeWheelSpin.setPosition(0);
-        RotatingARMJoint.setDirection(DcMotorEx.Direction.FORWARD);
-
-        Climb.setDirection(DcMotorEx.Direction.REVERSE);
-//        hook.setPosition(0);
+//        RotatingARMJoint.setDirection(DcMotorEx.Direction.FORWARD);
+//
+//        Climb.setDirection(DcMotorEx.Direction.REVERSE);
+////        hook.setPosition(0);
 
         //         Competition Robot Direction
         leftBackDrive.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.BRAKE);
@@ -206,10 +203,10 @@ public class InToTheDeepTeleOp extends LinearOpMode {
         leftFrontDrive.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.BRAKE);
 
         linearSlideElevator.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.BRAKE);
-        linearSlideARM.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.BRAKE);
-        RotatingARMJoint.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.BRAKE);
-
-        Climb.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.BRAKE);
+        Sprocket.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.BRAKE);
+//        RotatingARMJoint.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.BRAKE);
+//
+//        Climb.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.BRAKE);
 
 //        leftFrontDrive.setMode(DcMotorEx.RunMode.RUN_USING_ENCODER);
 //        rightFrontDrive.setMode(DcMotorEx.RunMode.RUN_USING_ENCODER);
@@ -241,12 +238,12 @@ public class InToTheDeepTeleOp extends LinearOpMode {
         telemetry.addData("heading ", "%4.2f", heading);
 
         telemetry.addData("Linear Slide Elevator", linearSlideElevator.getCurrentPosition());
-        telemetry.addData("Linear SlideARM ", linearSlideARM.getCurrentPosition());
-        telemetry.addData("rotatingARM", RotatingARMJoint.getCurrentPosition());
+        telemetry.addData("Linear SlideARM ", Sprocket.getCurrentPosition());
+        telemetry.addData("rotatingARM", Sprocket.getCurrentPosition());
 
-        telemetry.addData("IntakeWheel Power ", IntakeDirection.getPower());
-
-        telemetry.addData("climb ", Climb.getCurrentPosition());
+        telemetry.addData("IntakeWheel Power ", IntakeLeftRight.getPower());
+//
+//        telemetry.addData("climb ", Climb.getCurrentPosition());
 //        telemetry.addData("Sample detected", getSampleColor());
         telemetry.addData("Left distance", leftDistanceSensor.getDistance(DistanceUnit.MM));
         telemetry.addData("Front distance", rightDistanceSensor.getDistance(DistanceUnit.MM));
@@ -343,11 +340,11 @@ public class InToTheDeepTeleOp extends LinearOpMode {
             //
             double Adjaxial = axial;
             double Adjlateral = lateral;
-            double heading =0;
-            if(fieldConstant) {
-                 heading = -imu.getRobotYawPitchRollAngles().getYaw(AngleUnit.RADIANS);
-                 Adjlateral = -axial * Math.sin(heading) + lateral * Math.cos(heading);
-                 Adjaxial = axial * Math.cos(heading) + lateral * Math.sin(heading);
+            double heading = 0;
+            if (fieldConstant) {
+                heading = -imu.getRobotYawPitchRollAngles().getYaw(AngleUnit.RADIANS);
+                Adjlateral = -axial * Math.sin(heading) + lateral * Math.cos(heading);
+                Adjaxial = axial * Math.cos(heading) + lateral * Math.sin(heading);
             }
             // Combine the joystick requests for each axis-motion to determine each wheel's power.
             // Set up a variable for each drive wheel to save the power level for telemetry.
@@ -370,48 +367,48 @@ public class InToTheDeepTeleOp extends LinearOpMode {
             }
 
             // Read joystick for DC motor operation.
-            double climbVar = gamepad2.right_stick_y;
+//            double climbVar = gamepad2.right_stick_y;
             double ARMjointVar = gamepad2.right_stick_x;
             double elevatorVar = gamepad2.left_stick_y;
-            double ARMVar = gamepad2.left_stick_x;
+//            double ARMVar = gamepad2.left_stick_x;
 //          minimize opertor error with accidental angle push
-            if ((climbVar > -OPERATOR_ERROR_MARGIN) && (climbVar < OPERATOR_ERROR_MARGIN))
-                climbVar =0;
-            if ((ARMjointVar > -OPERATOR_ERROR_MARGIN) && (ARMjointVar < OPERATOR_ERROR_MARGIN))
-                ARMjointVar =0;
+//            if ((climbVar > -OPERATOR_ERROR_MARGIN) && (climbVar < OPERATOR_ERROR_MARGIN))
+//                climbVar =0;
+//            if ((ARMjointVar > -OPERATOR_ERROR_MARGIN) && (ARMjointVar < OPERATOR_ERROR_MARGIN))
+//                ARMjointVar =0;
             if ((elevatorVar > -OPERATOR_ERROR_MARGIN) && (elevatorVar < OPERATOR_ERROR_MARGIN))
-                elevatorVar =0;
-            if ((ARMVar > -OPERATOR_ERROR_MARGIN) && (ARMVar < OPERATOR_ERROR_MARGIN))
-                ARMVar=0;
+                elevatorVar = 0;
+//            if ((ARMVar > -OPERATOR_ERROR_MARGIN) && (ARMVar < OPERATOR_ERROR_MARGIN))
+//                ARMVar=0;
 
             //Manual Operation for ARM, sholder, Elevator, Climb, Hook
             //          Climber Logic
 //             Below this is code to get the arm and climb working
-            if(climbVar != 0)
-             {
-                Climb.setPower(climbVar);
-                climbVar=0;
-            }
-            else {
-                Climb.setPower(0);
-            }
+//            if(climbVar != 0)
+//             {
+//                Climb.setPower(climbVar);
+//                climbVar=0;
+//            }
+//            else {
+//                Climb.setPower(0);
+//            }
 
             // Move ARM Joint (Shoulder) to desired Position.
             if ((ARMjointVar != 0)
             ) {
                 //Ensure that downward drop is controlled motion with position controlled movement.
                 if(ARMjointVar < 0) {
-                    RotatingARMJoint.setTargetPosition(ROTATING_ARM_JOINT_RESET_POSITION);
-                    RotatingARMJoint.setPower(1);
+                    Sprocket.setTargetPosition(ROTATING_ARM_JOINT_RESET_POSITION);
+                    Sprocket.setPower(1);
                 }
-                RotatingARMJoint.setMode(DcMotorEx.RunMode.RUN_USING_ENCODER);
-                RotatingARMJoint.setPower(ARMjointVar);
+                Sprocket.setMode(DcMotorEx.RunMode.RUN_USING_ENCODER);
+                Sprocket.setPower(ARMjointVar);
                 // keep running motor to control loop
                 ARMjointVar=0;
             }
             else {
-                RotatingARMJoint.setTargetPosition(RotatingARMJoint.getCurrentPosition());
-                RotatingARMJoint.setMode(DcMotorEx.RunMode.RUN_TO_POSITION);
+                Sprocket.setTargetPosition(Sprocket.getCurrentPosition());
+                Sprocket.setMode(DcMotorEx.RunMode.RUN_TO_POSITION);
 //                RotatingARMJoint.setPower(0);
 //               RotatingARMJoint.setTargetPosition(ROTATING_ARM_JOINT_RESET_POSITION);
             }
@@ -430,25 +427,25 @@ public class InToTheDeepTeleOp extends LinearOpMode {
 ////                linearSlideElevator.setMode(DcMotorEx.RunMode.RUN_TO_POSITION);
 //                linearSlideElevator.setTargetPosition(linearSlideElevator.getCurrentPosition());
                 //                    linearSlideElevator.setPower(0);
-            }
-            if (ARMVar != 0) {
-                linearSlideARM.setPower(ARMVar* OPERATOR_GAIN_MULTIPLIER);
-                ARMVar=0;
-            }
-            else {
-//                    linearSlideARM.setPower(0);
-            }
+//            }
+//            if (ARMVar != 0) {
+//                Sprocket.setPower(ARMVar* OPERATOR_GAIN_MULTIPLIER);
+//                ARMVar=0;
+//            }
+//            else {
+////                    linearSlideARM.setPower(0);
+//            }
             if (gamepad2.dpad_up) {
-                hook.setPower(1);
+                IntakeLeftRight.setPower(1);
             }
             else if (gamepad2.dpad_down) {
-                hook.setPower(-1);
+                IntakeLeftRight.setPower(-1);
             }
             else {
-                hook.setPower(0);
+                IntakeLeftRight.setPower(0);
             }
 //                // Wheel Spine
-                if (gamepad2.a) {
+                if (gamepad2.x) {
                     IntakeWheelSpin.setPower(+1.0);
 //                    IntakeWheelSpin.setDirection(CRServo.Direction.FORWARD);
                 }
@@ -470,24 +467,24 @@ public class InToTheDeepTeleOp extends LinearOpMode {
 //                    IntakeWheelSpin.setDirection(CRServo.Direction.REVERSE);
 //            }
                 // Intakerollerdirection
-                if(gamepad2.y) {
-                    IntakeDirection.setPower(-0.25);
-                }
-                else if (gamepad2.x) {
-                    IntakeDirection.setPower(0.25);
-                }
-                else {
-                    IntakeDirection.setPower(0);
-                }
-                if (gamepad2.dpad_left) {
-                    linearSlideARM.setPower(1);
+                if(gamepad2.dpad_left) {
+                    IntakeLeftRight.setPower(-0.25);
                 }
                 else if (gamepad2.dpad_right) {
-                    linearSlideARM.setPower(-1);
+                    IntakeLeftRight.setPower(0.25);
                 }
-                else {
-                    linearSlideARM.setPower(0);
-                }
+//                else {
+//                    IntakeLeftRight.setPower(0);
+//                }
+//                if (gamepad2.dpad_left) {
+//                    Sprocket.setPower(1);
+//                }
+//                else if (gamepad2.dpad_right) {
+//                    Sprocket.setPower(-1);
+//                }
+//                else {
+//                    Sprocket.setPower(0);
+//                }
 
             // Send calculated power to wheels double lf, double lb, double rf, double rb
             updatedrivebase(leftFrontPower, leftBackPower, rightFrontPower, rightBackPower);
@@ -496,4 +493,5 @@ public class InToTheDeepTeleOp extends LinearOpMode {
             updatetelemetry_26295(heading);
         }
     }
+}
 }
