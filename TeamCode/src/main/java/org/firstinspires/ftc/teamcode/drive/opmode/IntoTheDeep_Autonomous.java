@@ -38,11 +38,10 @@ public class IntoTheDeep_Autonomous extends LinearOpMode {
         rightBackDrive = hardwareMap.get(DcMotorEx.class, "rightBackDrive");
 
         // Set motor directions (adjust these based on your robot)
-        leftFrontDrive.setDirection(DcMotorEx.Direction.REVERSE);
-        leftBackDrive.setDirection(DcMotorEx.Direction.FORWARD);
-        rightFrontDrive.setDirection(DcMotorEx.Direction.REVERSE);
-        rightBackDrive.setDirection(DcMotorEx.Direction.FORWARD);
-
+        leftFrontDrive.setDirection(DcMotorEx.Direction.FORWARD);
+        leftBackDrive.setDirection(DcMotorEx.Direction.REVERSE);
+        rightFrontDrive.setDirection(DcMotorEx.Direction.FORWARD);
+        rightBackDrive.setDirection(DcMotorEx.Direction.REVERSE);
 
 
         leftBackDrive.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
@@ -79,33 +78,37 @@ public class IntoTheDeep_Autonomous extends LinearOpMode {
 //
 // Practice robot / might work if comp bot is positioned straight
 
-                .strafeLeft(83.45)
-                .forward(9.95)
-                .strafeLeft(-82.5)
-                .strafeLeft(83.7)
-                .forward(9.55)
-                .strafeLeft(-83.35)
-                .strafeLeft(83.4)
-
-                .forward(6.5)
-                .strafeLeft(-83.3)
-                .strafeLeft(83.3)
-                .forward(-20.3)
+//                .strafeLeft(83.45)
+//                .forward(9.95)
+//                .strafeLeft(-82.5)
+//                .strafeLeft(83.7)
+//                .forward(9.55)
+//                .strafeLeft(-83.35)
+//                .strafeLeft(83.4)
+//
+//                .forward(6.5)
+//                .strafeLeft(-83.3)
+//                .strafeLeft(83.3)
+//                .forward(-20.3)
 
                 //Comp robot- most probably will NOT work
-//                .strafeLeft(12.2) //might work to drop specimen first
-//                .strafeLeft(12.2) // //might work to drop specimen first
-//                .forward(97)
-//                .strafeLeft(-13.2)
-//                .forward(-89.65)
-//                .forward(89.2)
-//                .strafeLeft(-13.2)
-//                .forward(-86.7)
-//                .forward(87)
-//                .strafeLeft(-12.2)
-//                .forward(-86.2)
-//                .forward(86.2)
-//                .strafeLeft(12.5)
+                .strafeLeft(-18.2) //might work to drop specimen first
+                .strafeLeft(16.2) // //might work to drop specimen first
+                .forward(97)
+                .strafeLeft(-11.7)
+                .forward(-89.65)
+                .turn(-6.2)
+                .strafeLeft(10.3)
+                .forward(89.2)
+                .strafeLeft(-11.6)
+                .forward(-88.7)
+                .forward(87)
+                .strafeLeft(-11.5)
+                .forward(-86.2)
+                .forward(86.2)
+                .strafeLeft(12.5)
+                .forward(30.5)
+                .strafeLeft(10.2)
 
 
 

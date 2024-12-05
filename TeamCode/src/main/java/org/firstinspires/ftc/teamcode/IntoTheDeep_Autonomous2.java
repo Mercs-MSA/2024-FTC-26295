@@ -91,22 +91,29 @@ import org.firstinspires.ftc.teamcode.trajectorysequence.TrajectorySequence;
 //              .strafeLeft(20)
 //                .splineTo(new Vector2d(0, 36), Math.toRadians(0))
 //                .forward(30)
-//                    .strafeLeft(-32)
-//                    .strafeLeft(31.2)
-                    .forward(25.6)
-                    .strafeLeft(-70)
-                    .forward(11.2)
-                    .strafeLeft(66)
-                    .strafeLeft(-69)
-                    .forward(11.1)
-                    .strafeLeft(65.56)
-                    .strafeLeft(-69)
-                    .forward(10.72)
-                    .strafeLeft(69.42)
-                    .strafeLeft(-18)
-                    .forward(-95.3)
+                    .strafeLeft(-32)
+                    .strafeLeft(31.2)
+                    .forward(51.3)
                     .strafeLeft(-55)
-                    .forward(50.5)
+                    .forward(28)
+                    .strafeLeft(53)
+                    .strafeLeft(-55)
+                    .forward(27.3)
+                    .strafeLeft(53)
+                    .strafeLeft(-54)
+                    .forward(28)
+                    .strafeLeft(55)
+                    .strafeLeft(-55)
+                    .forward(-51.3)
+                    .strafeLeft(-55)
+                    .forward(30)
+
+
+
+
+
+
+
 
                     .build();
 
