@@ -66,6 +66,7 @@ import static org.firstinspires.ftc.teamcode.drive.DriveConstants.FIELD_CENTRIC;
 import com.qualcomm.hardware.rev.Rev2mDistanceSensor;
 import com.qualcomm.hardware.rev.RevColorSensorV3;
 import com.qualcomm.robotcore.hardware.CRServo;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.NormalizedRGBA;
 import com.qualcomm.hardware.rev.RevBlinkinLedDriver;
 import com.qualcomm.hardware.rev.RevHubOrientationOnRobot;
@@ -183,8 +184,8 @@ public class InToTheDeepTeleOp extends LinearOpMode {
         // Configure Hardware for correct state
 //      Robot Drive base direction
         leftFrontDrive.setDirection(DcMotorEx.Direction.REVERSE);
-        leftBackDrive.setDirection(DcMotorEx.Direction.FORWARD);
-        rightFrontDrive.setDirection(DcMotorEx.Direction.REVERSE);
+        leftBackDrive.setDirection(DcMotorEx.Direction.REVERSE);
+        rightFrontDrive.setDirection(DcMotorEx.Direction.FORWARD);
         rightBackDrive.setDirection(DcMotorEx.Direction.FORWARD);
 
         linearSlideElevator.setDirection(DcMotorEx.Direction.FORWARD);
@@ -286,7 +287,7 @@ public class InToTheDeepTeleOp extends LinearOpMode {
         // Competition Robot Directions
         IMU.Parameters parameters = new IMU.Parameters(new RevHubOrientationOnRobot(
                 RevHubOrientationOnRobot.LogoFacingDirection.UP,
-                RevHubOrientationOnRobot.UsbFacingDirection.BACKWARD));
+                RevHubOrientationOnRobot.UsbFacingDirection.FORWARD));
 
         imu.initialize(parameters);
 //      IMU calibration
@@ -441,12 +442,12 @@ public class InToTheDeepTeleOp extends LinearOpMode {
             else if (gamepad2.dpad_down) {
                 IntakeLeftRight.setPower(-1);
             }
-            else {
-                IntakeLeftRight.setPower(0);
-            }
+//            else {
+//                IntakeLeftRight.setPower(0);
+//            }
 //                // Wheel Spine
                 if (gamepad2.x) {
-                    IntakeWheelSpin.setPower(+1.0);
+                    IntakeWheelSpin.setPower(1.0);
 //                    IntakeWheelSpin.setDirection(CRServo.Direction.FORWARD);
                 }
                 else if(gamepad2.b) {
@@ -468,10 +469,10 @@ public class InToTheDeepTeleOp extends LinearOpMode {
 //            }
                 // Intakerollerdirection
                 if(gamepad2.dpad_left) {
-                    IntakeLeftRight.setPower(-0.25);
+                    IntakeUpDown.setPower(-1);
                 }
                 else if (gamepad2.dpad_right) {
-                    IntakeLeftRight.setPower(0.25);
+                    IntakeUpDown.setPower(1);
                 }
 //                else {
 //                    IntakeLeftRight.setPower(0);
