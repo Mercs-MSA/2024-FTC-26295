@@ -442,9 +442,9 @@ public class InToTheDeepTeleOp extends LinearOpMode {
             else if (gamepad2.dpad_down) {
                 IntakeLeftRight.setPower(-1);
             }
-//            else {
-//                IntakeLeftRight.setPower(0);
-//            }
+            else {
+                IntakeLeftRight.setPower(0);
+            }
 //                // Wheel Spine
                 if (gamepad2.x) {
                     IntakeWheelSpin.setPower(1.0);
@@ -474,9 +474,9 @@ public class InToTheDeepTeleOp extends LinearOpMode {
                 else if (gamepad2.dpad_right) {
                     IntakeUpDown.setPower(1);
                 }
-//                else {
-//                    IntakeLeftRight.setPower(0);
-//                }
+                else {
+                    IntakeLeftRight.setPower(0);
+                }
 //                if (gamepad2.dpad_left) {
 //                    Sprocket.setPower(1);
 //                }
