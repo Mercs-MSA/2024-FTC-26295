@@ -417,18 +417,18 @@ public class InToTheDeepTeleOp extends LinearOpMode {
             ) {
                 // Move Elevator to desired Position.
 //                    linearSlideElevator.setTargetPosition(ELEVATOR_HIGH_BASKET_POSITION);
-//                linearSlideElevator.setMode(DcMotorEx.RunMode.RUN_USING_ENCODER);
+                linearSlideElevator.setMode(DcMotorEx.RunMode.RUN_USING_ENCODER);
                 linearSlideElevator.setPower(elevatorVar);
                 elevatorVar=0;
             }
             else {
                 linearSlideElevator.setPower(0);
 ////                    linearSlideElevator.setTargetPosition(ELEVATOR_RESET_POSITION);
-//                linearSlideElevator.setTargetPosition(linearSlideElevator.getCurrentPosition());
-////                linearSlideElevator.setMode(DcMotorEx.RunMode.RUN_TO_POSITION);
-//                linearSlideElevator.setTargetPosition(linearSlideElevator.getCurrentPosition());
+                linearSlideElevator.setTargetPosition(linearSlideElevator.getCurrentPosition());
+                linearSlideElevator.setMode(DcMotorEx.RunMode.RUN_TO_POSITION);
+                linearSlideElevator.setTargetPosition(linearSlideElevator.getCurrentPosition());
                 //                    linearSlideElevator.setPower(0);
-//            }
+            }
 //            if (ARMVar != 0) {
 //                Sprocket.setPower(ARMVar* OPERATOR_GAIN_MULTIPLIER);
 //                ARMVar=0;
@@ -436,56 +436,69 @@ public class InToTheDeepTeleOp extends LinearOpMode {
 //            else {
 ////                    linearSlideARM.setPower(0);
 //            }
-            if (gamepad2.dpad_up) {
+                if (gamepad2.x) {
+                    IntakeUpDown.setDirection(CRServo.Direction.REVERSE);
+                    IntakeUpDown.setPower(1);
+                    IntakeWheelSpin.setDirection(CRServo.Direction.FORWARD);
+                    IntakeWheelSpin.setPower(1);
+                    IntakeLeftRight.setDirection(CRServo.Direction.FORWARD);
+                    IntakeLeftRight.setPower(1);
+                }
+                else if (gamepad2.y) {
+                    IntakeUpDown.setDirection(CRServo.Direction.FORWARD);
+                    IntakeUpDown.setPower(1);
+                    IntakeWheelSpin.setDirection(CRServo.Direction.REVERSE);
+                    IntakeWheelSpin.setPower(1);
+                    IntakeLeftRight.setDirection(CRServo.Direction.REVERSE);
+                    IntakeLeftRight.setPower(1);
+                }
+                else {
+                    IntakeLeftRight.setPower(0);
+                }
+            if (gamepad2.a) {
+                IntakeUpDown.setDirection(CRServo.Direction.REVERSE);
+                IntakeUpDown.setPower(1);
+                    IntakeWheelSpin.setDirection(CRServo.Direction.FORWARD);
+                    IntakeWheelSpin.setPower(1);
+                IntakeLeftRight.setDirection(CRServo.Direction.FORWARD);
                 IntakeLeftRight.setPower(1);
             }
-            else if (gamepad2.dpad_down) {
-                IntakeLeftRight.setPower(-1);
+            else if (gamepad2.b) {
+                IntakeUpDown.setDirection(CRServo.Direction.FORWARD);
+                IntakeUpDown.setPower(1);
+                    IntakeWheelSpin.setDirection(CRServo.Direction.REVERSE);
+                    IntakeWheelSpin.setPower(1);
+                IntakeLeftRight.setDirection(CRServo.Direction.REVERSE);
+                IntakeLeftRight.setPower(1);
             }
             else {
                 IntakeLeftRight.setPower(0);
             }
-//                // Wheel Spine
-                if (gamepad2.x) {
-                    IntakeWheelSpin.setPower(1.0);
+//                // Wheel Spin
+//                if (gamepad2.x) {
 //                    IntakeWheelSpin.setDirection(CRServo.Direction.FORWARD);
-                }
-                else if(gamepad2.b) {
-                    IntakeWheelSpin.setPower(-1.0);
+//                    IntakeWheelSpin.setPower(1);
+//                }
+//                else if(gamepad2.b) {
 //                    IntakeWheelSpin.setDirection(CRServo.Direction.REVERSE);
-                }
-                else {
-                    IntakeWheelSpin.setPower(0);
-                }
-//            if (gamepad2.a) {
-//                RightClaw.setPosition(1.0);
-//                LeftClaw.setPosition(1.0);
-////                    IntakeWheelSpin.setDirection(CRServo.Direction.FORWARD);
-//            }
-//            else if(gamepad2.b) {
-////                RightClaw.setPosition(1.0);
-////                LeftClaw.setPosition(1.0);
-//                    IntakeWheelSpin.setDirection(CRServo.Direction.REVERSE);
-//            }
+//                    IntakeWheelSpin.setPower(1);
+//                }
+//                else {
+//                    IntakeWheelSpin.setPower(0);
+//                }
+
                 // Intakerollerdirection
-                if(gamepad2.dpad_left) {
-                    IntakeUpDown.setPower(-1);
+                if(gamepad2.a) {
+                    IntakeUpDown.setDirection(CRServo.Direction.REVERSE);
+                    IntakeUpDown.setPower(1);
                 }
-                else if (gamepad2.dpad_right) {
+                else if (gamepad2.b) {
+                    IntakeUpDown.setDirection(CRServo.Direction.FORWARD);
                     IntakeUpDown.setPower(1);
                 }
                 else {
                     IntakeLeftRight.setPower(0);
                 }
-//                if (gamepad2.dpad_left) {
-//                    Sprocket.setPower(1);
-//                }
-//                else if (gamepad2.dpad_right) {
-//                    Sprocket.setPower(-1);
-//                }
-//                else {
-//                    Sprocket.setPower(0);
-//                }
 
             // Send calculated power to wheels double lf, double lb, double rf, double rb
             updatedrivebase(leftFrontPower, leftBackPower, rightFrontPower, rightBackPower);
