@@ -388,13 +388,12 @@ public class InToTheDeepTeleOp extends LinearOpMode {
                 Sprocket.setTargetPosition(Sprocket.getCurrentPosition());
                 Sprocket.setMode(DcMotorEx.RunMode.RUN_TO_POSITION);
 //                RotatingARMJoint.setPower(0);
-                Sprocket.setTargetPosition(ROTATING_ARM_JOINT_RESET_POSITION);
+                Sprocket.setTargetPosition(Sprocket.getCurrentPosition());
             }
             if ((elevatorVar != 0)
             ) {
  //              Put Max Horizontal Expansion limit in SW
 //                if ((Sprocket.getCurrentPosition() <  PIXEL_PICKUP_POSITION) &&(linearSlideElevator.getCurrentPosition()< MAX_HORIZONTAL_EXPANSION_LIMIT))
-
                 linearSlideElevator.setMode(DcMotorEx.RunMode.RUN_USING_ENCODER);
                 linearSlideElevator.setPower(elevatorVar);
                 elevatorVar=0;
