@@ -139,14 +139,15 @@ import org.firstinspires.ftc.teamcode.trajectorysequence.TrajectorySequence;
             SampleMecanumDrive drive = new SampleMecanumDrive(hardwareMap); // Drive object declared and initialized here
 
             Pose2d startPose = new Pose2d(-36, -36, Math.toRadians(0)); //  start pose
-
+            // Drive fwd to place specimen
             TrajectorySequence trajSeq1 = drive.trajectorySequenceBuilder(startPose)
                     .forward(30.3)
                     .build();
-
+            // Drive back
             TrajectorySequence trajSeq2 = drive.trajectorySequenceBuilder(startPose)
                     .back(30.3)
                     .build();
+
             // Define your trajectory sequence here (replace with MeepMeep output)
             TrajectorySequence trajSeq = drive.trajectorySequenceBuilder(startPose)
                     .strafeRight(30.3)
@@ -161,6 +162,11 @@ import org.firstinspires.ftc.teamcode.trajectorysequence.TrajectorySequence;
                     .back(50)
                     .build();
 
+            // Drive to park location
+            TrajectorySequence trajSeq4 = drive.trajectorySequenceBuilder(startPose)
+                    .strafeRight(90.3)
+                    .build();
+
             waitForStart();
 
             drive.followTrajectorySequence(trajSeq1);
@@ -171,10 +177,10 @@ import org.firstinspires.ftc.teamcode.trajectorysequence.TrajectorySequence;
             // Realign IMU Angle to 0
             drive.followTrajectorySequence(trajSeq2);
 
-
-
             if (isStopRequested()) return;
 
             drive.followTrajectorySequence(trajSeq);
+            // This is to park the Robot once all samples are pushed. - uncomment after testing
+//            drive.followTrajectorySequence(trajSeq);
         }
     }

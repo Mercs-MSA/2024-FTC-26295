@@ -118,6 +118,7 @@ public class IntoTheDeep_Autonomous extends LinearOpMode {
                 .back(18.2) //might work to drop specimen first
                 .build();
 
+        // Define your trajectory sequence here (replace with MeepMeep output)
         TrajectorySequence trajSeq = drive.trajectorySequenceBuilder(startPose)
                 //Comp robot- most probably will NOT work
                 .strafeLeft(-18.2) //might work to drop specimen first
@@ -138,6 +139,12 @@ public class IntoTheDeep_Autonomous extends LinearOpMode {
                 .forward(30.5)
                 .strafeLeft(10.2)
                 .build();
+        // Define parking trajectory
+        TrajectorySequence trajSeq4 = drive.trajectorySequenceBuilder(startPose)
+                //Comp robot- most probably will NOT work
+                .strafeRight(20)
+                .back(18.2) //might work to drop specimen first
+                .build();
 
         waitForStart();
         // Hanging Specimen holding pattern.
@@ -145,13 +152,12 @@ public class IntoTheDeep_Autonomous extends LinearOpMode {
         hangSpecimen_26295();
         drive.followTrajectorySequence(trajSeq2);
 
-        // Define your trajectory sequence here (replace with MeepMeep output)
-
-
-
         if (isStopRequested()) return;
 
         drive.followTrajectorySequence(trajSeq);
+        // uncomment after testing - zthis is to park the Bot to parking positon in basket side Auto
+//        drive.followTrajectorySequence(trajSeq4);
+
     }
 }
 //Distance for Auton 1 start position: 704
