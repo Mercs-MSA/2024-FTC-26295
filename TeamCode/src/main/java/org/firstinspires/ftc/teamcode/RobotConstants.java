@@ -8,21 +8,20 @@ public class RobotConstants
     public static final double COLORSENSOR_DISTANCE = 5;//5 cm
 
     public static int ELEVATOR_HIGH_LIMIT_POSITION = -17484;
-    public static int ELEVATOR_HIGH_BASKET_POSITION = -5508;// position for shoulder for basket drop
-    public static int ELEVATOR_HIGH_SPECIMEN_HANG_POSITION = -5508;// position for shoulder for basket drop
-    public static int ELEVATOR_RESET_POSITION =-6; // start position
+    public static int ELEVATOR_LOW_BASKET_POSITION = -4422;
+    public static int ELEVATOR_HIGH_BASKET_POSITION = -4508;// position for shoulder for basket drop
+    public static int ELEVATOR_HIGH_SPECIMEN_HANG_POSITION = -4422;// position for shoulder for basket drop
+    public static int ELEVATOR_RESET_POSITION =0; // start position
 
     public static int ROTATING_ARM_JOINT_HIGH_POSITION = 520;   // vertical position
-    public static int ROTATING_ARM_JOINT_BASKET_POSITION = 278;// position for shoulder for basket drop
-    public static int ROTATING_ARM_JOINT_SPECIMEN_HANG_POSITION = 278;// position for shoulder for basket drop
+    public static int ROTATING_ARM_JOINT_BASKET_POSITION = -128;// position for shoulder for basket drop
+    public static int ROTATING_ARM_JOINT_SPECIMEN_HANG_POSITION = -128;// position for shoulder for basket drop
     public static int ROTATING_ARM_JOINT_RESET_POSITION =0; // start position
 
-    public static int LINEAR_ARM_RESET_POSITION =-126; // start position
-    public static int LINEAR_ARM_BASKET_POSITION = 1176; // start position
 
     //adjust this value to ensure smooth drive operation
-    public static float TELEOP_ASSIST_DRIVETRAIN_GAIN = 0.8; // % multiplier for drive smooth operation
-    public static float TELEOP_ASSIST_DRIVETRAIN_TURN_GAIN = 0.5; // % gain multiplier for smooth turning operation - slower is better
+    public static double TELEOP_ASSIST_DRIVETRAIN_GAIN = 1; // % multiplier for drive smooth operation
+    public static double TELEOP_ASSIST_DRIVETRAIN_TURN_GAIN = 1; // % gain multiplier for smooth turning operation - slower is better
 
     //Specimen assist function
     public static int HIGH_RUNG_SPECIMEN_ROBOT_FRONT_POSITION =0; // distance sensor

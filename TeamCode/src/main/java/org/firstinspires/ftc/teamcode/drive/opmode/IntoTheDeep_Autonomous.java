@@ -1,6 +1,11 @@
 package org.firstinspires.ftc.teamcode.drive.opmode;
 
+import static org.firstinspires.ftc.teamcode.RobotConstants.ELEVATOR_HIGH_SPECIMEN_HANG_POSITION;
+import static org.firstinspires.ftc.teamcode.RobotConstants.ELEVATOR_LOW_BASKET_POSITION;
+import static org.firstinspires.ftc.teamcode.RobotConstants.ELEVATOR_RESET_POSITION;
 import static org.firstinspires.ftc.teamcode.RobotConstants.ROTATING_ARM_JOINT_BASKET_POSITION;
+import static org.firstinspires.ftc.teamcode.RobotConstants.ROTATING_ARM_JOINT_RESET_POSITION;
+import static org.firstinspires.ftc.teamcode.RobotConstants.ROTATING_ARM_JOINT_SPECIMEN_HANG_POSITION;
 
 import com.acmerobotics.roadrunner.geometry.Pose2d;
 import com.acmerobotics.roadrunner.geometry.Vector2d;
@@ -26,9 +31,37 @@ public class IntoTheDeep_Autonomous extends LinearOpMode {
     private DcMotorEx rightFrontDrive = null;
     private DcMotorEx rightBackDrive = null;
     private IMU imu = null;
-    private DcMotorEx RotatingARMJoint;
-    CRServo IntakeWheelSpin;
 
+    private DcMotorEx linearSlideElevator = null;
+    private DcMotorEx Sprocket;
+    private CRServo IntakeUpDown;
+    private CRServo IntakeWheelSpin;
+
+    public void hangSpecimen_26295(){
+        // move Robot to correct position
+
+//      hang specimen to high rung  - Constants in RobotConstants.java file.
+        linearSlideElevator.setTargetPosition(ELEVATOR_LOW_BASKET_POSITION);
+        Sprocket.setTargetPosition(ROTATING_ARM_JOINT_BASKET_POSITION);
+        linearSlideElevator.setPower(1);
+        Sprocket.setPower(1);
+//            IntakeWheelSpin.setDirection(CRServo.Direction.REVERSE);
+        sleep(2000);
+        IntakeWheelSpin.setPower(1);
+        // delay for 4 Sec
+        sleep(1000);
+        // reset position prior to moving the robot.
+        IntakeWheelSpin.setPower(0);
+//            linearSlideElevator.setPower(0);
+//            Sprocket.setPower(0);
+        linearSlideElevator.setTargetPosition(ELEVATOR_RESET_POSITION);
+        sleep(3000);
+        Sprocket.setTargetPosition(ROTATING_ARM_JOINT_RESET_POSITION);
+//            linearSlideElevator.setPower(1);
+//            Sprocket.setPower(1);
+//            sleep(2000);
+
+    }
     @Override
     public void runOpMode() throws InterruptedException {
         // Initialize drive motors
@@ -36,6 +69,12 @@ public class IntoTheDeep_Autonomous extends LinearOpMode {
         rightFrontDrive = hardwareMap.get(DcMotorEx.class, "rightFrontDrive");
         leftBackDrive = hardwareMap.get(DcMotorEx.class, "leftBackDrive");
         rightBackDrive = hardwareMap.get(DcMotorEx.class, "rightBackDrive");
+        // Intake Mechanism Init
+        linearSlideElevator = hardwareMap.get(DcMotorEx.class, "linearSlideElevator");
+        Sprocket = hardwareMap.get(DcMotorEx.class, "Sprocket");
+        //Servos
+        IntakeUpDown = hardwareMap.get(CRServo.class,"IntakeUpDown");
+        IntakeWheelSpin = hardwareMap.get(CRServo.class, "WheelSpin");
 
         // Set motor directions (adjust these based on your robot)
         leftFrontDrive.setDirection(DcMotorEx.Direction.FORWARD);
@@ -43,13 +82,20 @@ public class IntoTheDeep_Autonomous extends LinearOpMode {
         rightFrontDrive.setDirection(DcMotorEx.Direction.FORWARD);
         rightBackDrive.setDirection(DcMotorEx.Direction.REVERSE);
 
-
         leftBackDrive.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         rightBackDrive.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         rightFrontDrive.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         leftFrontDrive.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
-
+        // Intake mechanism Init & Config
+        linearSlideElevator.setDirection(DcMotorEx.Direction.FORWARD);
+        Sprocket.setDirection(DcMotorEx.Direction.FORWARD);
+        linearSlideElevator.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.BRAKE);
+        Sprocket.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.BRAKE);
+        linearSlideElevator.setTargetPosition(ELEVATOR_LOW_BASKET_POSITION);
+        linearSlideElevator.setMode(DcMotorEx.RunMode.RUN_TO_POSITION);
+        Sprocket.setTargetPosition(ROTATING_ARM_JOINT_BASKET_POSITION);
+        Sprocket.setMode(DcMotorEx.RunMode.RUN_TO_POSITION);
 
         // Initialize IMU
         imu = hardwareMap.get(IMU.class, "imu");
@@ -62,35 +108,17 @@ public class IntoTheDeep_Autonomous extends LinearOpMode {
 
         Pose2d startPose = new Pose2d(-36, -36, Math.toRadians(0)); //  start pose
 
-//        RotatingARMJoint.setDirection(DcMotorEx.Direction.FORWARD);
-//        RotatingARMJoint.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.BRAKE);
-//        RotatingARMJoint.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-//        RotatingARMJoint.setTargetPosition(ROTATING_ARM_JOINT_BASKET_POSITION);
-//        RotatingARMJoint.setPower(1);
-//        IntakeWheelSpin.
-//                IntakeWheelSpin.setPower(+1.0);
+        TrajectorySequence trajSeq1 = drive.trajectorySequenceBuilder(startPose)
+                //Comp robot- most probably will NOT work
+                .forward(18.2) //might work to drop specimen first
+                .build();
 
+        TrajectorySequence trajSeq2 = drive.trajectorySequenceBuilder(startPose)
+                //Comp robot- most probably will NOT work
+                .back(18.2) //might work to drop specimen first
+                .build();
 
-        // Define your trajectory sequence here (replace with MeepMeep output)
         TrajectorySequence trajSeq = drive.trajectorySequenceBuilder(startPose)
-////
-//
-//
-// Practice robot / might work if comp bot is positioned straight
-
-//                .strafeLeft(83.45)
-//                .forward(9.95)
-//                .strafeLeft(-82.5)
-//                .strafeLeft(83.7)
-//                .forward(9.55)
-//                .strafeLeft(-83.35)
-//                .strafeLeft(83.4)
-//
-//                .forward(6.5)
-//                .strafeLeft(-83.3)
-//                .strafeLeft(83.3)
-//                .forward(-20.3)
-
                 //Comp robot- most probably will NOT work
                 .strafeLeft(-18.2) //might work to drop specimen first
                 .strafeLeft(16.2) // //might work to drop specimen first
@@ -109,40 +137,17 @@ public class IntoTheDeep_Autonomous extends LinearOpMode {
                 .strafeLeft(12.5)
                 .forward(30.5)
                 .strafeLeft(10.2)
-
-
-
-
-
-
-
-// 147cm or 58in in strafing actual distance
-// forward is goo
-//
-//
-//
-//
-//
-//
-//
-//
-
-
-
-
-
-
-//
-//
-//
-//                .turn(Math.toRadians(-120))
-//              .strafeLeft(20)
-//                .splineTo(new Vector2d(0, 36), Math.toRadians(0))
-//                .forward(30)
-               .build();
-
+                .build();
 
         waitForStart();
+        // Hanging Specimen holding pattern.
+        drive.followTrajectorySequence(trajSeq1);
+        hangSpecimen_26295();
+        drive.followTrajectorySequence(trajSeq2);
+
+        // Define your trajectory sequence here (replace with MeepMeep output)
+
+
 
         if (isStopRequested()) return;
 

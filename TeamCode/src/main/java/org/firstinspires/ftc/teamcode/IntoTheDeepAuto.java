@@ -25,7 +25,7 @@ import org.firstinspires.ftc.robotcore.external.navigation.YawPitchRollAngles;
 // Import Robot Subsystem Libs
 import org.firstinspires.ftc.teamcode.subsystem.SubSystemDrivetrain;
 
-
+@Disabled
 @Autonomous
 //adding empty Functions - AUTO
 public class IntoTheDeepAuto extends LinearOpMode {

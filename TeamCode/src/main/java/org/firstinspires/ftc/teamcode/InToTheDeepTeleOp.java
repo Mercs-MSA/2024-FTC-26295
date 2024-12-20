@@ -105,14 +105,8 @@ public class InToTheDeepTeleOp extends LinearOpMode {
 
 
     private DcMotorEx linearSlideElevator = null;
-//    private DcMotorEx linearSlideARM = null;
     private DcMotorEx Sprocket;
-    private CRServo IntakeLeftRight;
-//    private Servo RightClaw;
-//    private Servo LeftClaw;
-//    private DcMotorEx Climb = null;
     private CRServo IntakeUpDown;
-//    private CRServo hook;
     private CRServo IntakeWheelSpin;
 
     RevBlinkinLedDriver blinkinLedDriver;
@@ -159,9 +153,7 @@ public class InToTheDeepTeleOp extends LinearOpMode {
         // Intake Mechanism Init
         linearSlideElevator = hardwareMap.get(DcMotorEx.class, "linearSlideElevator");
         Sprocket = hardwareMap.get(DcMotorEx.class, "Sprocket");
-//        RotatingARMJoint = hardwareMap.get(DcMotorEx.class, "RotatingARMJoint");
         //Servos
-        IntakeLeftRight = hardwareMap.get(CRServo.class, "IntakeLeftRight");
         IntakeUpDown = hardwareMap.get(CRServo.class,"IntakeUpDown");
         IntakeWheelSpin = hardwareMap.get(CRServo.class, "WheelSpin");
 
@@ -236,7 +228,7 @@ public class InToTheDeepTeleOp extends LinearOpMode {
 
         telemetry.addData("Linear Slide Elevator", linearSlideElevator.getCurrentPosition());
         telemetry.addData("rotatingARM", Sprocket.getCurrentPosition());
-        telemetry.addData("IntakeLeftRight ", IntakeLeftRight.getPower());
+//        telemetry.addData("IntakeLeftRight ", IntakeLeftRight.getPower());
         telemetry.addData("IntakeUpDown  ", IntakeUpDown.getPower());
         telemetry.addData("WheelIntake ", IntakeWheelSpin.getPower());
 //
@@ -404,17 +396,17 @@ public class InToTheDeepTeleOp extends LinearOpMode {
                 linearSlideElevator.setMode(DcMotorEx.RunMode.RUN_TO_POSITION);
                 linearSlideElevator.setTargetPosition(linearSlideElevator.getCurrentPosition());
             }
-            if (gamepad2.dpad_right) {
-                IntakeLeftRight.setDirection(CRServo.Direction.FORWARD);
-                IntakeLeftRight.setPower(1);
-            }
-            else if (gamepad2.dpad_left) {
-                IntakeLeftRight.setDirection(CRServo.Direction.REVERSE);
-                IntakeLeftRight.setPower(1);
-            }
-            else {
-                IntakeLeftRight.setPower(0);
-            }
+//            if (gamepad2.dpad_right) {
+//                IntakeLeftRight.setDirection(CRServo.Direction.FORWARD);
+//                IntakeLeftRight.setPower(1);
+//            }
+//            else if (gamepad2.dpad_left) {
+//                IntakeLeftRight.setDirection(CRServo.Direction.REVERSE);
+//                IntakeLeftRight.setPower(1);
+//            }
+//            else {
+//                IntakeLeftRight.setPower(0);
+//            }
           if (gamepad2.dpad_up) {
                 IntakeUpDown.setDirection(CRServo.Direction.REVERSE);
                 IntakeUpDown.setPower(1);
@@ -442,7 +434,7 @@ public class InToTheDeepTeleOp extends LinearOpMode {
             if(gamepad2.y) {
                 IntakeWheelSpin.setPower(0);
                 IntakeUpDown.setPower(0);
-                IntakeLeftRight.setPower(0);
+//                IntakeLeftRight.setPower(0);
             }
             else if(gamepad2.a){ // Should be used for Climb Level 2 ascent.
                 //Reset All DC motors
@@ -453,7 +445,7 @@ public class InToTheDeepTeleOp extends LinearOpMode {
                 //Clear All Servo positions
                 IntakeWheelSpin.setPower(0);
                 IntakeUpDown.setPower(0);
-                IntakeLeftRight.setPower(0);
+//                IntakeLeftRight.setPower(0);
                 //retract ARM
                 Sprocket.setTargetPosition(Sprocket.getCurrentPosition());
                 Sprocket.setMode(DcMotorEx.RunMode.RUN_TO_POSITION);
