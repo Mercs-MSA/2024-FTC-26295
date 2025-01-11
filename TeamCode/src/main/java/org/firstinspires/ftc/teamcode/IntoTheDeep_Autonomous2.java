@@ -68,21 +68,21 @@ import org.firstinspires.ftc.teamcode.trajectorysequence.TrajectorySequence;
             linearSlideElevator.setPower(1);
             Sprocket.setPower(1);
             // setting active holding pattern
-            IntakeWheelSpin.setDirection(CRServo.Direction.REVERSE);
-//            sleep(2000);
-            IntakeWheelSpin.setPower(1);
-//            // delay for 4 Sec
-            sleep(5000);
+//            IntakeWheelSpin.setDirection(CRServo.Direction.REVERSE);
+//           sleep(2000);
+//            IntakeWheelSpin.setPower(-0.5);
+////            // delay for 4 Sec
+           sleep(1000);
             // reset position prior to moving the robot.
-            Sprocket.setTargetPosition(ROTATING_ARM_JOINT_RESET_POSITION);
-//            linearSlideElevator.setPower(1);
-//            Sprocket.setPower(1);
-            sleep(5000);
-            IntakeWheelSpin.setPower(0);
-//            linearSlideElevator.setPower(0);
-//            Sprocket.setPower(0);
-            linearSlideElevator.setTargetPosition(ELEVATOR_RESET_POSITION);
+//            Sprocket.setTargetPosition(ROTATING_ARM_JOINT_RESET_POSITION);
+////            linearSlideElevator.setPower(1);
+////            Sprocket.setPower(1);
 //            sleep(3000);
+// //           IntakeWheelSpin.setPower(0);
+////            linearSlideElevator.setPower(0);
+////            Sprocket.setPower(0);
+//            linearSlideElevator.setTargetPosition(ELEVATOR_RESET_POSITION);
+//           sleep(3000);
 
 
         }
@@ -141,11 +141,16 @@ import org.firstinspires.ftc.teamcode.trajectorysequence.TrajectorySequence;
             Pose2d startPose = new Pose2d(-36, -36, Math.toRadians(0)); //  start pose
             // Drive fwd to place specimen
             TrajectorySequence trajSeq1 = drive.trajectorySequenceBuilder(startPose)
-                    .forward(30.3)
+                    .forward(33.6)
                     .build();
             // Drive back
+            TrajectorySequence trajSeq3 = drive.trajectorySequenceBuilder(startPose)// drive forward to place specimen
+                    .forward(10.6)
+                    .build();
+
+
             TrajectorySequence trajSeq2 = drive.trajectorySequenceBuilder(startPose)
-                    .back(30.3)
+                    .back(32.6)
                     .build();
 
             // Define your trajectory sequence here (replace with MeepMeep output)
@@ -175,7 +180,20 @@ import org.firstinspires.ftc.teamcode.trajectorysequence.TrajectorySequence;
             hangSpecimen_26295();
             // Retract Robot
             // Realign IMU Angle to 0
+            drive.followTrajectorySequence(trajSeq3);
+            linearSlideElevator.setTargetPosition(ELEVATOR_RESET_POSITION);
+            sleep(3000);
+            Sprocket.setTargetPosition(ROTATING_ARM_JOINT_RESET_POSITION);
+////            linearSlideElevator.setPower(1);
+////            Sprocket.setPower(1);
+//            sleep(3000);
+// //           IntakeWheelSpin.setPower(0);
+////            linearSlideElevator.setPower(0);
+////            Sprocket.setPower(0);
+
+
             drive.followTrajectorySequence(trajSeq2);
+
 
             if (isStopRequested()) return;
 
