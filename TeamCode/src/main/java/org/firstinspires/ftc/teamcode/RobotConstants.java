@@ -8,14 +8,14 @@ public class RobotConstants
     public static final double COLORSENSOR_DISTANCE = 5;//5 cm
 
     public static int ELEVATOR_HIGH_LIMIT_POSITION = -17484;
-    public static int ELEVATOR_LOW_BASKET_POSITION = -4422;
+    public static int ELEVATOR_LOW_BASKET_POSITION = -5300; //low basket:-5300
     public static int ELEVATOR_HIGH_BASKET_POSITION = -4508;// position for shoulder for basket drop
-    public static int ELEVATOR_HIGH_SPECIMEN_HANG_POSITION = -4000;// position for shoulder for basket drop
-    public static int ELEVATOR_RESET_POSITION =0; // start position
+    public static int ELEVATOR_HIGH_SPECIMEN_HANG_POSITION = -4492;// position for shoulder for basket drop
+    public static int ELEVATOR_RESET_POSITION =5; // start position
 
     public static int ROTATING_ARM_JOINT_HIGH_POSITION = 520;   // vertical position
-    public static int ROTATING_ARM_JOINT_BASKET_POSITION = -128;// position for shoulder for basket drop
-    public static int ROTATING_ARM_JOINT_SPECIMEN_HANG_POSITION = -73;// position for shoulder for basket drop
+    public static int ROTATING_ARM_JOINT_BASKET_POSITION = -75;// position for shoulder for basket drop
+    public static int ROTATING_ARM_JOINT_SPECIMEN_HANG_POSITION = -88;// position for shoulder for basket drop
     public static int ROTATING_ARM_JOINT_RESET_POSITION =0; // start position
 
 

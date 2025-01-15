@@ -150,21 +150,21 @@ import org.firstinspires.ftc.teamcode.trajectorysequence.TrajectorySequence;
 
 
             TrajectorySequence trajSeq2 = drive.trajectorySequenceBuilder(startPose)
-                    .back(32.6)
+                    .back(40.6)
                     .build();
 
             // Define your trajectory sequence here (replace with MeepMeep output)
             TrajectorySequence trajSeq = drive.trajectorySequenceBuilder(startPose)
-                    .strafeRight(30.3)
-                    .forward(56)
-                    .strafeRight(26.5)
-                    .back(53)
-                    .forward(53)
-                    .strafeRight(22.5)
-                    .back(50)
-                    .forward(47)
-                    .strafeRight(26)
-                    .back(50)
+                    .strafeRight(60.3)
+                    .forward(60)
+//                    .strafeRight(26.5)
+//                    .back(53)
+//                    .forward(53)
+//                    .strafeRight(22.5)
+//                    .back(50)
+//                    .forward(47)
+//                    .strafeRight(26)
+//                    .back(50)
                     .build();
 
             // Drive to park location
@@ -196,6 +196,6 @@ import org.firstinspires.ftc.teamcode.trajectorysequence.TrajectorySequence;
 
             drive.followTrajectorySequence(trajSeq);
             // This is to park the Robot once all samples are pushed. - uncomment after testing
-//            drive.followTrajectorySequence(trajSeq);
+            drive.followTrajectorySequence(trajSeq);
         }
     }

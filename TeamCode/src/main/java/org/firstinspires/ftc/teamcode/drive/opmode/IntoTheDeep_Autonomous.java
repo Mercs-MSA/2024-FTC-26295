@@ -46,10 +46,10 @@ public class IntoTheDeep_Autonomous extends LinearOpMode {
         linearSlideElevator.setPower(1);
         Sprocket.setPower(1);
 //            IntakeWheelSpin.setDirection(CRServo.Direction.REVERSE);
-        sleep(2000);
+        sleep(1000);
         IntakeWheelSpin.setPower(1);
         // delay for 4 Sec
-        sleep(1000);
+        sleep(2000);
         // reset position prior to moving the robot.
         IntakeWheelSpin.setPower(0);
 //            linearSlideElevator.setPower(0);
