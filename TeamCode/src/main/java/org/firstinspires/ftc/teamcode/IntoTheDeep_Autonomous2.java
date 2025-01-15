@@ -190,10 +190,7 @@ import org.firstinspires.ftc.teamcode.trajectorysequence.TrajectorySequence;
 // //           IntakeWheelSpin.setPower(0);
 ////            linearSlideElevator.setPower(0);
 ////            Sprocket.setPower(0);
-
-
             drive.followTrajectorySequence(trajSeq2);
-
 
             if (isStopRequested()) return;
 
