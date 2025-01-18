@@ -6,7 +6,7 @@ public class RobotConstants
     public static final double OPERATOR_ERROR_MARGIN = 0.5;//wrounding error on joysticlk
     public static final double OPERATOR_GAIN_MULTIPLIER = 1;//50 % power
     public static final double COLORSENSOR_DISTANCE = 5;//5 cm
-
+    public static final double ELEVATOR_LIMIT_POSITION = -6750;
     public static int ELEVATOR_HIGH_LIMIT_POSITION = -17484;
     public static int ELEVATOR_LOW_BASKET_POSITION = -5300; //low basket:-5300
     public static int ELEVATOR_HIGH_BASKET_POSITION = -4508;// position for shoulder for basket drop

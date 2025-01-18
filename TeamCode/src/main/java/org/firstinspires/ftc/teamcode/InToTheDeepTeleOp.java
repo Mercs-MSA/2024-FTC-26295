@@ -56,6 +56,8 @@ rightDistanceSensor            control            i2cBus 3                rightD
 */
 
 import static org.firstinspires.ftc.teamcode.RobotConstants.COLORSENSOR_DISTANCE;
+import static org.firstinspires.ftc.teamcode.RobotConstants.ELEVATOR_LIMIT_POSITION;
+import static org.firstinspires.ftc.teamcode.RobotConstants.ELEVATOR_LOW_BASKET_POSITION;
 import static org.firstinspires.ftc.teamcode.RobotConstants.ELEVATOR_RESET_POSITION;
 import static org.firstinspires.ftc.teamcode.RobotConstants.OPERATOR_ERROR_MARGIN;
 import static org.firstinspires.ftc.teamcode.RobotConstants.OPERATOR_GAIN_MULTIPLIER;
@@ -296,6 +298,8 @@ public class InToTheDeepTeleOp extends LinearOpMode {
 
             // POV Mode uses left joystick to go forward & rotate, and right joystick to strafe.
             double axial = -gamepad1.left_stick_y * TELEOP_ASSIST_DRIVETRAIN_GAIN;  //FWD
+            if(linearSlideElevator.getCurrentPosition() < ELEVATOR_LIMIT_POSITION)
+                axial =0;
             double lateral = gamepad1.left_stick_x * TELEOP_ASSIST_DRIVETRAIN_GAIN;  //TUR
             //Test This code to check drive and turn operation.
             double yaw = gamepad1.right_stick_x * TELEOP_ASSIST_DRIVETRAIN_TURN_GAIN; //STR
