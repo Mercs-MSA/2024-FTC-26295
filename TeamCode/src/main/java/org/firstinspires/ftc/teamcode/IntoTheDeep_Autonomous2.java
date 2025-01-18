@@ -141,11 +141,11 @@ import org.firstinspires.ftc.teamcode.trajectorysequence.TrajectorySequence;
             Pose2d startPose = new Pose2d(-36, -36, Math.toRadians(0)); //  start pose
             // Drive fwd to place specimen
             TrajectorySequence trajSeq1 = drive.trajectorySequenceBuilder(startPose)
-                    .forward(33.6)
+                    .forward(31.9)
                     .build();
             // Drive back
             TrajectorySequence trajSeq3 = drive.trajectorySequenceBuilder(startPose)// drive forward to place specimen
-                    .forward(10.6)
+                    .forward(9.6)
                     .build();
 
 
@@ -157,20 +157,20 @@ import org.firstinspires.ftc.teamcode.trajectorysequence.TrajectorySequence;
             TrajectorySequence trajSeq = drive.trajectorySequenceBuilder(startPose)
                     .strafeRight(60.3)
                     .forward(60)
-//                    .strafeRight(26.5)
-//                    .back(53)
-//                    .forward(53)
-//                    .strafeRight(22.5)
-//                    .back(50)
-//                    .forward(47)
-//                    .strafeRight(26)
-//                    .back(50)
+                    .strafeRight(26.5)
+                    .back(54)
+                    .forward(54)
+                    .strafeRight(25.5)
+                    .back(50)
+                    .forward(47)
+                    .strafeRight(30)
+                    .back(53)
                     .build();
 
             // Drive to park location
-            TrajectorySequence trajSeq4 = drive.trajectorySequenceBuilder(startPose)
-                    .strafeRight(90.3)
-                    .build();
+ //           TrajectorySequence trajSeq4 = drive.trajectorySequenceBuilder(startPose)
+               //     .strafeRight(.3)
+ //                   .build();
 
             waitForStart();
 
