@@ -44,19 +44,19 @@ public class IntoTheDeep_Autonomous extends LinearOpMode {
         linearSlideElevator.setTargetPosition(ELEVATOR_LOW_BASKET_POSITION);
         Sprocket.setTargetPosition(ROTATING_ARM_JOINT_BASKET_POSITION);
         linearSlideElevator.setPower(1);
-        Sprocket.setPower(1);
+//        Sprocket.setPower(1);
 //            IntakeWheelSpin.setDirection(CRServo.Direction.REVERSE);
-        sleep(1000);
+        sleep(2000);
         IntakeWheelSpin.setPower(1);
         // delay for 4 Sec
         sleep(2000);
         // reset position prior to moving the robot.
-        IntakeWheelSpin.setPower(0);
 //            linearSlideElevator.setPower(0);
 //            Sprocket.setPower(0);
         linearSlideElevator.setTargetPosition(ELEVATOR_RESET_POSITION);
-        sleep(3000);
+        sleep(1000);
         Sprocket.setTargetPosition(ROTATING_ARM_JOINT_RESET_POSITION);
+        IntakeWheelSpin.setPower(0);
 //            linearSlideElevator.setPower(1);
 //            Sprocket.setPower(1);
 //            sleep(2000);
@@ -110,22 +110,22 @@ public class IntoTheDeep_Autonomous extends LinearOpMode {
 
         TrajectorySequence trajSeq1 = drive.trajectorySequenceBuilder(startPose)
                 //Comp robot- most probably will NOT work
-                .forward(18.2) //might work to drop specimen first
+                .forward(19.5) //might work to drop specimen first
                 .build();
 
         TrajectorySequence trajSeq2 = drive.trajectorySequenceBuilder(startPose)
                 //Comp robot- most probably will NOT work
-                .back(18.2) //might work to drop specimen first
+                .back(19.5) //might work to drop specimen first
                 .build();
 
         // Define your trajectory sequence here (replace with MeepMeep output)
         TrajectorySequence trajSeq = drive.trajectorySequenceBuilder(startPose)
                 //Comp robot- most probably will NOT work
-                .strafeLeft(-18.2) //might work to drop specimen first
-                .strafeLeft(16.2) // //might work to drop specimen first
-                .forward(97)
-                .strafeLeft(-11.7)
-                .forward(-89.65)
+//               .strafeLeft(-18.2) //might work to drop specimen first
+                .strafeRight(70.2) // //might work to drop specimen first
+                .forward(30)
+                .strafeLeft(70.1)
+                .forward(30.65)
                 .turn(-6.2)
                 .strafeLeft(10.3)
                 .forward(89.2)

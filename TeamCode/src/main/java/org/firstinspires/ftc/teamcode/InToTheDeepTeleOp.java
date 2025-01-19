@@ -165,11 +165,11 @@ public class InToTheDeepTeleOp extends LinearOpMode {
 
         //Initialize the color sensor
 //        colorSensor = hardwareMap.get(NormalizedColorSensor.class, "colorSensor");
-        colorSensor = hardwareMap.get(RevColorSensorV3.class, "colorSensor");
+//        colorSensor = hardwareMap.get(RevColorSensorV3.class, "colorSensor");
 
         //Initialize distance sensors
-        leftDistanceSensor = hardwareMap.get(Rev2mDistanceSensor.class, "leftDistanceSensor");
-        rightDistanceSensor = hardwareMap.get(Rev2mDistanceSensor.class, "rightDistanceSensor");
+//        leftDistanceSensor = hardwareMap.get(Rev2mDistanceSensor.class, "leftDistanceSensor");
+//        rightDistanceSensor = hardwareMap.get(Rev2mDistanceSensor.class, "rightDistanceSensor");
 
         blinkinLedDriver = hardwareMap.get(RevBlinkinLedDriver.class, "blinkin");
         blinkinLedDriver.setPattern(RevBlinkinLedDriver.BlinkinPattern.DARK_GREEN);
@@ -234,9 +234,9 @@ public class InToTheDeepTeleOp extends LinearOpMode {
         telemetry.addData("IntakeUpDown  ", IntakeUpDown.getPower());
         telemetry.addData("WheelIntake ", IntakeWheelSpin.getPower());
 //
-        telemetry.addData("Sample detected", getSampleColor());
-        telemetry.addData("Back distance", leftDistanceSensor.getDistance(DistanceUnit.MM));
-        telemetry.addData("Front distance", rightDistanceSensor.getDistance(DistanceUnit.MM));
+//        telemetry.addData("Sample detected", getSampleColor());
+//        telemetry.addData("Back distance", leftDistanceSensor.getDistance(DistanceUnit.MM));
+//        telemetry.addData("Front distance", rightDistanceSensor.getDistance(DistanceUnit.MM));
         telemetry.update();
     }
 
@@ -465,5 +465,14 @@ public class InToTheDeepTeleOp extends LinearOpMode {
             // Show the elapsed game time and wheel power.c
             updatetelemetry_26295(heading);
         }
+        //retract ARM
+        Sprocket.setTargetPosition(Sprocket.getCurrentPosition());
+        Sprocket.setMode(DcMotorEx.RunMode.RUN_TO_POSITION);
+        Sprocket.setTargetPosition(Sprocket.getCurrentPosition());
+        //Retract Elevator
+        linearSlideElevator.setTargetPosition(linearSlideElevator.getCurrentPosition());
+        linearSlideElevator.setMode(DcMotorEx.RunMode.RUN_TO_POSITION);
+        linearSlideElevator.setTargetPosition(linearSlideElevator.getCurrentPosition());
+
     }
 }
