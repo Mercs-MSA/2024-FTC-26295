@@ -46,10 +46,11 @@ public class IntoTheDeep_Autonomous extends LinearOpMode {
         linearSlideElevator.setPower(1);
 //        Sprocket.setPower(1);
 //            IntakeWheelSpin.setDirection(CRServo.Direction.REVERSE);
+        // delay for 2 Sec - optimize after testing.
         sleep(2000);
         IntakeWheelSpin.setPower(1);
-        // delay for 4 Sec
-        sleep(2000);
+        // delay for 1 Sec to split the sample out
+        sleep(1000);
         // reset position prior to moving the robot.
 //            linearSlideElevator.setPower(0);
 //            Sprocket.setPower(0);

@@ -70,6 +70,7 @@ public class IntoTheDeep_Autonomous2 extends LinearOpMode {
         // setting active holding pattern
 //            IntakeWheelSpin.setDirection(CRServo.Direction.REVERSE);
 //           sleep(2000);
+        // Removed wheel spin to avoid sample release.
 //            IntakeWheelSpin.setPower(-0.5);
 ////            // delay for 4 Sec
         sleep(1000);

@@ -156,7 +156,7 @@ public class InToTheDeepTeleOp extends LinearOpMode {
         linearSlideElevator = hardwareMap.get(DcMotorEx.class, "linearSlideElevator");
         Sprocket = hardwareMap.get(DcMotorEx.class, "Sprocket");
         //Servos
-        IntakeUpDown = hardwareMap.get(CRServo.class,"IntakeUpDown");
+//        IntakeUpDown = hardwareMap.get(CRServo.class,"IntakeUpDown");
         IntakeWheelSpin = hardwareMap.get(CRServo.class, "WheelSpin");
 
         //Ascent HW Init
