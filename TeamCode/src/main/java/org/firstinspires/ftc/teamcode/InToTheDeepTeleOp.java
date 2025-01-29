@@ -231,7 +231,7 @@ public class InToTheDeepTeleOp extends LinearOpMode {
         telemetry.addData("Linear Slide Elevator", linearSlideElevator.getCurrentPosition());
         telemetry.addData("rotatingARM", Sprocket.getCurrentPosition());
 //        telemetry.addData("IntakeLeftRight ", IntakeLeftRight.getPower());
-        telemetry.addData("IntakeUpDown  ", IntakeUpDown.getPower());
+//        telemetry.addData("IntakeUpDown  ", IntakeUpDown.getPower());
         telemetry.addData("WheelIntake ", IntakeWheelSpin.getPower());
 //
 //        telemetry.addData("Sample detected", getSampleColor());
@@ -265,11 +265,7 @@ public class InToTheDeepTeleOp extends LinearOpMode {
         //
 
         IMU imu = hardwareMap.get(IMU.class, "imu");
-/*      Test Robot Directions
-        IMU.Parameters parameters = new IMU.Parameters(new RevHubOrientationOnRobot(
-                RevHubOrientationOnRobot.LogoFacingDirection.BACKWARD,
-            RevHubOrientationOnRobot.UsbFacingDirection.RIGHT));
-*/
+
         // Competition Robot Directions
         IMU.Parameters parameters = new IMU.Parameters(new RevHubOrientationOnRobot(
                 RevHubOrientationOnRobot.LogoFacingDirection.UP,
@@ -411,17 +407,17 @@ public class InToTheDeepTeleOp extends LinearOpMode {
 //            else {
 //                IntakeLeftRight.setPower(0);
 //            }
-          if (gamepad2.dpad_up) {
-                IntakeUpDown.setDirection(CRServo.Direction.REVERSE);
-                IntakeUpDown.setPower(1);
-            }
-            else if (gamepad2.dpad_down) {
-                IntakeUpDown.setDirection(CRServo.Direction.FORWARD);
-                IntakeUpDown.setPower(1);
-            }
-            else {
-                IntakeUpDown.setPower(0);
-            }
+//          if (gamepad2.dpad_up) {
+//                IntakeUpDown.setDirection(CRServo.Direction.REVERSE);
+//                IntakeUpDown.setPower(1);
+//            }
+//            else if (gamepad2.dpad_down) {
+//                IntakeUpDown.setDirection(CRServo.Direction.FORWARD);
+//                IntakeUpDown.setPower(1);
+//            }
+//            else {
+//                IntakeUpDown.setPower(0);
+//            }
             // Wheel Spin
             if (gamepad2.x) {
                 IntakeWheelSpin.setDirection(CRServo.Direction.FORWARD);
