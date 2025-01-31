@@ -41,40 +41,39 @@ import org.firstinspires.ftc.teamcode.drive.SampleMecanumDrive;
 import org.firstinspires.ftc.teamcode.trajectorysequence.TrajectorySequence;
 
 
-@Autonomous
-public class IntoTheDeep_Autonomous2 extends LinearOpMode {
-    private ElapsedTime runtime = new ElapsedTime();
-    private DcMotorEx leftFrontDrive = null;
-    private DcMotorEx leftBackDrive = null;
-    private DcMotorEx rightFrontDrive = null;
-    private DcMotorEx rightBackDrive = null;
+    @Autonomous
+    public class IntoTheDeep_Autonomous2 extends LinearOpMode {
+        private ElapsedTime runtime = new ElapsedTime();
+        private DcMotorEx leftFrontDrive = null;
+        private DcMotorEx leftBackDrive = null;
+        private DcMotorEx rightFrontDrive = null;
+        private DcMotorEx rightBackDrive = null;
 
-    private DcMotorEx linearSlideElevator = null;
-    private DcMotorEx Sprocket;
-    private CRServo IntakeUpDown;
-    private CRServo IntakeWheelSpin;
-    Rev2mDistanceSensor leftDistanceSensor;
-    Rev2mDistanceSensor rightDistanceSensor;
-    private double originalDistance =0;
-    private double targetDistance =0;
-    private IMU imu = null;
+        private DcMotorEx linearSlideElevator = null;
+        private DcMotorEx Sprocket;
+        private CRServo IntakeUpDown;
+        private CRServo IntakeWheelSpin;
+        Rev2mDistanceSensor leftDistanceSensor;
+        Rev2mDistanceSensor rightDistanceSensor;
+        private double originalDistance =0;
+        private double targetDistance =0;
+        private IMU imu = null;
 
-    public void hangSpecimen_26295(){
-        // move Robot to correct position
+        public void hangSpecimen_26295(){
+            // move Robot to correct position
 
 //      hang specimen to high rung  - Constants in RobotConstants.java file.
-        linearSlideElevator.setTargetPosition(ELEVATOR_HIGH_SPECIMEN_HANG_POSITION);
-        Sprocket.setTargetPosition(ROTATING_ARM_JOINT_SPECIMEN_HANG_POSITION);
-        linearSlideElevator.setPower(1);
-        Sprocket.setPower(1);
-        // setting active holding pattern
-//            IntakeWheelSpin.setDirection(CRServo.Direction.REVERSE);
+            linearSlideElevator.setTargetPosition(ELEVATOR_HIGH_SPECIMEN_HANG_POSITION);
+            Sprocket.setTargetPosition(ROTATING_ARM_JOINT_SPECIMEN_HANG_POSITION);
+            linearSlideElevator.setPower(1);
+            Sprocket.setPower(1);
+            // setting active holding pattern
+            IntakeWheelSpin.setDirection(CRServo.Direction.REVERSE);
 //           sleep(2000);
-        // Removed wheel spin to avoid sample release.
 //            IntakeWheelSpin.setPower(-0.5);
 ////            // delay for 4 Sec
-        sleep(1000);
-        // reset position prior to moving the robot.
+           sleep(3500);
+            // reset position prior to moving the robot.
 //            Sprocket.setTargetPosition(ROTATING_ARM_JOINT_RESET_POSITION);
 ////            linearSlideElevator.setPower(1);
 ////            Sprocket.setPower(1);
@@ -86,117 +85,118 @@ public class IntoTheDeep_Autonomous2 extends LinearOpMode {
 //           sleep(3000);
 
 
-    }
-    @Override
-    public void runOpMode() throws InterruptedException {
-        // Initialize drive motors -> Do we Need this - Vaibhav ?????
-        leftFrontDrive = hardwareMap.get(DcMotorEx.class, "leftFrontDrive");
-        rightFrontDrive = hardwareMap.get(DcMotorEx.class, "rightFrontDrive");
-        leftBackDrive = hardwareMap.get(DcMotorEx.class, "leftBackDrive");
-        rightBackDrive = hardwareMap.get(DcMotorEx.class, "rightBackDrive");
-        // Intake Mechanism Init
-        linearSlideElevator = hardwareMap.get(DcMotorEx.class, "linearSlideElevator");
-        Sprocket = hardwareMap.get(DcMotorEx.class, "Sprocket");
-        //Servos
-        IntakeUpDown = hardwareMap.get(CRServo.class,"IntakeUpDown");
-        IntakeWheelSpin = hardwareMap.get(CRServo.class, "WheelSpin");
-        //Initialize distance sensors
-        leftDistanceSensor = hardwareMap.get(Rev2mDistanceSensor.class, "leftDistanceSensor");
-        rightDistanceSensor = hardwareMap.get(Rev2mDistanceSensor.class, "rightDistanceSensor");
+        }
+        @Override
+        public void runOpMode() throws InterruptedException {
+            // Initialize drive motors -> Do we Need this - Vaibhav ?????
+            leftFrontDrive = hardwareMap.get(DcMotorEx.class, "leftFrontDrive");
+            rightFrontDrive = hardwareMap.get(DcMotorEx.class, "rightFrontDrive");
+            leftBackDrive = hardwareMap.get(DcMotorEx.class, "leftBackDrive");
+            rightBackDrive = hardwareMap.get(DcMotorEx.class, "rightBackDrive");
+            // Intake Mechanism Init
+            linearSlideElevator = hardwareMap.get(DcMotorEx.class, "linearSlideElevator");
+            Sprocket = hardwareMap.get(DcMotorEx.class, "Sprocket");
+            //Servos
+            IntakeUpDown = hardwareMap.get(CRServo.class,"IntakeUpDown");
+            IntakeWheelSpin = hardwareMap.get(CRServo.class, "WheelSpin");
+            //Initialize distance sensors
+            leftDistanceSensor = hardwareMap.get(Rev2mDistanceSensor.class, "leftDistanceSensor");
+            rightDistanceSensor = hardwareMap.get(Rev2mDistanceSensor.class, "rightDistanceSensor");
 
-        // Set motor directions (adjust these based on your robot)
-        leftFrontDrive.setDirection(DcMotorEx.Direction.REVERSE);
-        leftBackDrive.setDirection(DcMotorEx.Direction.FORWARD);
-        rightFrontDrive.setDirection(DcMotorEx.Direction.REVERSE);
-        rightBackDrive.setDirection(DcMotorEx.Direction.FORWARD);
+            // Set motor directions (adjust these based on your robot)
+            leftFrontDrive.setDirection(DcMotorEx.Direction.REVERSE);
+            leftBackDrive.setDirection(DcMotorEx.Direction.FORWARD);
+            rightFrontDrive.setDirection(DcMotorEx.Direction.REVERSE);
+            rightBackDrive.setDirection(DcMotorEx.Direction.FORWARD);
 
-        // Intake mechanism Config
-        linearSlideElevator.setDirection(DcMotorEx.Direction.FORWARD);
-        Sprocket.setDirection(DcMotorEx.Direction.FORWARD);
+            // Intake mechanism Config
+            linearSlideElevator.setDirection(DcMotorEx.Direction.FORWARD);
+            Sprocket.setDirection(DcMotorEx.Direction.FORWARD);
 
-        leftBackDrive.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        rightBackDrive.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        rightFrontDrive.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        leftFrontDrive.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+            leftBackDrive.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+            rightBackDrive.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+            rightFrontDrive.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+            leftFrontDrive.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
-        // Intake mechanism Config
-        linearSlideElevator.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.BRAKE);
-        Sprocket.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.BRAKE);
+            // Intake mechanism Config
+            linearSlideElevator.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.BRAKE);
+            Sprocket.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.BRAKE);
 
-        linearSlideElevator.setTargetPosition(ELEVATOR_HIGH_SPECIMEN_HANG_POSITION);
+            linearSlideElevator.setTargetPosition(ELEVATOR_HIGH_SPECIMEN_HANG_POSITION);
 //            linearSlideElevator.setTargetPosition(linearSlideElevator.getCurrentPosition());
-        linearSlideElevator.setMode(DcMotorEx.RunMode.RUN_TO_POSITION);
-        Sprocket.setTargetPosition(ROTATING_ARM_JOINT_SPECIMEN_HANG_POSITION);
+            linearSlideElevator.setMode(DcMotorEx.RunMode.RUN_TO_POSITION);
+            Sprocket.setTargetPosition(ROTATING_ARM_JOINT_SPECIMEN_HANG_POSITION);
 //            Sprocket.setTargetPosition(Sprocket.getCurrentPosition());
-        Sprocket.setMode(DcMotorEx.RunMode.RUN_TO_POSITION);
+            Sprocket.setMode(DcMotorEx.RunMode.RUN_TO_POSITION);
 
-        // Initialize IMU
-        imu = hardwareMap.get(IMU.class, "imu");
-        IMU.Parameters parameters = new IMU.Parameters(new RevHubOrientationOnRobot(
-                DriveConstants.LOGO_FACING_DIR, DriveConstants.USB_FACING_DIR));
-        imu.initialize(parameters);
+            // Initialize IMU
+            imu = hardwareMap.get(IMU.class, "imu");
+            IMU.Parameters parameters = new IMU.Parameters(new RevHubOrientationOnRobot(
+                    DriveConstants.LOGO_FACING_DIR, DriveConstants.USB_FACING_DIR));
+            imu.initialize(parameters);
 
-        // Initialize RoadRunner drivetrain
-        SampleMecanumDrive drive = new SampleMecanumDrive(hardwareMap); // Drive object declared and initialized here
+            // Initialize RoadRunner drivetrain
+            SampleMecanumDrive drive = new SampleMecanumDrive(hardwareMap); // Drive object declared and initialized here
 
-        Pose2d startPose = new Pose2d(-36, -36, Math.toRadians(0)); //  start pose
-        // Drive fwd to place specimen
-        TrajectorySequence trajSeq1 = drive.trajectorySequenceBuilder(startPose)
-                .forward(31.9)
-                .build();
-        // Drive back
-        TrajectorySequence trajSeq3 = drive.trajectorySequenceBuilder(startPose)// drive forward to place specimen
-                .forward(6.7)
-                .build();
+            Pose2d startPose = new Pose2d(-36, -36, Math.toRadians(0)); //  start pose
+            // Drive fwd to place specimen
+            TrajectorySequence trajSeq1 = drive.trajectorySequenceBuilder(startPose)
+                    .forward(28.50)
+                    .build();
+            // Drive back
+            TrajectorySequence trajSeq3 = drive.trajectorySequenceBuilder(startPose)// drive forward to place specimen
+                    .forward(9.6)
+                    .build();
 
 
-        TrajectorySequence trajSeq2 = drive.trajectorySequenceBuilder(startPose)
-                .back(40.6)
-                .build();
+            TrajectorySequence trajSeq2 = drive.trajectorySequenceBuilder(startPose)
+                    .back(36.5)
+                    .build();
 
-        // Define your trajectory sequence here (replace with MeepMeep output)
-        TrajectorySequence trajSeq = drive.trajectorySequenceBuilder(startPose)
-                .strafeRight(60.3)
-                .forward(60)
-                .strafeRight(26.5)
-                .back(54)
-                .forward(54)
-                .strafeRight(25.5)
-                .back(50)
-                .forward(47)
-                .strafeRight(30)
-                .back(53)
-                .build();
+            // Define your trajectory sequence here (replace with MeepMeep output)
+            TrajectorySequence trajSeq = drive.trajectorySequenceBuilder(startPose)
+                    .strafeRight(63.56)
+                    .forward(60)
+                    .strafeRight(26.5)
+                    .turn(1.15)
+                    .back(58)
+                    .forward(58.5)
+                    .strafeRight(30.65)
+                    .back(58)
+//                    .forward()
+//                    .strafeRight(30)
+//                    .back(53)
+                    .build();
 
-        // Drive to park location
-        //           TrajectorySequence trajSeq4 = drive.trajectorySequenceBuilder(startPose)
-        //     .strafeRight(.3)
-        //                   .build();
+            // Drive to park location
+ //           TrajectorySequence trajSeq4 = drive.trajectorySequenceBuilder(startPose)
+               //     .strafeRight(.3)
+ //                   .build();
 
-        waitForStart();
+            waitForStart();
 
-        drive.followTrajectorySequence(trajSeq1);
+            drive.followTrajectorySequence(trajSeq1);
 
-        // Hanging Specimen holding pattern.
-        hangSpecimen_26295();
-        // Retract Robot
-        // Realign IMU Angle to 0
-        drive.followTrajectorySequence(trajSeq3);
-        linearSlideElevator.setTargetPosition(ELEVATOR_RESET_POSITION);
-        sleep(3000);
-        Sprocket.setTargetPosition(ROTATING_ARM_JOINT_RESET_POSITION);
+            // Hanging Specimen holding pattern.
+            hangSpecimen_26295();
+            // Retract Robot
+            // Realign IMU Angle to 0
+            drive.followTrajectorySequence(trajSeq3);
+            linearSlideElevator.setTargetPosition(ELEVATOR_RESET_POSITION);
+            sleep(2000);
+            Sprocket.setTargetPosition(ROTATING_ARM_JOINT_RESET_POSITION);
 ////            linearSlideElevator.setPower(1);
 ////            Sprocket.setPower(1);
 //            sleep(3000);
 // //           IntakeWheelSpin.setPower(0);
 ////            linearSlideElevator.setPower(0);
 ////            Sprocket.setPower(0);
-        drive.followTrajectorySequence(trajSeq2);
+            drive.followTrajectorySequence(trajSeq2);
 
-        if (isStopRequested()) return;
+            if (isStopRequested()) return;
 
-        drive.followTrajectorySequence(trajSeq);
-        // This is to park the Robot once all samples are pushed. - uncomment after testing
-        drive.followTrajectorySequence(trajSeq);
+            drive.followTrajectorySequence(trajSeq);
+            // This is to park the Robot once all samples are pushed. - uncomment after testing
+            drive.followTrajectorySequence(trajSeq);
+        }
     }
-}

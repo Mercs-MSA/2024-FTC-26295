@@ -44,10 +44,11 @@ public class IntoTheDeep_Autonomous extends LinearOpMode {
         linearSlideElevator.setTargetPosition(ELEVATOR_LOW_BASKET_POSITION);
         Sprocket.setTargetPosition(ROTATING_ARM_JOINT_BASKET_POSITION);
         linearSlideElevator.setPower(1);
+        Sprocket.setPower(1);
 //        Sprocket.setPower(1);
 //            IntakeWheelSpin.setDirection(CRServo.Direction.REVERSE);
         // delay for 2 Sec - optimize after testing.
-        sleep(2000);
+        sleep(3000);
         IntakeWheelSpin.setPower(1);
         // delay for 1 Sec to split the sample out
         sleep(1000);
@@ -111,41 +112,44 @@ public class IntoTheDeep_Autonomous extends LinearOpMode {
 
         TrajectorySequence trajSeq1 = drive.trajectorySequenceBuilder(startPose)
                 //Comp robot- most probably will NOT work
-                .forward(19.5) //might work to drop specimen first
+                .forward(15.65) //might work to drop specimen first
                 .build();
 
         TrajectorySequence trajSeq2 = drive.trajectorySequenceBuilder(startPose)
                 //Comp robot- most probably will NOT work
-                .back(19.5) //might work to drop specimen first
+                .back(15.55) //might work to drop specimen first
                 .build();
 
         // Define your trajectory sequence here (replace with MeepMeep output)
         TrajectorySequence trajSeq = drive.trajectorySequenceBuilder(startPose)
                 //Comp robot- most probably will NOT work
 //               .strafeLeft(-18.2) //might work to drop specimen first
-                .strafeRight(70.2) // //might work to drop specimen first
-                .forward(30)
-                .strafeLeft(70.1)
-                .forward(30.65)
-                .turn(-6.2)
-                .strafeLeft(10.3)
-                .forward(89.2)
-                .strafeLeft(-11.6)
-                .forward(-88.7)
-                .forward(87)
-                .strafeLeft(-11.5)
-                .forward(-86.2)
-                .forward(86.2)
-                .strafeLeft(12.5)
-                .forward(30.5)
-                .strafeLeft(10.2)
+                .strafeRight(65.2) // //might work to drop specimen first
+                .forward(25.2)
+                .strafeLeft(63.65)
+                .strafeRight(64.65)
+                .forward(25.2)
+                .strafeLeft(63.2)
+
+//                .turn(-6.2)
+//                .strafeLeft(10.3)
+//                .forward(89.2)
+//                .strafeLeft(-11.6)
+//                .forward(-88.7)
+//                .forward(87)
+//                .strafeLeft(-11.5)
+//                .forward(-86.2)
+//                .forward(86.2)
+//                .strafeLeft(12.5)
+//                .forward(30.5)
+//                .strafeLeft(10.2)
                 .build();
         // Define parking trajectory
-        TrajectorySequence trajSeq4 = drive.trajectorySequenceBuilder(startPose)
-                //Comp robot- most probably will NOT work
-                .strafeRight(20)
-                .back(18.2) //might work to drop specimen first
-                .build();
+//        TrajectorySequence trajSeq4 = drive.trajectorySequenceBuilder(startPose)
+//                //Comp robot- most probably will NOT work
+//                .strafeRight(20)
+//                .back(18.2) //might work to drop specimen first
+//                .build();
 
         waitForStart();
         // Hanging Specimen holding pattern.
