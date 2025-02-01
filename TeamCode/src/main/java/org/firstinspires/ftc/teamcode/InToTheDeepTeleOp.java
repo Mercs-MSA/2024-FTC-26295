@@ -62,6 +62,7 @@ import static org.firstinspires.ftc.teamcode.RobotConstants.ELEVATOR_RESET_POSIT
 import static org.firstinspires.ftc.teamcode.RobotConstants.OPERATOR_ERROR_MARGIN;
 import static org.firstinspires.ftc.teamcode.RobotConstants.OPERATOR_GAIN_MULTIPLIER;
 import static org.firstinspires.ftc.teamcode.RobotConstants.ROTATING_ARM_JOINT_RESET_POSITION;
+import static org.firstinspires.ftc.teamcode.RobotConstants.SPROCET_HORIZONTAL_LIMIT_POSITION;
 import static org.firstinspires.ftc.teamcode.RobotConstants.TELEOP_ASSIST_DRIVETRAIN_GAIN;
 import static org.firstinspires.ftc.teamcode.RobotConstants.TELEOP_ASSIST_DRIVETRAIN_TURN_GAIN;
 import static org.firstinspires.ftc.teamcode.drive.DriveConstants.FIELD_CENTRIC;
@@ -294,8 +295,6 @@ public class InToTheDeepTeleOp extends LinearOpMode {
 
             // POV Mode uses left joystick to go forward & rotate, and right joystick to strafe.
             double axial = -gamepad1.left_stick_y * TELEOP_ASSIST_DRIVETRAIN_GAIN;  //FWD
-            if(linearSlideElevator.getCurrentPosition() < ELEVATOR_LIMIT_POSITION)
-                axial =0;
             double lateral = gamepad1.left_stick_x * TELEOP_ASSIST_DRIVETRAIN_GAIN;  //TUR
             //Test This code to check drive and turn operation.
             double yaw = gamepad1.right_stick_x * TELEOP_ASSIST_DRIVETRAIN_TURN_GAIN; //STR
@@ -354,6 +353,11 @@ public class InToTheDeepTeleOp extends LinearOpMode {
             // Read joystick for DC motor operation.
             double ARMjointVar = gamepad2.right_stick_x;
             double elevatorVar = gamepad2.left_stick_y;
+            if((linearSlideElevator.getCurrentPosition() < ELEVATOR_LIMIT_POSITION) &&
+                    (Sprocket.getCurrentPosition()  < SPROCET_HORIZONTAL_LIMIT_POSITION) &&
+                    (elevatorVar > 1 ))
+                elevatorVar =0;
+
 //          minimize opertor error with accidental angle push
             if ((ARMjointVar > -OPERATOR_ERROR_MARGIN) && (ARMjointVar < OPERATOR_ERROR_MARGIN))
                 ARMjointVar =0;
@@ -433,7 +437,7 @@ public class InToTheDeepTeleOp extends LinearOpMode {
             // Turn off all the Servos
             if(gamepad2.y) {
                 IntakeWheelSpin.setPower(0);
-                IntakeUpDown.setPower(0);
+//                IntakeUpDown.setPower(0);
 //                IntakeLeftRight.setPower(0);
             }
             else if(gamepad2.a){ // Should be used for Climb Level 2 ascent.
@@ -444,7 +448,7 @@ public class InToTheDeepTeleOp extends LinearOpMode {
                 rightBackDrive.setPower(0);
                 //Clear All Servo positions
                 IntakeWheelSpin.setPower(0);
-                IntakeUpDown.setPower(0);
+//                IntakeUpDown.setPower(0);
 //                IntakeLeftRight.setPower(0);
                 //retract ARM
                 Sprocket.setTargetPosition(Sprocket.getCurrentPosition());
