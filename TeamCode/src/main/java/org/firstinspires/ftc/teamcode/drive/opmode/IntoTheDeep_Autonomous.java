@@ -155,6 +155,7 @@ public class IntoTheDeep_Autonomous extends LinearOpMode {
         // Hanging Specimen holding pattern.
         drive.followTrajectorySequence(trajSeq1);
         hangSpecimen_26295();
+        // go fwd to actually hang specimen
         drive.followTrajectorySequence(trajSeq2);
 
         if (isStopRequested()) return;
