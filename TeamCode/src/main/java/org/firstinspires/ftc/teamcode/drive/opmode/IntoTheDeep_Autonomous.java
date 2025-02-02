@@ -124,12 +124,12 @@ public class IntoTheDeep_Autonomous extends LinearOpMode {
         TrajectorySequence trajSeq = drive.trajectorySequenceBuilder(startPose)
                 //Comp robot- most probably will NOT work
 //               .strafeLeft(-18.2) //might work to drop specimen first
-                .strafeRight(65.2) // //might work to drop specimen first
+                .strafeRight(70.2) // //might work to drop specimen first
                 .forward(25.2)
-                .strafeLeft(63.65)
-                .strafeRight(64.65)
+                .strafeLeft(68.65)
+                .strafeRight(67.65)
                 .forward(25.2)
-                .strafeLeft(63.2)
+                .strafeLeft(66.2)
 
 //                .turn(-6.2)
 //                .strafeLeft(10.3)
