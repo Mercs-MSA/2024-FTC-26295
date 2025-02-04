@@ -1,21 +1,17 @@
 package org.firstinspires.ftc.teamcode.drive.opmode;
 
-import static org.firstinspires.ftc.teamcode.RobotConstants.ELEVATOR_HIGH_SPECIMEN_HANG_POSITION;
 import static org.firstinspires.ftc.teamcode.RobotConstants.ELEVATOR_LOW_BASKET_POSITION;
 import static org.firstinspires.ftc.teamcode.RobotConstants.ELEVATOR_RESET_POSITION;
 import static org.firstinspires.ftc.teamcode.RobotConstants.ROTATING_ARM_JOINT_BASKET_POSITION;
 import static org.firstinspires.ftc.teamcode.RobotConstants.ROTATING_ARM_JOINT_RESET_POSITION;
-import static org.firstinspires.ftc.teamcode.RobotConstants.ROTATING_ARM_JOINT_SPECIMEN_HANG_POSITION;
 
 import com.acmerobotics.roadrunner.geometry.Pose2d;
-import com.acmerobotics.roadrunner.geometry.Vector2d;
 import com.qualcomm.hardware.rev.RevHubOrientationOnRobot;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
-import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.IMU;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
@@ -37,7 +33,7 @@ public class IntoTheDeep_Autonomous extends LinearOpMode {
     private CRServo IntakeUpDown;
     private CRServo IntakeWheelSpin;
 
-    public void hangSpecimen_26295(){
+    public void dropSpecimen_26295(){
         // move Robot to correct position
 
 //      hang specimen to high rung  - Constants in RobotConstants.java file.
@@ -56,7 +52,6 @@ public class IntoTheDeep_Autonomous extends LinearOpMode {
 //            linearSlideElevator.setPower(0);
 //            Sprocket.setPower(0);
         linearSlideElevator.setTargetPosition(ELEVATOR_RESET_POSITION);
-        sleep(1000);
         Sprocket.setTargetPosition(ROTATING_ARM_JOINT_RESET_POSITION);
         IntakeWheelSpin.setPower(0);
 //            linearSlideElevator.setPower(1);
@@ -110,17 +105,20 @@ public class IntoTheDeep_Autonomous extends LinearOpMode {
 
         Pose2d startPose = new Pose2d(-36, -36, Math.toRadians(0)); //  start pose
 
+        // Move fwd to drop the sample in basket.
         TrajectorySequence trajSeq1 = drive.trajectorySequenceBuilder(startPose)
                 //Comp robot- most probably will NOT work
                 .forward(15.65) //might work to drop specimen first
                 .build();
 
+        //Retract to follow remaining auto path
         TrajectorySequence trajSeq2 = drive.trajectorySequenceBuilder(startPose)
                 //Comp robot- most probably will NOT work
                 .back(15.55) //might work to drop specimen first
                 .build();
 
         // Define your trajectory sequence here (replace with MeepMeep output)
+        //strafe 3 samples in netzone.
         TrajectorySequence trajSeq = drive.trajectorySequenceBuilder(startPose)
                 //Comp robot- most probably will NOT work
 //               .strafeLeft(-18.2) //might work to drop specimen first
@@ -144,17 +142,17 @@ public class IntoTheDeep_Autonomous extends LinearOpMode {
 //                .forward(30.5)
 //                .strafeLeft(10.2)
                 .build();
-        // Define parking trajectory
-//        TrajectorySequence trajSeq4 = drive.trajectorySequenceBuilder(startPose)
-//                //Comp robot- most probably will NOT work
-//                .strafeRight(20)
-//                .back(18.2) //might work to drop specimen first
-//                .build();
+        // Define parking trajectory in app note
+        TrajectorySequence trajSeq4 = drive.trajectorySequenceBuilder(startPose)
+                //Comp robot- most probably will NOT work
+                .strafeRight(20)
+                .back(18.2)
+                .build();
 
         waitForStart();
         // Hanging Specimen holding pattern.
         drive.followTrajectorySequence(trajSeq1);
-        hangSpecimen_26295();
+        dropSpecimen_26295();
         // go fwd to actually hang specimen
         drive.followTrajectorySequence(trajSeq2);
 
@@ -162,7 +160,7 @@ public class IntoTheDeep_Autonomous extends LinearOpMode {
 
         drive.followTrajectorySequence(trajSeq);
         // uncomment after testing - zthis is to park the Bot to parking positon in basket side Auto
-//        drive.followTrajectorySequence(trajSeq4);
+        drive.followTrajectorySequence(trajSeq4);
 
     }
 }
