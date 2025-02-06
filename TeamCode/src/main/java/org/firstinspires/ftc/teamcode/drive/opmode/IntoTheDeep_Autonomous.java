@@ -33,10 +33,11 @@ public class IntoTheDeep_Autonomous extends LinearOpMode {
     private CRServo IntakeUpDown;
     private CRServo IntakeWheelSpin;
 
-    public void dropSpecimen_26295(){
+    public void hangSpecimen_26295(){
         // move Robot to correct position
 
 //      hang specimen to high rung  - Constants in RobotConstants.java file.
+        linearSlideElevator.setPower(1);
         linearSlideElevator.setTargetPosition(ELEVATOR_LOW_BASKET_POSITION);
         Sprocket.setTargetPosition(ROTATING_ARM_JOINT_BASKET_POSITION);
         linearSlideElevator.setPower(1);
@@ -86,8 +87,8 @@ public class IntoTheDeep_Autonomous extends LinearOpMode {
 
         // Intake mechanism Init & Config
         linearSlideElevator.setDirection(DcMotorEx.Direction.FORWARD);
-        Sprocket.setDirection(DcMotorEx.Direction.FORWARD);
         linearSlideElevator.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.BRAKE);
+        Sprocket.setDirection(DcMotorEx.Direction.FORWARD);
         Sprocket.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.BRAKE);
         linearSlideElevator.setTargetPosition(ELEVATOR_LOW_BASKET_POSITION);
         linearSlideElevator.setMode(DcMotorEx.RunMode.RUN_TO_POSITION);
@@ -108,13 +109,13 @@ public class IntoTheDeep_Autonomous extends LinearOpMode {
         // Move fwd to drop the sample in basket.
         TrajectorySequence trajSeq1 = drive.trajectorySequenceBuilder(startPose)
                 //Comp robot- most probably will NOT work
-                .forward(15.65) //might work to drop specimen first
+                .forward(15) //might work to drop specimen first
                 .build();
 
         //Retract to follow remaining auto path
         TrajectorySequence trajSeq2 = drive.trajectorySequenceBuilder(startPose)
                 //Comp robot- most probably will NOT work
-                .back(15.55) //might work to drop specimen first
+                .back(11.25) //might work to drop specimen first
                 .build();
 
         // Define your trajectory sequence here (replace with MeepMeep output)
@@ -122,12 +123,16 @@ public class IntoTheDeep_Autonomous extends LinearOpMode {
         TrajectorySequence trajSeq = drive.trajectorySequenceBuilder(startPose)
                 //Comp robot- most probably will NOT work
 //               .strafeLeft(-18.2) //might work to drop specimen first
-                .strafeRight(70.2) // //might work to drop specimen first
-                .forward(25.2)
-                .strafeLeft(68.65)
-                .strafeRight(67.65)
-                .forward(25.2)
-                .strafeLeft(66.2)
+                .strafeRight(85.2)
+                .turn(0.95)
+                .forward(12)
+                .strafeRight(10.5)
+                .forward(22.5)
+                .strafeLeft(85.452)
+                .back(1.5)
+                .strafeRight(85.2)
+                .forward(22.5)
+                .strafeLeft(83.2)
 
 //                .turn(-6.2)
 //                .strafeLeft(10.3)
@@ -145,21 +150,21 @@ public class IntoTheDeep_Autonomous extends LinearOpMode {
         // Define parking trajectory in app note
         TrajectorySequence trajSeq4 = drive.trajectorySequenceBuilder(startPose)
                 //Comp robot- most probably will NOT work
-                .strafeRight(20)
-                .back(18.2)
+                .strafeRight(95)
+                .back(25.2)
                 .build();
 
         waitForStart();
         // Hanging Specimen holding pattern.
         drive.followTrajectorySequence(trajSeq1);
-        dropSpecimen_26295();
+        hangSpecimen_26295();
         // go fwd to actually hang specimen
         drive.followTrajectorySequence(trajSeq2);
 
         if (isStopRequested()) return;
 
         drive.followTrajectorySequence(trajSeq);
-        // uncomment after testing - zthis is to park the Bot to parking positon in basket side Auto
+        // uncomment after testing - this is to park the Bot to parking positon in basket side Auto
         drive.followTrajectorySequence(trajSeq4);
 
     }

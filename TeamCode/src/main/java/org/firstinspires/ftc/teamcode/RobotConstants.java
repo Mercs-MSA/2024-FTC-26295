@@ -10,14 +10,15 @@ public class RobotConstants
     public static final double SPROCET_HORIZONTAL_LIMIT_POSITION = 100;
 
     public static int ELEVATOR_HIGH_LIMIT_POSITION = -17484;
-    public static int ELEVATOR_LOW_BASKET_POSITION = -6050; //low basket:-5300
+    public static int ELEVATOR_LOW_BASKET_POSITION = 6050; //low basket:-5300
     public static int ELEVATOR_HIGH_BASKET_POSITION = -4508;// position for shoulder for basket drop
     public static int ELEVATOR_HIGH_SPECIMEN_HANG_POSITION = -4600;// position for shoulder for basket drop
     public static int ELEVATOR_RESET_POSITION =5; // start position
     public static int BASKET_ELEVATOR_RESET_POSITION =505; // start position
 
-    public static int ROTATING_ARM_JOINT_HIGH_POSITION = 520;   // vertical position
-    public static int ROTATING_ARM_JOINT_BASKET_POSITION = 0;//-105;// position for shoulder for basket drop
+    public static int ROTATING_ARM_JOINT_HIGH_POSITION = 520;
+   // public static int ROTATING_ARM_JOINT_HIGH_POSITION2 = 520; // going for 2nd sample in auton 1
+    public static int ROTATING_ARM_JOINT_BASKET_POSITION = -225;//-105;// position for shoulder for basket drop
     public static int ROTATING_ARM_JOINT_SPECIMEN_HANG_POSITION = -165;// position for shoulder for basket drop
     public static int ROTATING_ARM_JOINT_RESET_POSITION =0; // start position
     public static int BASKET_ROTATING_ARM_JOINT_RESET_POSITION = -500;
