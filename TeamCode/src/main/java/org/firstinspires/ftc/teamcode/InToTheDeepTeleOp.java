@@ -353,9 +353,10 @@ public class InToTheDeepTeleOp extends LinearOpMode {
             // Read joystick for DC motor operation.
             double ARMjointVar = gamepad2.right_stick_x;
             double elevatorVar = gamepad2.left_stick_y;
-            if((linearSlideElevator.getCurrentPosition() < ELEVATOR_LIMIT_POSITION) &&
-                    (Sprocket.getCurrentPosition()  < SPROCET_HORIZONTAL_LIMIT_POSITION) &&
-                    (elevatorVar > 1 ))
+            if((linearSlideElevator.getCurrentPosition() > ELEVATOR_LIMIT_POSITION)
+                    && (Sprocket.getCurrentPosition()  < SPROCET_HORIZONTAL_LIMIT_POSITION)
+                    && (elevatorVar > 0 )
+                    )
                 elevatorVar =0;
 
 //          minimize opertor error with accidental angle push

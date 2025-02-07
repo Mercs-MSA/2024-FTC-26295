@@ -3,21 +3,21 @@ package org.firstinspires.ftc.teamcode;
 public class RobotConstants
 {
 
-    public static final double OPERATOR_ERROR_MARGIN = 0.5;//wrounding error on joysticlk
+    public static final double OPERATOR_ERROR_MARGIN = 0.2;//wrounding error on joysticlk
     public static final double OPERATOR_GAIN_MULTIPLIER = 1;//50 % power
     public static final double COLORSENSOR_DISTANCE = 5;//5 cm
-    public static final double ELEVATOR_LIMIT_POSITION = -6050;
-    public static final double SPROCET_HORIZONTAL_LIMIT_POSITION = 100;
+    public static final double ELEVATOR_LIMIT_POSITION = 6200;
+    public static final double SPROCET_HORIZONTAL_LIMIT_POSITION = -700;
 
     public static int ELEVATOR_HIGH_LIMIT_POSITION = -17484;
-    public static int ELEVATOR_LOW_BASKET_POSITION = -6050; //low basket:-5300
+    public static int ELEVATOR_LOW_BASKET_POSITION = 6050; //low basket:-5300
     public static int ELEVATOR_HIGH_BASKET_POSITION = -4508;// position for shoulder for basket drop
-    public static int ELEVATOR_HIGH_SPECIMEN_HANG_POSITION = -4600;// position for shoulder for basket drop
+    public static int ELEVATOR_HIGH_SPECIMEN_HANG_POSITION = 5600;// position for shoulder for basket drop
     public static int ELEVATOR_RESET_POSITION =5; // start position
     public static int BASKET_ELEVATOR_RESET_POSITION =505; // start position
 
     public static int ROTATING_ARM_JOINT_HIGH_POSITION = 520;   // vertical position
-    public static int ROTATING_ARM_JOINT_BASKET_POSITION = 0;//-105;// position for shoulder for basket drop
+    public static int ROTATING_ARM_JOINT_BASKET_POSITION = -225;// position for shoulder for basket drop
     public static int ROTATING_ARM_JOINT_SPECIMEN_HANG_POSITION = -165;// position for shoulder for basket drop
     public static int ROTATING_ARM_JOINT_RESET_POSITION =0; // start position
     public static int BASKET_ROTATING_ARM_JOINT_RESET_POSITION = -500;

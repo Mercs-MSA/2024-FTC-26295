@@ -1,7 +1,5 @@
 package org.firstinspires.ftc.teamcode.drive.opmode;
 
-import static org.firstinspires.ftc.teamcode.RobotConstants.BASKET_ELEVATOR_RESET_POSITION;
-import static org.firstinspires.ftc.teamcode.RobotConstants.BASKET_ROTATING_ARM_JOINT_RESET_POSITION;
 import static org.firstinspires.ftc.teamcode.RobotConstants.ELEVATOR_LOW_BASKET_POSITION;
 import static org.firstinspires.ftc.teamcode.RobotConstants.ELEVATOR_RESET_POSITION;
 import static org.firstinspires.ftc.teamcode.RobotConstants.ROTATING_ARM_JOINT_BASKET_POSITION;
@@ -10,6 +8,7 @@ import static org.firstinspires.ftc.teamcode.RobotConstants.ROTATING_ARM_JOINT_R
 import com.acmerobotics.roadrunner.geometry.Pose2d;
 import com.qualcomm.hardware.rev.RevHubOrientationOnRobot;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.DcMotor;
@@ -20,7 +19,7 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 import org.firstinspires.ftc.teamcode.drive.DriveConstants;
 import org.firstinspires.ftc.teamcode.drive.SampleMecanumDrive;
 import org.firstinspires.ftc.teamcode.trajectorysequence.TrajectorySequence;
-
+@Disabled
 @Autonomous
 public class IntoTheDeepAuto2 extends LinearOpMode {
     private ElapsedTime runtime = new ElapsedTime();
@@ -35,10 +34,11 @@ public class IntoTheDeepAuto2 extends LinearOpMode {
     private CRServo IntakeUpDown;
     private CRServo IntakeWheelSpin;
 
-    public void dropSpecimen_26295(){
+    public void hangSpecimen_26295(){
         // move Robot to correct position
 
 //      hang specimen to high rung  - Constants in RobotConstants.java file.
+        linearSlideElevator.setPower(1);
         linearSlideElevator.setTargetPosition(ELEVATOR_LOW_BASKET_POSITION);
         Sprocket.setTargetPosition(ROTATING_ARM_JOINT_BASKET_POSITION);
         linearSlideElevator.setPower(1);
@@ -46,12 +46,16 @@ public class IntoTheDeepAuto2 extends LinearOpMode {
 //        Sprocket.setPower(1);
 //            IntakeWheelSpin.setDirection(CRServo.Direction.REVERSE);
         // delay for 2 Sec - optimize after testing.
-//        sleep(3000);
+        sleep(3000);
+        IntakeWheelSpin.setPower(1);
         // delay for 1 Sec to split the sample out
-//        sleep(1000);
+        sleep(1000);
         // reset position prior to moving the robot.
 //            linearSlideElevator.setPower(0);
 //            Sprocket.setPower(0);
+        linearSlideElevator.setTargetPosition(ELEVATOR_RESET_POSITION);
+        Sprocket.setTargetPosition(ROTATING_ARM_JOINT_RESET_POSITION);
+        IntakeWheelSpin.setPower(0);
 //            linearSlideElevator.setPower(1);
 //            Sprocket.setPower(1);
 //            sleep(2000);
@@ -84,8 +88,8 @@ public class IntoTheDeepAuto2 extends LinearOpMode {
 
         // Intake mechanism Init & Config
         linearSlideElevator.setDirection(DcMotorEx.Direction.FORWARD);
-        Sprocket.setDirection(DcMotorEx.Direction.FORWARD);
         linearSlideElevator.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.BRAKE);
+        Sprocket.setDirection(DcMotorEx.Direction.FORWARD);
         Sprocket.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.BRAKE);
         linearSlideElevator.setTargetPosition(ELEVATOR_LOW_BASKET_POSITION);
         linearSlideElevator.setMode(DcMotorEx.RunMode.RUN_TO_POSITION);
@@ -101,21 +105,18 @@ public class IntoTheDeepAuto2 extends LinearOpMode {
         // Initialize RoadRunner drivetrain
         SampleMecanumDrive drive = new SampleMecanumDrive(hardwareMap); // Drive object declared and initialized here
 
-        Pose2d startPose = new Pose2d(-36, -36, Math.toRadians(90)); //  start pose
+        Pose2d startPose = new Pose2d(-36, -36, Math.toRadians(0)); //  start pose
+
         // Move fwd to drop the sample in basket.
         TrajectorySequence trajSeq1 = drive.trajectorySequenceBuilder(startPose)
                 //Comp robot- most probably will NOT work
-                .strafeRight(20.00) //might work to drop specimen first
-                .turn(Math.toRadians(45))
-                .forward(10)
+                .forward(15) //might work to drop specimen first
                 .build();
 
         //Retract to follow remaining auto path
         TrajectorySequence trajSeq2 = drive.trajectorySequenceBuilder(startPose)
                 //Comp robot- most probably will NOT work
-                .turn(Math.toRadians(-45)) //might work to drop specimen first
-                .waitSeconds(0.5)
-                .back(20)
+                .back(11.25) //might work to drop specimen first
                 .build();
 
         // Define your trajectory sequence here (replace with MeepMeep output)
@@ -123,23 +124,17 @@ public class IntoTheDeepAuto2 extends LinearOpMode {
         TrajectorySequence trajSeq = drive.trajectorySequenceBuilder(startPose)
                 //Comp robot- most probably will NOT work
 //               .strafeLeft(-18.2) //might work to drop specimen first
-                .strafeRight(70.2) // //might work to drop specimen first
-                .waitSeconds(0.1)
-                .forward(25.2)
-                .waitSeconds(0.1)
-                .strafeLeft(68.65)
-                .waitSeconds(0.1)
-                .strafeRight(67.65)
-                .waitSeconds(0.1)
-                .forward(25.2)
-                .waitSeconds(0.1)
-                .strafeLeft(66.2)
-                .waitSeconds(0.1)
-                .strafeRight(90.2) // //might work to drop specimen first
-                .waitSeconds(0.1)
-                .back(50)
-                .waitSeconds(0.5)
-                .turn(Math.toRadians(45))
+                .strafeRight(85.2)
+                .turn(0.95)
+                .forward(12)
+                .strafeRight(10.5)
+                .forward(22.5)
+                .strafeLeft(85.452)
+                .back(1.5)
+                .strafeRight(85.2)
+                .forward(22.5)
+                .strafeLeft(83.2)
+
 //                .turn(-6.2)
 //                .strafeLeft(10.3)
 //                .forward(89.2)
@@ -156,28 +151,21 @@ public class IntoTheDeepAuto2 extends LinearOpMode {
         // Define parking trajectory in app note
         TrajectorySequence trajSeq4 = drive.trajectorySequenceBuilder(startPose)
                 //Comp robot- most probably will NOT work
-                .strafeRight(20)
-                .back(18.2)
+                .strafeRight(95)
+                .back(25.2)
                 .build();
 
         waitForStart();
-        // start elevator raising function as soon as AUTO starts
-        dropSpecimen_26295();
         // Hanging Specimen holding pattern.
         drive.followTrajectorySequence(trajSeq1);
+        hangSpecimen_26295();
         // go fwd to actually hang specimen
-        IntakeWheelSpin.setPower(1);
-        sleep(500);
-        linearSlideElevator.setTargetPosition(BASKET_ELEVATOR_RESET_POSITION);
-        IntakeWheelSpin.setPower(0);
         drive.followTrajectorySequence(trajSeq2);
-        sleep(1500);
-        Sprocket.setTargetPosition(BASKET_ROTATING_ARM_JOINT_RESET_POSITION);
 
         if (isStopRequested()) return;
 
         drive.followTrajectorySequence(trajSeq);
-        // uncomment after testing - zthis is to park the Bot to parking positon in basket side Auto
+        // uncomment after testing - this is to park the Bot to parking positon in basket side Auto
         drive.followTrajectorySequence(trajSeq4);
 
     }
