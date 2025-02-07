@@ -150,7 +150,7 @@ import org.firstinspires.ftc.teamcode.trajectorysequence.TrajectorySequence;
 
 
             TrajectorySequence trajSeq2 = drive.trajectorySequenceBuilder(startPose)
-                    .back(26.5)
+                    .back(20.5)
                     .build();
 
             // Define your trajectory sequence here (replace with MeepMeep output)
@@ -176,15 +176,15 @@ import org.firstinspires.ftc.teamcode.trajectorysequence.TrajectorySequence;
 
             waitForStart();
 
-            drive.followTrajectorySequence(trajSeq1);
-
             // Hanging Specimen holding pattern.
             hangSpecimen_26295();
+            drive.followTrajectorySequence(trajSeq1);
+
             // Retract Robot
             // Realign IMU Angle to 0
             drive.followTrajectorySequence(trajSeq3);
             linearSlideElevator.setTargetPosition(ELEVATOR_RESET_POSITION);
-            sleep(2000);
+            sleep(1000);
             Sprocket.setTargetPosition(ROTATING_ARM_JOINT_RESET_POSITION);
 ////            linearSlideElevator.setPower(1);
 ////            Sprocket.setPower(1);

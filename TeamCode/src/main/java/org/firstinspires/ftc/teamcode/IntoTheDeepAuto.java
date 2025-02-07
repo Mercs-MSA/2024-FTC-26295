@@ -184,7 +184,7 @@ public class IntoTheDeepAuto extends LinearOpMode {
         // Realign IMU Angle to 0
         drive.followTrajectorySequence(trajSeq3);
         linearSlideElevator.setTargetPosition(ELEVATOR_RESET_POSITION);
-        sleep(700);
+        sleep(1000);
         Sprocket.setTargetPosition(ROTATING_ARM_JOINT_RESET_POSITION);
 ////            linearSlideElevator.setPower(1);
 ////            Sprocket.setPower(1);
