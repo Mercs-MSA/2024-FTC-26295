@@ -8,6 +8,7 @@ import static org.firstinspires.ftc.teamcode.RobotConstants.ROTATING_ARM_JOINT_R
 import com.acmerobotics.roadrunner.geometry.Pose2d;
 import com.qualcomm.hardware.rev.RevHubOrientationOnRobot;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.DcMotor;
@@ -18,7 +19,6 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 import org.firstinspires.ftc.teamcode.drive.DriveConstants;
 import org.firstinspires.ftc.teamcode.drive.SampleMecanumDrive;
 import org.firstinspires.ftc.teamcode.trajectorysequence.TrajectorySequence;
-
 @Autonomous
 public class IntoTheDeep_Autonomous extends LinearOpMode {
     private ElapsedTime runtime = new ElapsedTime();
@@ -45,6 +45,7 @@ public class IntoTheDeep_Autonomous extends LinearOpMode {
 //        Sprocket.setPower(1);
 //            IntakeWheelSpin.setDirection(CRServo.Direction.REVERSE);
         // delay for 2 Sec - optimize after testing.
+//        sleep(3000);
 //            linearSlideElevator.setPower(1);
 //            Sprocket.setPower(1);
 //            sleep(2000);
@@ -115,8 +116,8 @@ public class IntoTheDeep_Autonomous extends LinearOpMode {
 //               .strafeLeft(-18.2) //might work to drop specimen first
                 .strafeRight(85.2)
                 .turn(0.95)
-                .forward(22)
-                .strafeRight(20.5)
+                .forward(12)
+                .strafeRight(10.5)
                 .forward(22.5)
                 .strafeLeft(85.452)
                 .back(1.5)
@@ -148,21 +149,17 @@ public class IntoTheDeep_Autonomous extends LinearOpMode {
         hangSpecimen_26295();
         // Hanging Specimen holding pattern.
         drive.followTrajectorySequence(trajSeq1);
-
-        sleep(500);
         IntakeWheelSpin.setPower(1);
         // delay for 1 Sec to split the sample out
-        sleep(500);
+        sleep(1000);
         // reset position prior to moving the robot.
 //            linearSlideElevator.setPower(0);
 //            Sprocket.setPower(0);
         linearSlideElevator.setTargetPosition(ELEVATOR_RESET_POSITION);
         Sprocket.setTargetPosition(ROTATING_ARM_JOINT_RESET_POSITION);
         IntakeWheelSpin.setPower(0);
-
         // go fwd to actually hang specimen
         drive.followTrajectorySequence(trajSeq2);
-
 
         if (isStopRequested()) return;
 

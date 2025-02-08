@@ -12,7 +12,7 @@ public class RobotConstants
     public static int ELEVATOR_HIGH_LIMIT_POSITION = -17484;
     public static int ELEVATOR_LOW_BASKET_POSITION = 6050; //low basket:-5300
     public static int ELEVATOR_HIGH_BASKET_POSITION = -4508;// position for shoulder for basket drop
-    public static int ELEVATOR_HIGH_SPECIMEN_HANG_POSITION = 5600;// position for shoulder for basket drop
+    public static int ELEVATOR_HIGH_SPECIMEN_HANG_POSITION = 4200;// position for shoulder for basket drop
     public static int ELEVATOR_RESET_POSITION =5; // start position
     public static int BASKET_ELEVATOR_RESET_POSITION =505; // start position
 

@@ -155,18 +155,18 @@ public class IntoTheDeepAuto extends LinearOpMode {
 
         // Define your trajectory sequence here (replace with MeepMeep output)
         TrajectorySequence trajSeq = drive.trajectorySequenceBuilder(startPose)
-                .strafeLeft(23.56)
+                .strafeLeft(45.56)
 //                .turn(0.75)
-                .forward(60)
-                .strafeLeft(26.5)
-//                    .turn(1.15)
+                .forward(40)
+                .strafeLeft(26.65)
+                .turn(-0.75)
                 .back(61)
-                    .forward(61.5)
+                    .forward(63.5)
                 .strafeLeft(29.65)
-                    .back(62)
-                    .forward(82)
+                    .back(64.2)
+                    .forward(76.65)
                     .strafeRight(30)
-//                    .back(53)
+////                    .back(53)
                 .build();
 
         // Drive to park location

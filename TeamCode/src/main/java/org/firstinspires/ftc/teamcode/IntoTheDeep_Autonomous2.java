@@ -72,7 +72,7 @@ import org.firstinspires.ftc.teamcode.trajectorysequence.TrajectorySequence;
 //           sleep(2000);
 //            IntakeWheelSpin.setPower(-0.5);
 ////            // delay for 4 Sec
-           sleep(3500);
+//           sleep(3500);
             // reset position prior to moving the robot.
 //            Sprocket.setTargetPosition(ROTATING_ARM_JOINT_RESET_POSITION);
 ////            linearSlideElevator.setPower(1);

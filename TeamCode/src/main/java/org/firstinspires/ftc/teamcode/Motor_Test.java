@@ -78,8 +78,8 @@ public class Motor_Test extends LinearOpMode {
         linearSlideARM = hardwareMap.get(DcMotorEx.class, "linearSlideARM");
         RotatingARMJoint = hardwareMap.get(DcMotorEx.class, "RotatingARMJoint");
         //Servos
-        Intakerollerdirection = hardwareMap.get(CRServo.class, "IntakeRotation");
-        IntakeWheelSpin = hardwareMap.get(CRServo.class, "wheelSpin");
+        Intakerollerdirection = hardwareMap.get(CRServo.class, "IntakeDirection");
+        IntakeWheelSpin = hardwareMap.get(CRServo.class, "WheelSpin");
         //Ascent HW Init
         Climb = hardwareMap.get(DcMotorEx.class, "climb");
         hook = hardwareMap.get(CRServo.class, "hook");
