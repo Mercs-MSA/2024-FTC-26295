@@ -36,6 +36,7 @@ public class IntoTheDeep_Autonomous extends LinearOpMode {
     public void hangSpecimen_26295(){
         // move Robot to correct position
 
+
 //      hang specimen to high rung  - Constants in RobotConstants.java file.
         linearSlideElevator.setPower(1);
         linearSlideElevator.setTargetPosition(ELEVATOR_LOW_BASKET_POSITION);
@@ -106,7 +107,7 @@ public class IntoTheDeep_Autonomous extends LinearOpMode {
         //Retract to follow remaining auto path
         TrajectorySequence trajSeq2 = drive.trajectorySequenceBuilder(startPose)
                 //Comp robot- most probably will NOT work
-                .back(11.25) //might work to drop specimen first
+                .back(10) //might work to drop specimen first
                 .build();
 
         // Define your trajectory sequence here (replace with MeepMeep output)
@@ -114,15 +115,16 @@ public class IntoTheDeep_Autonomous extends LinearOpMode {
         TrajectorySequence trajSeq = drive.trajectorySequenceBuilder(startPose)
                 //Comp robot- most probably will NOT work
 //               .strafeLeft(-18.2) //might work to drop specimen first
-                .strafeRight(85.2)
+                .turn(0.2)
+                .strafeRight(75.2)
                 .turn(0.95)
-                .forward(12)
-                .strafeRight(10.5)
-                .forward(22.5)
+                .forward(19)
+                .strafeRight(38.5)
+                .forward(12.5)
                 .strafeLeft(85.452)
                 .back(1.5)
                 .strafeRight(85.2)
-                .forward(22.5)
+                .forward(18.5)
                 .strafeLeft(83.2)
 
 //                .turn(-6.2)
@@ -149,9 +151,10 @@ public class IntoTheDeep_Autonomous extends LinearOpMode {
         hangSpecimen_26295();
         // Hanging Specimen holding pattern.
         drive.followTrajectorySequence(trajSeq1);
+        sleep(500);
         IntakeWheelSpin.setPower(1);
         // delay for 1 Sec to split the sample out
-        sleep(1000);
+        sleep(2000);
         // reset position prior to moving the robot.
 //            linearSlideElevator.setPower(0);
 //            Sprocket.setPower(0);
